@@ -4,35 +4,37 @@ const techCategories = [
     items: [
       { name: 'React', tooltip: 'UI-kirjasto' },
       { name: 'Next.js', tooltip: 'Metaframework' },
-      { name: 'Tailwind CSS', tooltip: 'Tyylit' },
-      { name: 'TypeScript', tooltip: 'Tyypitys' }
+      { name: 'TypeScript', tooltip: 'Tyypitys' },
+      { name: 'Tailwind CSS', tooltip: 'Tyylit' }
     ]
   },
   {
-    title: 'Backend',
+    title: 'Backend & Data',
     items: [
       { name: 'Node.js', tooltip: 'Runtime' },
-      { name: 'Supabase', tooltip: 'BaaS & Database' },
+      { name: 'Supabase', tooltip: 'BaaS & PostgreSQL' },
+      { name: 'RLS', tooltip: 'Row Level Security' },
       { name: 'pgvector', tooltip: 'Vektorihaut' },
-      { name: 'Deno', tooltip: 'Edge Functions' }
+      { name: 'Multi-tenant', tooltip: 'Arkkitehtuuri' }
     ]
   },
   {
     title: 'AI & Automaatiot',
     items: [
+      { name: 'RAG', tooltip: 'Retrieval-Augmented Generation' },
       { name: 'OpenAI', tooltip: 'LLM API' },
       { name: 'Anthropic', tooltip: 'LLM API' },
-      { name: 'n8n', tooltip: 'Workflow automation' },
-      { name: 'Vapi / Bland', tooltip: 'Voice AI' }
+      { name: 'n8n', tooltip: 'Workflow-orkestrointi' },
+      { name: 'Voice AI', tooltip: 'Vapi / Bland' }
     ]
   },
   {
     title: 'Integraatiot',
     items: [
+      { name: 'REST APIs', tooltip: 'API-kehitys' },
       { name: 'Resend', tooltip: 'Sähköpostit' },
       { name: 'Stripe', tooltip: 'Maksut' },
-      { name: 'Twilio', tooltip: 'Viestintä' },
-      { name: 'Google APIs', tooltip: 'Dokumentit' }
+      { name: 'Google APIs', tooltip: 'Drive, Calendar' }
     ]
   }
 ]
