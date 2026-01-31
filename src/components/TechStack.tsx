@@ -25,7 +25,8 @@ const techCategories = [
       { name: 'OpenAI', tooltip: 'LLM API' },
       { name: 'Anthropic', tooltip: 'LLM API' },
       { name: 'n8n', tooltip: 'Workflow-orkestrointi' },
-      { name: 'Synthflow', tooltip: 'Voice AI' }
+      { name: 'Synthflow', tooltip: 'Voice AI' },
+      { name: 'No-code', tooltip: 'Nopea prototypointi' }
     ]
   },
   {
