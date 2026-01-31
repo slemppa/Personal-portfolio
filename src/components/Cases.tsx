@@ -4,7 +4,7 @@ const cases = [
   {
     icon: Search,
     title: 'RAG-synkronointi',
-    client: 'Gold Adam',
+    client: 'Asiakasprojekti',
     description: 'Google Drive → Supabase → semanttinen haku. Automaattinen dokumenttien indeksointi ja älykäs tiedonhaku vektorihauilla.',
     tech: ['Supabase', 'pgvector', 'n8n', 'OpenAI']
   },

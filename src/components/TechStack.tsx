@@ -25,14 +25,13 @@ const techCategories = [
       { name: 'OpenAI', tooltip: 'LLM API' },
       { name: 'Anthropic', tooltip: 'LLM API' },
       { name: 'n8n', tooltip: 'Workflow-orkestrointi' },
-      { name: 'Voice AI', tooltip: 'Vapi / Bland' }
+      { name: 'Synthflow', tooltip: 'Voice AI' }
     ]
   },
   {
     title: 'Integraatiot',
     items: [
       { name: 'REST APIs', tooltip: 'API-kehitys' },
-      { name: 'Resend', tooltip: 'Sähköpostit' },
       { name: 'Stripe', tooltip: 'Maksut' },
       { name: 'Google APIs', tooltip: 'Drive, Calendar' }
     ]
