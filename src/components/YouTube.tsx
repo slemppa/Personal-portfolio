@@ -21,10 +21,10 @@ export default function YouTube() {
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold mb-4">AI-automaatiosisaltoa</h3>
+          <h3 className="text-xl font-semibold mb-4">AI-automaatiosisältöä</h3>
           <p className="text-text-secondary mb-6">
-            Dokumentoin matkaa AI-jarjestelmien rakentajana. Tutoriaaleja,
-            projektien lapikäynteja ja ajatuksia teknologian kehityksesta.
+            Dokumentoin matkaa AI-järjestelmien rakentajana. Tutoriaaleja,
+            projektien läpikäyntejä ja ajatuksia teknologian kehityksestä.
           </p>
           <ul className="space-y-3">
             {[

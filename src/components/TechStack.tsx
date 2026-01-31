@@ -29,9 +29,9 @@ const techCategories = [
   {
     title: 'Integraatiot',
     items: [
-      { name: 'Resend', tooltip: 'Sahkopostit' },
+      { name: 'Resend', tooltip: 'Sähköpostit' },
       { name: 'Stripe', tooltip: 'Maksut' },
-      { name: 'Twilio', tooltip: 'Viestinta' },
+      { name: 'Twilio', tooltip: 'Viestintä' },
       { name: 'Google APIs', tooltip: 'Dokumentit' }
     ]
   }
@@ -41,7 +41,7 @@ export default function TechStack() {
   return (
     <section id="tech" className="py-24 px-8 max-w-6xl mx-auto">
       <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2">Tech Stack</h2>
-      <p className="text-text-muted mb-12">Tyokalut joilla rakennan</p>
+      <p className="text-text-muted mb-12">Työkalut joilla rakennan</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {techCategories.map((category) => (

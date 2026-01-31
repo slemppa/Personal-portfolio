@@ -1,7 +1,7 @@
 import { Mail, Linkedin, Youtube, Github } from 'lucide-react'
 
 const links = [
-  { icon: Mail, label: 'sami@rascal.ai', href: 'mailto:sami@rascal.ai' },
+  { icon: Mail, label: 'sami@rascalai.fi', href: 'mailto:sami@rascalai.fi' },
   { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/in/samikiias' },
   { icon: Youtube, label: 'YouTube', href: 'https://youtube.com/@samikiias' },
   { icon: Github, label: 'GitHub', href: 'https://github.com/samikiias' }
@@ -23,7 +23,7 @@ const companies = [
 export default function Contact() {
   return (
     <section id="contact" className="py-24 px-8 max-w-6xl mx-auto">
-      <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2">Ota yhteytta</h2>
+      <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2">Ota yhteyttä</h2>
       <p className="text-text-muted mb-12">Keskustellaan miten voin auttaa</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
