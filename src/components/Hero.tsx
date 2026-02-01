@@ -73,7 +73,7 @@ export default function Hero() {
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-accent/20 to-purple-500/20 rounded-2xl blur-2xl"></div>
               <img
-                src="/profile.jpg"
+                src="/portfolio-hero-fix.png"
                 alt="Sami Kiias"
                 className="relative w-80 h-80 lg:w-96 lg:h-96 object-cover rounded-2xl border border-border shadow-2xl"
               />
