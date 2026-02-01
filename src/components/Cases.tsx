@@ -1,33 +1,33 @@
-import { Search, Phone, Mail, Shield } from 'lucide-react'
+import { Sparkles, FileText, Search, Phone } from 'lucide-react'
 
 const cases = [
   {
+    icon: Sparkles,
+    title: 'Rascal AI',
+    client: 'Rascal Company',
+    description: 'AI-pohjainen markkinointiautomaatioalusta pk-yrityksille. Säästää 8-10h viikossa markkinointitehtävistä. Multi-tenant arkkitehtuuri ja RLS.',
+    tech: ['React', 'Supabase', 'OpenAI', 'n8n']
+  },
+  {
+    icon: FileText,
+    title: 'Rascal Pages',
+    client: 'Rascal Company',
+    description: 'AI-avusteinen laskeutumissivujen rakentaja. Generoi konvertoivia sivuja automaattisesti brändin mukaan. Integroitu analytiikka.',
+    tech: ['Next.js', 'Supabase', 'Claude', 'Vercel']
+  },
+  {
     icon: Search,
-    title: 'RAG-synkronointi',
-    client: 'Asiakasprojekti',
-    description: 'Google Drive → Supabase → semanttinen haku. Automaattinen dokumenttien indeksointi ja älykäs tiedonhaku vektorihauilla.',
+    title: 'RAG-ratkaisut',
+    client: 'Asiakasprojektit',
+    description: 'Räätälöidyt RAG-järjestelmät yrityksille. Dokumenttien indeksointi, semanttinen haku ja vektoritietokannat. Google Drive, Notion, SharePoint.',
     tech: ['Supabase', 'pgvector', 'n8n', 'OpenAI']
   },
   {
     icon: Phone,
-    title: 'Voice AI -puhelinpalvelu',
+    title: 'Voice AI',
     client: 'Useita asiakkaita',
-    description: 'AI-pohjaiset puhelinvastaukset ja ajanvaraukset. Luonnollinen keskustelu, CRM-integraatiot ja automaattinen jälkikäsittely.',
-    tech: ['Voice AI', 'n8n', 'Webhooks', 'CRM']
-  },
-  {
-    icon: Mail,
-    title: 'Rascal Mail',
-    client: 'Rascal AI',
-    description: 'Multi-tenant sähköpostimarkkinointijärjestelmä. Row Level Security, kampanja-automaatiot ja analytiikka.',
-    tech: ['React', 'Supabase', 'RLS', 'Resend']
-  },
-  {
-    icon: Shield,
-    title: 'Tietoturva-auditoinnit',
-    client: 'Konsultointi',
-    description: 'Prompt injection -haavoittuvuusanalyysit ja LLM-järjestelmien tietoturvatarkastukset. Suositukset ja korjaukset.',
-    tech: ['Security', 'LLM', 'Penetration testing']
+    description: 'AI-pohjaiset puhelinpalvelut ja ajanvarausjärjestelmät. Luonnollinen keskustelu, CRM-integraatiot ja automaattinen jälkikäsittely.',
+    tech: ['Synthflow', 'n8n', 'Webhooks', 'CRM']
   }
 ]
 
