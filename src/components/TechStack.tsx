@@ -46,7 +46,7 @@ const categories = [
         active: true
       },
       {
-        name: 'Kling',
+        name: 'Kie.ai',
         provider: 'KIE.AI',
         description: 'Videogeneraattori lyhyisiin markkinointivideoihin ja somecontentiin.',
         tags: ['Video Gen', 'Social'],
@@ -181,6 +181,13 @@ const categories = [
         provider: 'MICROSOFT',
         description: 'Versionhallinta ja CI/CD. Actions-automaatiot ja yhteistyötyökalut.',
         tags: ['Git', 'Actions', 'CI/CD'],
+        active: true
+      },
+      {
+        name: 'Nango',
+        provider: 'NANGO',
+        description: 'Unified API integraatioihin. OAuth-hallinta ja synkronointi kolmansien osapuolien palveluihin.',
+        tags: ['Integrations', 'OAuth', 'API'],
         active: true
       }
     ]
