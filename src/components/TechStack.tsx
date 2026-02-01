@@ -46,8 +46,8 @@ const categories = [
         active: true
       },
       {
-        name: 'Kling AI',
-        provider: 'KUAISHOU',
+        name: 'Kling',
+        provider: 'KIE.AI',
         description: 'Videogeneraattori lyhyisiin markkinointivideoihin ja somecontentiin.',
         tags: ['Video Gen', 'Social'],
         active: true
@@ -143,9 +143,9 @@ const categories = [
         active: true
       },
       {
-        name: 'Codex CLI',
-        provider: 'OPENAI',
-        description: 'OpenAI:n terminaalityökalu. Komentorivipohjainen AI-avustaja.',
+        name: 'Mistral CLI',
+        provider: 'MISTRAL AI',
+        description: 'Mistralin terminaalityökalu. Komentorivipohjainen AI-koodausavustaja.',
         tags: ['CLI', 'Terminal', 'AI'],
         active: true
       }
@@ -223,7 +223,7 @@ export default function TechStack() {
                     <p className="text-[10px] text-text-muted uppercase tracking-wider">{tool.provider}</p>
                   </div>
 
-                  <p className="text-xs text-text-secondary mb-3 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-text-secondary mb-3 leading-relaxed">
                     {tool.description}
                   </p>
 
