@@ -1,13 +1,23 @@
 export default function Hero() {
   return (
-    <section className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-      {/* Left - Text Content */}
-      <div className="flex items-center px-8 lg:px-16 py-24 lg:py-0">
-        <div className="max-w-xl">
+    <section className="min-h-screen relative overflow-hidden">
+      {/* Background Image - Right Side, 50% height */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-[50vh] hidden lg:block animate-fade-in-up animation-delay-300">
+        <div className="absolute inset-0 bg-gradient-to-r from-bg-primary to-transparent z-10 w-24"></div>
+        <img
+          src="/portfolio-hero-fix.png"
+          alt="Sami Kiias"
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+
+      {/* Text Content - 2/3 width, centered */}
+      <div className="min-h-screen flex items-center justify-center px-8 lg:pr-[33%]">
+        <div className="max-w-2xl">
           <p className="text-accent font-medium mb-4 animate-fade-in-up animation-delay-100">
             Sami Kiias
           </p>
-          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6 bg-gradient-to-b from-text-primary to-text-secondary bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-6 bg-gradient-to-b from-text-primary to-text-secondary bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
             Rakennan AI-järjestelmiä jotka tekevät oikeasti töitä
           </h1>
           <p className="text-lg text-text-secondary mb-6 animate-fade-in-up animation-delay-300">
@@ -68,13 +78,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Right - Full Height Profile Image */}
-      <div className="relative min-h-[50vh] lg:min-h-screen animate-fade-in-up animation-delay-300">
-        <div className="absolute inset-0 bg-gradient-to-r from-bg-primary via-transparent to-transparent z-10 lg:w-32"></div>
+      {/* Mobile Image */}
+      <div className="lg:hidden px-8 pb-16">
         <img
           src="/portfolio-hero-fix.png"
           alt="Sami Kiias"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="w-full h-64 object-cover object-top rounded-2xl"
         />
       </div>
     </section>
