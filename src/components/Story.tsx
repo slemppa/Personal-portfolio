@@ -27,7 +27,7 @@ const timeline = [
   },
   {
     icon: Rocket,
-    year: '2024',
+    year: '2026',
     title: 'CTO & AI Builder',
     subtitle: 'Rascal AI',
     description: 'Rakennan AI-järjestelmiä jotka automatisoivat oikeita työtehtäviä. Multi-tenant SaaS, RAG ja Voice AI.',
