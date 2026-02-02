@@ -296,7 +296,7 @@ export default function TechStack() {
             <div className="text-sm text-text-muted">Tuotantokäytössä</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-text-primary mb-1">2025</div>
+            <div className="text-3xl font-bold text-text-primary mb-1">2026</div>
             <div className="text-sm text-text-muted">Jatkuvasti päivitetty</div>
           </div>
         </div>
