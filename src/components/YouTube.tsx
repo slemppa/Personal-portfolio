@@ -1,4 +1,4 @@
-import { Youtube, Play, ExternalLink, Video, Users, Eye } from 'lucide-react'
+import { Youtube, Play, ExternalLink, Video } from 'lucide-react'
 
 const topics = [
   { title: 'n8n-automaatiot', description: 'Workflow-automaatioiden rakentaminen alusta loppuun' },

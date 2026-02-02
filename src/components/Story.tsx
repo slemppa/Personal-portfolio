@@ -55,7 +55,7 @@ export default function Story() {
       {/* Timeline */}
       <div className="max-w-3xl mx-auto mb-16">
         <div className="grid gap-6">
-          {timeline.map((item, index) => (
+          {timeline.map((item) => (
             <div
               key={item.title}
               className={`group relative flex gap-6 p-6 rounded-2xl border transition-all ${
