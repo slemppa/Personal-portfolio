@@ -3,7 +3,7 @@ import { Briefcase, GraduationCap, Code, Rocket } from 'lucide-react'
 const timeline = [
   {
     icon: Briefcase,
-    year: '2013',
+    year: '2015',
     title: 'Yrittäjä',
     subtitle: 'Ensimmäinen yritys',
     description: 'Aloitin yrittäjänä. Opin ymmärtämään asiakkaita, myyntiä ja liiketoiminnan perusteita käytännön kautta.',
@@ -11,7 +11,7 @@ const timeline = [
   },
   {
     icon: GraduationCap,
-    year: '2018',
+    year: '2022',
     title: 'Markkinoija',
     subtitle: 'Haaga-Helia',
     description: 'Liiketalouden tradenomi markkinoinnin suuntautumisella. Digitaalinen markkinointi ja analytiikka.',
@@ -19,7 +19,7 @@ const timeline = [
   },
   {
     icon: Code,
-    year: '2021',
+    year: '2024',
     title: 'Kehittäjä',
     subtitle: 'Full-stack',
     description: 'Itseoppinut kehittäjä. React, TypeScript, Node.js ja modernit pilvipalvelut. Ideat muuttuivat tuotteiksi.',
@@ -27,7 +27,7 @@ const timeline = [
   },
   {
     icon: Rocket,
-    year: '2026',
+    year: '2025',
     title: 'CTO & AI Builder',
     subtitle: 'Rascal AI',
     description: 'Rakennan AI-järjestelmiä jotka automatisoivat oikeita työtehtäviä. Multi-tenant SaaS, RAG ja Voice AI.',
