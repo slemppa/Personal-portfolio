@@ -26,7 +26,7 @@ export default function YouTube() {
           {/* Video preview card */}
           <div className="lg:col-span-2">
             <div className="relative group">
-              <div className="aspect-video bg-gradient-to-br from-bg-secondary to-bg-tertiary border border-border rounded-2xl overflow-hidden">
+              <div className="relative aspect-video bg-gradient-to-br from-bg-secondary to-bg-tertiary border border-border rounded-2xl overflow-hidden">
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <div className="w-20 h-20 rounded-full bg-red-500/90 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Play className="w-8 h-8 text-white ml-1" />
