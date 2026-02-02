@@ -127,7 +127,13 @@ const categories = [
         description: 'Edge-deployment ja CI/CD. Preview-ympäristöt jokaiselle PR:lle.',
         tags: ['Edge', 'CI/CD', 'Preview'],
         active: true
-      },
+      }
+    ]
+  },
+  {
+    title: 'Tools',
+    subtitle: 'Työkalut ja apuohjelmat',
+    tools: [
       {
         name: 'Claude Code',
         provider: 'ANTHROPIC',
@@ -151,9 +157,16 @@ const categories = [
       },
       {
         name: 'Antigravity',
-        provider: 'PYTHON',
-        description: 'Pythonin piilotettu "easter egg". Koodaamisen iloa ja yllätyksiä.',
-        tags: ['Fun', 'Easter egg', 'Python'],
+        provider: 'OPEN SOURCE',
+        description: 'Koodaamisen iloa ja yllätyksiä. Hauska työkalu kehittäjille.',
+        tags: ['Fun', 'Easter egg', 'Dev'],
+        active: true
+      },
+      {
+        name: 'MCP',
+        provider: 'ANTHROPIC',
+        description: 'Model Context Protocol. Avoin standardi LLM-integraatioihin. Yhdistää AI-mallit ulkoisiin työkaluihin, tietokantoihin ja tiedostoihin.',
+        tags: ['AI', 'Protocol', 'Integration'],
         active: true
       }
     ]
@@ -271,11 +284,11 @@ export default function TechStack() {
       <div className="mt-16 pt-12 border-t border-border">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className="text-3xl font-bold text-text-primary mb-1">26+</div>
+            <div className="text-3xl font-bold text-text-primary mb-1">30+</div>
             <div className="text-sm text-text-muted">Työkalua hallinnassa</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-text-primary mb-1">3</div>
+            <div className="text-3xl font-bold text-text-primary mb-1">4</div>
             <div className="text-sm text-text-muted">Osaamisaluetta</div>
           </div>
           <div>

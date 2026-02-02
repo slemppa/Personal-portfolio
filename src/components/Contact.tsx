@@ -11,7 +11,13 @@ const companies = [
     name: 'Rascal AI',
     role: 'CTO',
     description: 'AI-pohjaiset myynti- ja asiakaspalveluautomaatiot pk-yrityksille',
-    href: 'https://rascal.ai'
+    href: 'https://rascalai.fi'
+  },
+  {
+    name: 'Rascal Pages',
+    role: 'Founder',
+    description: 'AI-pohjaiset verkkosivut ja sisällöntuotanto',
+    href: 'https://rascalpages.fi'
   },
   {
     name: 'Mak8r.fi',
