@@ -2,7 +2,7 @@ import { Mail, Linkedin, Youtube, Github, ArrowRight, Calendar, MessageSquare } 
 
 const links = [
   { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/in/samikiias', description: 'Verkostoidu' },
-  { icon: Youtube, label: 'YouTube', href: 'https://www.youtube.com/@samikiias?sub_confirmation=1', description: 'Katso sisältöä' },
+  { icon: Youtube, label: 'YouTube', href: 'https://www.youtube.com/@samikiias?subscription_1', description: 'Katso sisältöä' },
   { icon: Github, label: 'GitHub', href: 'https://github.com/slemppa', description: 'Tutustu koodiin' }
 ]
 
