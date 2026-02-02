@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Tausta - pyöristetty neliö -->
+  <rect x="10" y="10" width="80" height="80" rx="15" fill="url(#grad)" />
+  
+  <!-- AI/portfolio symboli - tyylitelty "S" (Sami) tai "P" (Portfolio) -->
+  <path d="M35 35 Q50 25 65 35 Q70 45 65 55 Q50 65 35 55 Q30 45 35 35 Z" 
+        fill="white" stroke="white" stroke-width="2"/>
+  
+  <!-- Pieni tähti oikeassa yläkulmassa - symboloi AI:ta -->
+  <path d="M75 25 L78 32 L85 32 L79 37 L82 44 L75 40 L68 44 L71 37 L65 32 L72 32 Z" 
+        fill="white"/>
+</svg>

@@ -148,6 +148,13 @@ const categories = [
         description: 'Mistralin terminaalityökalu. Komentorivipohjainen AI-koodausavustaja.',
         tags: ['CLI', 'Terminal', 'AI'],
         active: true
+      },
+      {
+        name: 'Antigravity',
+        provider: 'PYTHON',
+        description: 'Pythonin piilotettu "easter egg". Koodaamisen iloa ja yllätyksiä.',
+        tags: ['Fun', 'Easter egg', 'Python'],
+        active: true
       }
     ]
   },
@@ -264,7 +271,7 @@ export default function TechStack() {
       <div className="mt-16 pt-12 border-t border-border">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className="text-3xl font-bold text-text-primary mb-1">25+</div>
+            <div className="text-3xl font-bold text-text-primary mb-1">26+</div>
             <div className="text-sm text-text-muted">Työkalua hallinnassa</div>
           </div>
           <div>
