@@ -17,7 +17,7 @@ export default function Footer() {
             <Heart className="w-4 h-4 text-red-400" />
             ja
             <Code className="w-4 h-4 text-accent" />
-            &copy; 2025
+            &copy; 2026
           </p>
 
           <div className="flex gap-4">
