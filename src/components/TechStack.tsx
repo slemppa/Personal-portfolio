@@ -197,8 +197,17 @@ const categories = [
 export default function TechStack() {
   return (
     <section id="tech" className="py-24 px-8 max-w-6xl mx-auto">
-      <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2">Tech Stack</h2>
-      <p className="text-text-muted mb-12">Työkalut joilla rakennan</p>
+      <div className="text-center mb-16">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full mb-6">
+          <span className="w-2 h-2 bg-accent rounded-full"></span>
+          <span className="text-accent text-sm font-medium">Päivittäisessä käytössä</span>
+        </div>
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">Tech Stack</h2>
+        <p className="text-text-muted max-w-2xl mx-auto">
+          Modernit työkalut AI-järjestelmien ja automaatioiden rakentamiseen.
+          Kaikki tuotantokäytössä oikeissa projekteissa.
+        </p>
+      </div>
 
       <div className="space-y-12">
         {categories.map((category) => (
@@ -249,6 +258,28 @@ export default function TechStack() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Summary stats */}
+      <div className="mt-16 pt-12 border-t border-border">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div className="text-3xl font-bold text-text-primary mb-1">25+</div>
+            <div className="text-sm text-text-muted">Työkalua hallinnassa</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-text-primary mb-1">3</div>
+            <div className="text-sm text-text-muted">Osaamisaluetta</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-text-primary mb-1">100%</div>
+            <div className="text-sm text-text-muted">Tuotantokäytössä</div>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-text-primary mb-1">2025</div>
+            <div className="text-sm text-text-muted">Jatkuvasti päivitetty</div>
+          </div>
+        </div>
       </div>
     </section>
   )
