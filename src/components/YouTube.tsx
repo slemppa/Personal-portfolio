@@ -36,7 +36,7 @@ export default function YouTube() {
                 </div>
               </div>
               <a
-                href="https://www.youtube.com/@samikiias?subscription_1"
+                href="https://www.youtube.com/@samikiias?sub_confirmation=1"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 w-full flex items-center justify-center gap-2 px-6 py-3 bg-red-500 text-white font-medium rounded-xl hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30 transition-all"
