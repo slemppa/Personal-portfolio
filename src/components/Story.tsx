@@ -112,7 +112,7 @@ export default function Story() {
             </div>
             <div>
               <div className="font-medium text-text-primary">Sami Kiias</div>
-              <div className="text-sm text-text-muted">CTO @ Rascal AI · Founder @ Rascal Pages</div>
+              <div className="text-sm text-text-muted">CTO @ Rascal AI</div>
             </div>
           </footer>
         </blockquote>
