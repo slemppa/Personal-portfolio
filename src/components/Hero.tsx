@@ -22,12 +22,6 @@ export default function Hero() {
       <div className="relative min-h-screen flex items-center">
         <div className="w-full max-w-7xl mx-auto px-8 lg:px-16 py-24 lg:py-0">
           <div className="max-w-2xl">
-            {/* Status badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6 animate-fade-in-up animation-delay-100">
-              <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-              <span className="text-emerald-400 text-sm font-medium">Työnhaku auki uusille tekijöille · Täysi työmäärä</span>
-            </div>
-
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 animate-fade-in-up animation-delay-200">
               <span className="text-text-primary">Rakennan </span>
               <span className="bg-gradient-to-r from-accent via-purple-400 to-emerald-400 bg-clip-text text-transparent">AI-järjestelmiä</span>

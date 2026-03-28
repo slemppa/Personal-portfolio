@@ -35,11 +35,6 @@ export default function Contact() {
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-accent via-purple-500 to-emerald-500 p-[1px]">
           <div className="bg-bg-primary rounded-3xl p-8 md:p-12">
             <div className="text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-                <span className="text-emerald-400 text-sm font-medium">Vapaita aikoja helmikuussa</span>
-              </div>
-
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
                 <span className="text-text-primary">Rakennetaan jotain </span>
                 <span className="bg-gradient-to-r from-accent via-purple-400 to-emerald-400 bg-clip-text text-transparent">merkittävää</span>
