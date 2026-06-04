@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 
 # Obsidian (repo-as-vault)
-_templates
+# Note: _templates/ is tracked on purpose so the blog template survives clones.
 .obsidian
 .trash

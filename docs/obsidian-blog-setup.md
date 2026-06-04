@@ -19,31 +19,45 @@ URL-slugin: `oma-postaus.md` → `/blog/oma-postaus`.
    attachments" → "In the folder specified below" → `public/blog`. Näin
    liittämäsi kuvat menevät oikeaan paikkaan ja polut (`/blog/...`) täsmäävät.
 
-## Template
+## Template (Templater)
 
-1. Settings → Core plugins → ota käyttöön **Templates**.
-2. Settings → Templates → "Template folder location" → `_templates`.
-3. Luo note `_templates/Blogipostaus.md` sisällöllä:
+Valmis template on tiedostossa `_templates/Blogipostaus.md` (versioitu, joten se
+seuraa repoa). Se käyttää **Templater**-pluginia.
+
+Templater-asetukset (Settings → Templater):
+
+1. **Template folder location** → `_templates`.
+2. (Valinnainen, suositus) **Folder Templates** → "Add new folder template" →
+   Folder: `src/content/blog`, Template: `_templates/Blogipostaus.md`, ja ota
+   "Trigger Templater on new file creation" käyttöön. Tällöin jokainen uusi
+   tiedosto blogikansiossa saa templaten automaattisesti.
+
+Templaten sisältö:
 
 ```
 ---
-title: ""
-date: {{date:YYYY-MM-DD}}
+title: "<% tp.file.title %>"
+date: <% tp.date.now("YYYY-MM-DD") %>
 description: ""
 tags: []
-cover:
+cover: 
 draft: true
 ---
 
+<% tp.file.cursor() %>
 ```
 
-   (`{{date:YYYY-MM-DD}}` täyttää päivän automaattisesti.)
+- `<% tp.file.title %>` täyttää otsikoksi tiedostonimen (voit muokata).
+- `<% tp.date.now("YYYY-MM-DD") %>` täyttää päivän automaattisesti.
+- `<% tp.file.cursor() %>` siirtää kohdistimen valmiiksi tekstialueelle.
 
 ## Uusi postaus
 
 1. Luo uusi tiedosto `src/content/blog/`-kansioon **slug-nimellä**
    (esim. `ensimmainen-postaus.md`).
-2. Aja komento *"Templates: Insert template"* → Blogipostaus.
+2. Jos folder-template on käytössä, template ilmestyy automaattisesti. Muuten aja
+   komento *"Templater: Create new note from template"* tai *"Templater: Open
+   insert template modal"* → Blogipostaus.
 3. Täytä `title`, `description`, `tags`. Kirjoita sisältö frontmatterin alle.
 4. Kuvat: liitä ne (menevät `public/blog/`-kansioon) ja viittaa `/blog/tiedosto.png`.
 5. Linkit: tavalliset markdown-linkit; Obsidianin `[[wikilinkit]]` eivät renderöidy.
