@@ -53,3 +53,9 @@ export function parsePost(raw: string, filename: string): Post | null {
     content: match[2].trim(),
   }
 }
+
+export function selectPosts(posts: Post[], includeDrafts: boolean): Post[] {
+  return posts
+    .filter((p) => includeDrafts || !p.draft)
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+}
