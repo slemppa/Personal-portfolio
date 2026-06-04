@@ -1,9 +1,11 @@
 ---
-title: "Tervetuloa blogiin"
+title: Tervetuloa blogiin
 date: 2026-06-04
-description: "Ensimmäinen postaus — näin tämä blogi toimii."
-tags: [obsidian, blogi]
-draft: false
+description: Ensimmäinen postaus — näin tämä blogi toimii.
+tags:
+  - obsidian
+  - blogi
+draft: true
 ---
 
 Tämä on ensimmäinen postaus. Kirjoitan nämä **Obsidianissa** ja ne renderöityvät
