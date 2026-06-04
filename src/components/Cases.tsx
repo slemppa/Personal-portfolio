@@ -1,4 +1,4 @@
-import { Sparkles, Phone, Clock, Users, Zap, Activity, Brain, Wallet } from 'lucide-react'
+import { Sparkles, Phone, Clock, Users, Activity, Brain, Wallet, Shield } from 'lucide-react'
 
 const cases = [
   {
@@ -45,12 +45,12 @@ const cases = [
     title: 'Pesä',
     client: 'Henkilökohtainen projekti',
     role: 'Solo Developer',
-    description: 'Itse tehty budjetointisovellus YNAB-hengessä. Zero-based-budjetointi, jossa jokaiselle eurolle annetaan tehtävä — selkeä näkymä siihen mihin raha liikkuu.',
+    description: 'Local-first kirjekuoribudjetointi, joka tuo YNAB-metodologian suomalaiseen arkeen. Palkkavetoinen työnkulku, täysi tavoite-, tili- ja tapahtumahallinta sekä kaksikielinen käyttöliittymä — yksityisyys edellä, data pysyy laitteella.',
     results: [
-      { icon: Wallet, value: 'Zero-based', label: 'Budjetointi' },
-      { icon: Zap, value: 'Solo build', label: 'Täysin itse tehty' }
+      { icon: Wallet, value: 'Kirjekuoret', label: 'YNAB-metodi' },
+      { icon: Shield, value: 'Local-first', label: 'Data laitteella' }
     ],
-    tech: ['React', 'TypeScript', 'Supabase', 'Vercel'],
+    tech: ['React Native', 'Expo', 'TypeScript', 'Drizzle', 'SQLite'],
     featured: false
   }
 ]

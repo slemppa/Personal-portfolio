@@ -1,110 +1,74 @@
 ---
-title: "Näin Superhuman on rakennettu"
+title: "Superhuman — valmentaja, joka tuntee sinut"
 date: 2026-06-04
-description: "Avaava postaus siitä, miten henkilökohtainen Superhuman-valmennussovellus on rakennettu — iOS-sovellus, Supabase-backend, AI-valmentaja ja integraatiot."
+description: "Tutustu Superhumaniin: henkilökohtaiseen valmennussovellukseen, joka yhdistää terveyden, treenin ja ravinnon yhdeksi selkeäksi tarinaksi — ja antaa neuvot, jotka perustuvat juuri sinun dataasi."
 tags:
   - superhuman
-  - ios
-  - supabase
-  - arkkitehtuuri
+  - hyvinvointi
+  - valmennus
+  - tekoäly
 cover: 
 draft: false
 ---
 
-Tämä on avaava postaus uudesta projektista nimeltä **Superhuman** — henkilökohtaisesta
-iOS-sovelluksesta, joka kerää terveys-, treeni-, ravinto- ja tapatiedot yhteen
-paikkaan ja antaa niiden päälle AI-valmentajan. Tässä postauksessa avaan, miten
-sovellus on teknisesti rakennettu: mistä data tulee, missä se asuu ja miten
-valmentaja päättelee.
+Mitä jos sinulla olisi valmentaja, joka näkee miten nukuit viime yön, tietää
+millainen treeni odottaa tänään ja muistaa mitä lupasit itsellesi viime viikolla?
+Joka ei anna geneerisiä neuvoja vaan puhuu juuri sinun luvuistasi?
 
-## Iso kuva
+Sitä **Superhuman** rakentaa. Tämä on avaava postaus uudesta projektista — ja
+samalla kurkistus siihen, miksi se on enemmän kuin yksi sovellus lisää.
 
-Superhuman koostuu kolmesta kerroksesta:
+## Liikaa appeja, liian vähän selkeyttä
 
-1. **iOS-sovellus** näyttää datan ja kerää sitä — ennen kaikkea Apple HealthKitin
-   kautta (syke, HRV, uni, askeleet, aktiivinen energia).
-2. **Supabase-backend** on totuuden lähde: Postgres-tietokanta, jossa jokaisella
-   taululla on rivitason käyttöoikeudet (Row Level Security), sekä joukko
-   Edge-funktioita (Deno) raskaampaan logiikkaan ja integraatioihin.
-3. **AI-valmentaja** istuu datan päällä ja keskustelee käyttäjän kanssa — mutta
-   ei tyhjästä, vaan oman datan ja muistin pohjalta.
+Useimmilla meistä terveys on hajallaan. Uni yhdessä sovelluksessa, treenit
+toisessa, ravinto kolmannessa ja tavoitteet jossain muistilapulla. Dataa on
+enemmän kuin koskaan, mutta **ymmärrystä ei yhtään enempää.** Numerot eivät kerro,
+mitä niille pitäisi tehdä.
 
-Kaikki käyttäjäkohtainen data on eristetty RLS:llä: data kuuluu aina yhdelle
-`user_id`:lle, eikä sitä pääse näkemään kukaan muu. Tämä on perusta, jonka päälle
-kaikki muu rakentuu.
+Superhuman lähtee päinvastaisesta ajatuksesta: yksi paikka, joka kerää palaset
+yhteen ja kääntää ne selkeiksi, henkilökohtaisiksi neuvoiksi.
 
-## Data: terveys, treeni, ravinto ja tavat
+## Kaikki yhdessä näkymässä
 
-Sovelluksen tietomalli jakautuu muutamaan selkeään alueeseen.
+Superhuman tuo saman katon alle sen, mikä yleensä on hajallaan:
 
-**Terveysmetriikat** virtaavat `daily_metrics`-tauluun: lepo- ja keskisyke, HRV,
-unen vaiheet, askeleet ja aktiivinen energia. Jokaisella rivillä on `source`-kenttä
-(esimerkiksi Apple Health), joten tiedetään mistä luku on peräisin.
+- **Terveys** — uni, syke, palautuminen ja askeleet suoraan puhelimen terveysdatasta.
+- **Treeni** — älykäs ohjelma, joka elää sen mukaan miten keho vastaa, niin
+  voima- kuin juoksupuolella.
+- **Ravinto** — kevyt ruokapäiväkirja, joka pysyy mukana ilman pikkutarkkaa näpräämistä.
+- **Tavat ja tavoitteet** — pienet päivittäiset teot ja isot suunnat samassa kuvassa.
 
-**Treenimoottori** on sovelluksen sydän. Se on suunniteltu niin, että ohjelma
-purkautuu hierarkiana: `training_programs` → `program_weeks` → `planned_sessions` →
-`planned_exercises` ja juoksun puolella `running_plans` → `running_segments`.
-Toteutuneet treenit kirjataan erikseen (`training_sessions`, `exercise_logs`,
-`running_logs`), jolloin suunniteltua ja tehtyä voidaan verrata. Päälle tulee
-viikkoanalyysi (`weekly_analyses`), joka tuottaa varoituksia (`engine_flags`) ja
-adaptaatioita (`adaptations`) — eli ohjelma elää sen mukaan, miten keho vastaa.
+Kun kaikki on yhdessä paikassa, alat nähdä yhteyksiä: miten huono yö näkyy treenissä,
+miten palautuminen seuraa rytmiä, miten pienet teot kasaantuvat tuloksiksi.
 
-**Ravinto** koostuu omasta ruokatietokannasta (`custom_foods`,
-`exercises_catalog`-tyyppiset hakemistot) ja päiväkirjasta (`food_log_entries`).
+## Valmentaja, joka oikeasti tuntee sinut
 
-**Tavat ja rutiinit** (`routines`, `routine_steps`, `routine_completions`) tukevat
-identiteettipohjaista tekemistä: jokaiseen rutiiniin liittyy "identity" ja
-ankkuri (kellonaika tai tapahtuma), ja jokaiselle askeleelle on myös "kahden
-minuutin versio" matalan kynnyksen suorittamiseen.
+Superhumanin sydän on **AI-valmentaja** — mutta ei sellainen, joka toistaa
+internetin yleisviisauksia. Se katsoo sinun dataasi ja keskustelee sen pohjalta.
 
-Lisäksi mukana on tavoitteet ja virstanpylväät (`goals`, `goal_metrics`,
-`goal_milestones`), painonseuranta, sekä luetun ja kuunnellun media-arkisto
-(`books`, joka tukee myös Spotify-podcasteja).
+Erona tavalliseen chatbottiin on kaksi asiaa: valmentaja **muistaa** aiemmat
+keskustelut ja oppii sinusta ajan myötä, ja se **perustelee** neuvonsa — voit aina
+nähdä, mihin lukuihin tai treeneihin se nojaa. Se ei siis vain sano "lepää
+enemmän", vaan kertoo *miksi*, juuri tällä viikolla, juuri sinun kohdallasi.
 
-## AI-valmentaja: RAG oman datan päälle
+Lopputulos tuntuu vähemmän sovellukselta ja enemmän valmentajalta, joka on
+kulkenut matkan kanssasi.
 
-Valmentaja ei ole pelkkä chatbot. Se on rakennettu hakuavusteisen generoinnin
-(RAG) periaatteella oman datan päälle:
+## Treeni, joka mukautuu sinuun
 
-- Keskustelut tallennetaan (`coach_messages`) lähdeviittauksineen (`citations`),
-  jolloin vastaukset voidaan jäljittää takaisin oikeaan dataan.
-- Pitkäkestoinen muisti (`coach_memories`) tallentaa tiivistelmiä **vektoreina**
-  — käytössä on Postgresin `pgvector`-laajennus HNSW-indeksillä, joten valmentaja
-  löytää relevantit muistot semanttisella haulla.
-- Telemetria (`coach_telemetry`) seuraa, mitä työkaluja valmentaja käytti, kuinka
-  kauan ne kestivät ja menivätkö ne läpi — eli valmentajan toimintaa voi
-  havainnoida ja virittää.
+Useimmat ohjelmat on tehty keskivertoihmiselle. Superhumanin treeni rakentuu
+sinun tavoitteistasi ja päivittyy sen mukaan, miten todella jaksat ja palaudut.
+Hyvän viikon jälkeen se nostaa rimaa, kuormittavan jakson jälkeen se antaa tilaa.
 
-Embeddingit lasketaan omassa `embed`-Edge-funktiossa ja muisti tiivistetään
-taustalla `coach-consolidate-memory`-funktiolla. Erillinen `insight-miner` kaivaa
-datasta huomioita (`insights`) ilman, että käyttäjän tarvitsee kysyä mitään.
+Tavoite ei ole tehdä mahdollisimman paljon, vaan **oikea määrä oikeaan aikaan** —
+niin että edistyt ilman että ajat itsesi loppuun.
 
-## Edge-funktiot ja integraatiot
+## Mihin tämä on menossa
 
-Raskaampi ja ulospäin puhuva logiikka on eristetty Supabasen Edge-funktioihin
-(Deno/TypeScript). Karkeasti kolmessa ryhmässä:
+Superhuman on vasta alussa, ja rakennan sitä avoimesti. Seuraavissa postauksissa
+kerron lisää siitä, miten valmentaja päättelee, miten treeniohjelma elää viikosta
+toiseen ja mitä olen matkalla oppinut.
 
-- **Strava-integraatio:** `strava-oauth-callback`, `strava-sync`, `strava-push`,
-  `strava-refresh-activity` ja `strava-backfill-routes` hoitavat OAuthin, suoritusten
-  synkronoinnin ja reittien (polyline) tuonnin.
-- **Ravinto-AI:** `food-search`, `food-parse` ja `nutrition-coach` hakevat,
-  jäsentävät ja valmentavat ruokakirjauksia.
-- **Valmentajan tausta-ajot:** `embed`, `coach-consolidate-memory` ja
-  `insight-miner`.
-
-Tietokannan puolella hyödynnetään muutamaa tehokasta laajennusta: `pg_cron`
-ajastaa toistuvat työt, `pg_net` hoitaa asynkroniset HTTP-kutsut tietokannasta
-käsin, ja `pgvector` mahdollistaa valmentajan semanttisen muistin. Reitit ja
-sijainnit nojaavat Mapbox-profiileihin (`planned_routes`, `route_history`).
-
-## Mikä tässä on kiinnostavaa
-
-Lopputulos on järjestelmä, jossa **data, päättely ja toiminta ovat samassa
-ympyrässä**: HealthKit ja Strava tuovat raakadatan, Postgres pitää sen
-turvassa ja jäsenneltynä, treenimoottori muuttaa sen ohjelmaksi, ja AI-valmentaja
-sulkee silmukan keskustelulla, joka perustuu juuri sinun lukuihisi — ei
-yleisneuvoihin.
-
-Seuraavissa postauksissa sukellan syvemmälle yksittäisiin osiin: ensin
-treenimoottorin periodisointiin ja adaptaatioihin, sitten valmentajan muistiin ja
-RAG-putkeen. Tervetuloa mukaan rakentamaan superihmistä — yksi commit kerrallaan.
+Idea on yksinkertainen: tehdä huippuvalmennuksesta jotain, joka kulkee taskussa ja
+puhuu sinun kieltäsi. Tervetuloa mukaan matkalle kohti superihmistä — askel
+kerrallaan.
