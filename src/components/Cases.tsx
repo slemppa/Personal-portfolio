@@ -1,4 +1,4 @@
-import { Sparkles, FileText, Search, Phone, TrendingUp, Clock, Users, Zap } from 'lucide-react'
+import { Sparkles, Phone, Clock, Users, Zap, Activity, Brain, Wallet } from 'lucide-react'
 
 const cases = [
   {
@@ -15,42 +15,42 @@ const cases = [
     featured: true
   },
   {
-    icon: FileText,
-    title: 'Rascal Pages',
+    icon: Users,
+    title: 'Rascal CRM',
     client: 'Rascal Company',
-    role: 'Technical Lead',
-    description: 'AI-pohjainen laskeutumissivugeneraattori. Analysoi brändin, generoi konvertoivan sivun ja julkaisee sen minuuteissa.',
+    role: 'CTO & Founder',
+    description: 'Rascal-ekosysteemin asiakkuudenhallinta ja myyntiputki. Liidit, kontaktit ja kampanjat yhdessä — mukana AI-puhelut, viestiautomaatio ja GDPR-yhteensopiva opt-out-hallinta.',
     results: [
-      { icon: Zap, value: '< 5min', label: 'Sivun luonti' },
-      { icon: TrendingUp, value: '3x', label: 'Nopeampi julkaisu' }
+      { icon: Phone, value: 'Voice AI', label: 'Puhelukampanjat' },
+      { icon: Users, value: 'Multi-tenant', label: 'Org-eristetty data' }
     ],
-    tech: ['Next.js', 'Supabase', 'Claude', 'Vercel'],
+    tech: ['React', 'Supabase', 'VAPI', 'n8n', 'RLS'],
     featured: true
   },
   {
-    icon: Search,
-    title: 'RAG-järjestelmät',
-    client: 'Useita asiakkaita',
-    role: 'AI Architect',
-    description: 'Räätälöidyt tiedonhakujärjestelmät yrityksille. Dokumenttien indeksointi, semanttinen haku ja keskusteleva käyttöliittymä.',
+    icon: Activity,
+    title: 'Superhuman',
+    client: 'Henkilökohtainen projekti',
+    role: 'Solo Developer',
+    description: 'Henkilökohtainen iOS-valmennussovellus. Yhdistää HealthKit-datan, periodisoidun treeniohjelman ja AI-valmentajan, joka muistaa ja perustelee neuvonsa omalla datalla.',
     results: [
-      { icon: Clock, value: '90%', label: 'Nopeampi tiedonhaku' },
-      { icon: Users, value: '5+', label: 'Toteutettua järjestelmää' }
+      { icon: Activity, value: 'iOS', label: 'HealthKit-data' },
+      { icon: Brain, value: 'AI-valmentaja', label: 'pgvector-muisti' }
     ],
-    tech: ['Supabase', 'pgvector', 'n8n', 'OpenAI'],
+    tech: ['SwiftUI', 'Supabase', 'Deno', 'pgvector', 'HealthKit'],
     featured: false
   },
   {
-    icon: Phone,
-    title: 'Voice AI -palvelut',
-    client: 'Useita asiakkaita',
-    role: 'Integration Specialist',
-    description: 'AI-puhelinpalvelut ja ajanvaraukset. Luonnollinen keskustelu, reaaliaikainen CRM-synkronointi ja automaattinen jälkikäsittely.',
+    icon: Wallet,
+    title: 'Pesä',
+    client: 'Henkilökohtainen projekti',
+    role: 'Solo Developer',
+    description: 'Itse tehty budjetointisovellus YNAB-hengessä. Zero-based-budjetointi, jossa jokaiselle eurolle annetaan tehtävä — selkeä näkymä siihen mihin raha liikkuu.',
     results: [
-      { icon: Zap, value: '24/7', label: 'Saatavuus' },
-      { icon: TrendingUp, value: '40%', label: 'Vähemmän no-show' }
+      { icon: Wallet, value: 'Zero-based', label: 'Budjetointi' },
+      { icon: Zap, value: 'Solo build', label: 'Täysin itse tehty' }
     ],
-    tech: ['Synthflow', 'n8n', 'Webhooks', 'Airtable'],
+    tech: ['React', 'TypeScript', 'Supabase', 'Vercel'],
     featured: false
   }
 ]
