@@ -6,7 +6,7 @@ import 'highlight.js/styles/github-dark.css'
 
 export default function Markdown({ children }: { children: string }) {
   return (
-    <div className="prose prose-invert max-w-none prose-headings:text-text-primary prose-a:text-accent hover:prose-a:text-accent-hover prose-code:text-text-primary prose-strong:text-text-primary">
+    <div className="prose prose-invert max-w-none prose-headings:text-text-primary prose-a:text-accent prose-a:hover:text-accent-hover prose-code:text-text-primary prose-strong:text-text-primary">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSlug, rehypeHighlight]}
