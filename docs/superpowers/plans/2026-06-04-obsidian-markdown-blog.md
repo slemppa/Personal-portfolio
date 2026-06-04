@@ -786,63 +786,92 @@ git commit -m "chore: add Vercel SPA rewrite"
 
 ---
 
-## Task 14: Obsidian authoring guide
+## Task 14: Obsidian authoring guide (repo-as-vault, Pattern A)
+
+**Chosen integration:** the portfolio repo is opened as its own (second) Obsidian vault. Obsidian Git, installed in that vault, auto-commits and pushes the portfolio repo → Vercel auto-builds. The user's existing vault is untouched. Obsidian templates live in `_templates/`, which is gitignored.
 
 **Files:**
 - Create: `docs/obsidian-blog-setup.md`
+- Modify: `.gitignore`
 
-- [ ] **Step 1: Write the guide**
+- [ ] **Step 1: Gitignore the Obsidian template + config folders**
+
+Append to `.gitignore`:
+```gitignore
+
+# Obsidian (repo-as-vault)
+_templates
+.obsidian
+.trash
+```
+
+- [ ] **Step 2: Write the guide**
 
 Create `docs/obsidian-blog-setup.md`:
 ```markdown
-# Blogin kirjoittaminen Obsidianissa
+# Blogin kirjoittaminen Obsidianissa (repo omana vaultina)
 
-Blogipostaukset ovat tavallisia markdown-tiedostoja kansiossa
-`src/content/blog/`. Tiedoston nimi määrää URL-slugin:
-`oma-postaus.md` → `/blog/oma-postaus`.
+Tämä repo toimii omana Obsidian-vaultinaan. Blogipostaukset ovat tavallisia
+markdown-tiedostoja kansiossa `src/content/blog/`. Tiedoston nimi määrää
+URL-slugin: `oma-postaus.md` → `/blog/oma-postaus`.
 
 ## Kertasetup
 
-1. **Avaa repo vaultiksi.** Obsidian → "Open folder as vault" → valitse repon
-   juuri (tai suoraan `src/content/blog`).
-2. **Asenna Obsidian Git** (Community plugins). Aseta auto-commit + auto-push
-   esim. 10 minuutin välein, niin julkaisu hoituu ilman terminaalia.
-3. **Aseta liitekansio.** Settings → Files and links → "Default location for new
-   attachments" → "In the folder specified below" → `public/blog`. Näin kuvapolut
-   (`/blog/...`) täsmäävät sekä Obsidianissa että tuotannossa.
+1. **Avaa repo vaultiksi.** Obsidian → "Open folder as vault" → valitse tämän
+   repon juuri (`portfolio/`). Tämä on erillinen vault olemassa olevan rinnalla;
+   vaihdat niiden välillä vasemman alakulman vault-valitsimesta.
+2. **Asenna Obsidian Git** (Community plugins → Browse → "Obsidian Git").
+   Asetukset: ota käyttöön "Auto commit-and-sync" esim. 10 min välein. Plugin
+   pushaa tämän repon, jolloin Vercel julkaisee automaattisesti.
+3. **Piilota koodiroska (valinnainen).** Settings → Files and links → "Excluded
+   files" → lisää `node_modules`, `dist`, `src/components`, `src/lib`. Tämä
+   siistii hakua; navigoi postauksiin kansiosta `src/content/blog`.
+4. **Aseta liitekansio.** Settings → Files and links → "Default location for new
+   attachments" → "In the folder specified below" → `public/blog`. Näin
+   liittämäsi kuvat menevät oikeaan paikkaan ja polut (`/blog/...`) täsmäävät.
+
+## Template
+
+1. Settings → Core plugins → ota käyttöön **Templates**.
+2. Settings → Templates → "Template folder location" → `_templates`.
+3. Luo note `_templates/Blogipostaus.md` sisällöllä:
+
+   \`\`\`
+   ---
+   title: ""
+   date: {{date:YYYY-MM-DD}}
+   description: ""
+   tags: []
+   cover:
+   draft: true
+   ---
+
+   \`\`\`
+
+   (`{{date:YYYY-MM-DD}}` täyttää päivän automaattisesti.)
 
 ## Uusi postaus
 
-Luo uusi tiedosto `src/content/blog/`-kansioon ja liitä alkuun frontmatter:
-
-\`\`\`yaml
----
-title: "Otsikko"
-date: 2026-06-04
-description: "Lyhyt kuvaus listaan"
-tags: [react, obsidian]
-cover: /blog/kuva.png   # valinnainen
-draft: false
----
-\`\`\`
-
-- `draft: true` pitää postauksen piilossa tuotannosta (näkyy vain dev-tilassa).
-- `draft: false` julkaisee sen seuraavassa Vercel-buildissa pushin jälkeen.
-- Kuvat: pudota ne `public/blog/`-kansioon ja viittaa `/blog/tiedosto.png`.
-- Linkit: käytä tavallisia markdown-linkkejä; Obsidianin `[[wikilinkit]]` eivät
-  renderöidy.
+1. Luo uusi tiedosto `src/content/blog/`-kansioon **slug-nimellä**
+   (esim. `ensimmainen-postaus.md`).
+2. Aja komento *"Templates: Insert template"* → Blogipostaus.
+3. Täytä `title`, `description`, `tags`. Kirjoita sisältö frontmatterin alle.
+4. Kuvat: liitä ne (menevät `public/blog/`-kansioon) ja viittaa `/blog/tiedosto.png`.
+5. Linkit: tavalliset markdown-linkit; Obsidianin `[[wikilinkit]]` eivät renderöidy.
+6. Kun valmis, vaihda `draft: true` → `draft: false`.
 
 ## Julkaisu
 
 Tallenna → Obsidian Git commitoi ja pushaa → Vercel buildaa ja julkaisee
-automaattisesti (n. 1–2 min).
+automaattisesti (n. 1–2 min). `draft: true` -postaukset näkyvät vain dev-tilassa
+(`npm run dev`), eivät tuotannossa.
 ```
 
-- [ ] **Step 2: Commit**
+- [ ] **Step 3: Commit**
 
 ```bash
-git add docs/obsidian-blog-setup.md
-git commit -m "docs: add Obsidian blog authoring guide"
+git add docs/obsidian-blog-setup.md .gitignore
+git commit -m "docs: add Obsidian repo-as-vault authoring guide"
 ```
 
 ---
