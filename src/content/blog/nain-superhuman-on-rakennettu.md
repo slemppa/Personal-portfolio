@@ -72,3 +72,8 @@ toiseen ja mitä olen matkalla oppinut.
 Idea on yksinkertainen: tehdä huippuvalmennuksesta jotain, joka kulkee taskussa ja
 puhuu sinun kieltäsi. Tervetuloa mukaan matkalle kohti superihmistä — askel
 kerrallaan.
+
+<!-- xlink:start -->
+## Liittyvät kirjoitukset
+- [Pesä: budjetointi tietoisuuden ehdoilla](/blog/pesa-anna-jokaiselle-eurolle-koti)
+<!-- xlink:end -->
