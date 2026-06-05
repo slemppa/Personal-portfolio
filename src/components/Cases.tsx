@@ -45,7 +45,7 @@ const cases = [
     title: 'Pesä',
     client: 'Henkilökohtainen projekti',
     role: 'Solo Developer',
-    description: 'Local-first kirjekuoribudjetointi, joka tuo YNAB-metodologian suomalaiseen arkeen. Palkkavetoinen työnkulku, täysi tavoite-, tili- ja tapahtumahallinta sekä kaksikielinen käyttöliittymä — yksityisyys edellä, data pysyy laitteella.',
+    description: 'Local-first, joka tuo YNAB-metodologian suomalaiseen arkeen. Palkkavetoinen työnkulku, täysi tavoite-, tili- ja tapahtumahallinta sekä kaksikielinen käyttöliittymä — yksityisyys edellä, data pysyy laitteella.',
     results: [
       { icon: Wallet, value: 'Kirjekuoret', label: 'YNAB-metodi' },
       { icon: Shield, value: 'Local-first', label: 'Data laitteella' }
@@ -70,11 +70,10 @@ export default function Cases() {
         {cases.map((item) => (
           <article
             key={item.title}
-            className={`group relative bg-bg-secondary border rounded-2xl p-8 hover:-translate-y-1 transition-all duration-300 ${
-              item.featured
+            className={`group relative bg-bg-secondary border rounded-2xl p-8 hover:-translate-y-1 transition-all duration-300 ${item.featured
                 ? 'border-accent/30 hover:border-accent/60 hover:shadow-xl hover:shadow-accent/10'
                 : 'border-border hover:border-border-hover'
-            }`}
+              }`}
           >
             {item.featured && (
               <div className="absolute -top-3 right-6 px-3 py-1 bg-gradient-to-r from-accent to-purple-500 rounded-full text-xs font-medium text-white">
