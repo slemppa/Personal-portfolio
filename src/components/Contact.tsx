@@ -14,10 +14,10 @@ const companies = [
     href: 'https://rascalai.fi'
   },
   {
-    name: 'Rascal Pages',
-    role: 'Founder',
-    description: 'AI-pohjaiset verkkosivut ja sisällöntuotanto',
-    href: 'https://rascalpages.fi'
+    name: 'Superhuman',
+    role: 'Solo Developer',
+    description: 'Henkilökohtainen iOS-valmennussovellus — HealthKit-data, periodisoitu treeniohjelma ja AI-valmentaja',
+    href: 'https://superhuman-ios.vercel.app/'
   },
   {
     name: 'Mak8r.fi',
