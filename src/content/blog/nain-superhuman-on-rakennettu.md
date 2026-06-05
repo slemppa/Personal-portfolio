@@ -22,11 +22,11 @@ samalla kurkistus siihen, miksi se on enemmän kuin yksi sovellus lisää.
 
 Useimmilla meistä terveys on hajallaan. Uni yhdessä sovelluksessa, treenit
 toisessa, ravinto kolmannessa ja tavoitteet jossain muistilapulla. Dataa on
-enemmän kuin koskaan, mutta **ymmärrystä ei yhtään enempää.** Numerot eivät kerro,
+enemmän kuin koskaan, mutta **[ymmärrystä ei yhtään enempää](/blog/pesa-anna-jokaiselle-eurolle-koti).** Numerot eivät kerro,
 mitä niille pitäisi tehdä.
 
 Superhuman lähtee päinvastaisesta ajatuksesta: yksi paikka, joka kerää palaset
-yhteen ja kääntää ne selkeiksi, henkilökohtaisiksi neuvoiksi.
+yhteen ja kääntää ne selkeiksi, [henkilökohtaisiksi neuvoiksi](/blog/pesa-anna-jokaiselle-eurolle-koti).
 
 ## Kaikki yhdessä näkymässä
 
@@ -60,7 +60,7 @@ Useimmat ohjelmat on tehty keskivertoihmiselle. Superhumanin treeni rakentuu
 sinun tavoitteistasi ja päivittyy sen mukaan, miten todella jaksat ja palaudut.
 Hyvän viikon jälkeen se nostaa rimaa, kuormittavan jakson jälkeen se antaa tilaa.
 
-Tavoite ei ole tehdä mahdollisimman paljon, vaan **oikea määrä oikeaan aikaan** —
+Tavoite ei ole tehdä mahdollisimman paljon, vaan **[oikea määrä oikeaan aikaan](/blog/pesa-anna-jokaiselle-eurolle-koti)** —
 niin että edistyt ilman että ajat itsesi loppuun.
 
 ## Mihin tämä on menossa
@@ -72,8 +72,3 @@ toiseen ja mitä olen matkalla oppinut.
 Idea on yksinkertainen: tehdä huippuvalmennuksesta jotain, joka kulkee taskussa ja
 puhuu sinun kieltäsi. Tervetuloa mukaan matkalle kohti superihmistä — askel
 kerrallaan.
-
-<!-- xlink:start -->
-## Liittyvät kirjoitukset
-- [Pesä: budjetointi tietoisuuden ehdoilla](/blog/pesa-anna-jokaiselle-eurolle-koti)
-<!-- xlink:end -->
