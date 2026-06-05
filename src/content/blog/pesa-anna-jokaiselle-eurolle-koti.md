@@ -108,3 +108,8 @@ Pesä on tarkoituksella aloittanut tiukasti rajatusta, viimeistellystä ytimest�
 Pesä syntyi yksinkertaisesta uskomuksesta: budjetoinnin ei pitäisi tarkoittaa menneen suremista, vaan tulevan suunnittelua — eikä sen pitäisi vaatia luovuttamaan yksityisyyttäsi. Anna jokaiselle eurolle koti, tee rauhassa se viiden minuutin palkkapäivärituaali, ja anna rahan tehdä töitä puolestasi.
 
 **Pesä — joka eurolle koti.**
+
+<!-- xlink:start -->
+## Liittyvät kirjoitukset
+- [Superhuman: valmentaja datan pohjalta](/blog/nain-superhuman-on-rakennettu)
+<!-- xlink:end -->
