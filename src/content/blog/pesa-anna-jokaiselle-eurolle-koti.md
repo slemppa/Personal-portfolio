@@ -4,7 +4,8 @@ date: 2026-06-05
 description: Miksi rakensin local-first-budjetointisovelluksen, joka kääntää rahankäytön päälaelleen — ja miten se toimii.
 tags:
   - budjetointi
-  - [henkilökohtainentalous]
+  - henkilökohtainentalous
+  - talousapp
   - mobiilisovellus
   - react-native
 draft: false
@@ -19,7 +20,7 @@ Halusin jotain muuta: työkalun, joka auttaa _suunnittelemaan_ rahankäytön e
 
 ## Ratkaisu: kirjekuoribudjetointi, modernisti
 
-Pesä perustuu vanhaan ja todistettuun ideaan — **kirjekuorimenetelmään**. Ajatus on yksinkertainen: kun rahaa tulee, jaat sen heti “kirjekuoriin” eri tarkoituksia varten. Vuokra, ruoka, polttoaine, lomarahasto, yllätyslasku. Jokaisella eurolla on tehtävä jo ennen kuin sitä on käytetty.
+Pesä perustuu vanhaan ja todistettuun ideaan — **[kirjekuorimenetelmään](/blog/nain-superhuman-on-rakennettu)**. Ajatus on yksinkertainen: kun rahaa tulee, jaat sen heti “kirjekuoriin” eri tarkoituksia varten. Vuokra, ruoka, polttoaine, lomarahasto, yllätyslasku. Jokaisella eurolla on tehtävä jo ennen kuin sitä on käytetty.
 
 Tämä on sama filosofia, jonka YNAB (You Need A Budget) on tehnyt maailmankuuluksi. Pesä tuo sen suomalaiseen arkeen — suomeksi, eurolla, ja yksityisyys edellä.
 
@@ -45,7 +46,7 @@ Pitkän aikavälin tavoite on käyttää tässä kuussa viime kuussa ansaittua r
 
 Tämä on Pesän selkein ero verrattuna automaattisiin sovelluksiin. Pesä **ei pollaa pankkiasi taustalla**. Sen sijaan se rakentuu yhden tietoisen hetken ympärille: palkkapäivän.
 
-Kun palkka kolahtaa tilille, avaat **“Palkka tuli”** -näkymän. Se kirjaa tulon, lisää summan jaettavaan ja kutsuu sinut jakamaan rahat kirjekuoriin. Se on pieni kuukausittainen rituaali, joka tekee rahankäytöstä tietoista — viisi minuuttia, jotka antavat sinulle [hallinnan tunteen koko kuukaudeksi](/blog/nain-superhuman-on-rakennettu).
+Kun palkka kolahtaa tilille, avaat **“Palkka tuli”** -näkymän. Se kirjaa tulon, lisää summan jaettavaan ja kutsuu sinut jakamaan rahat kirjekuoriin. Se on pieni kuukausittainen rituaali, joka tekee rahankäytöstä tietoista — viisi minuuttia, jotka antavat sinulle hallinnan tunteen koko kuukaudeksi.
 
 Pesä tukee erilaisia palkkasyklejä:
 
@@ -80,7 +81,7 @@ Pesä on rakennettu modernilla, tyyppiturvallisella stackilla:
 
 |Osa-alue|Teknologia|
 |---|---|
-|Sovelluskehys|Expo SDK 54 · Expo Router 6 · React Native 0.81|
+|Sovelluskehys|Expo SDK 54 · Expo Router 6 · [React Native](https://reactnative.dev/docs/getting-started) 0.81|
 |Kieli|TypeScript (strict)|
 |Paikallinen tietokanta|Drizzle ORM + expo-sqlite|
 |Tila|TanStack Query (data) + Zustand (UI)|
