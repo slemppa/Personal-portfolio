@@ -4,8 +4,7 @@ date: 2026-06-05
 description: Miksi rakensin local-first-budjetointisovelluksen, joka kääntää rahankäytön päälaelleen — ja miten se toimii.
 tags:
   - budjetointi
-  - [henkilökohtainentalous](/blog/nain-superhuman-on-rakennettu)
-  - talousapp
+  - [henkilökohtainentalous]
   - mobiilisovellus
   - react-native
 draft: false
