@@ -1,70 +1,9 @@
 ---
-  title: "“95% halvempi malli” on monessa agenttiprojektissa kallein päätös, jonka voit tehdä.
-
-Tämä kirkastui taas, kun luin Redditissä Claude Code -agenttiloopista: agentti ei ole yksi prompti. Se on kymmeniä tai satoja pieniä kutsuja, joissa väärät oletukset kertautuvat.
-
-Kun rakennetaan agenttia, joka oikeasti tuottaa myynnin mahdollisuuksia (ei demoja), kustannus ei synny token-hinnasta. Kokonaiskustannus = tokenit + epäonnistumiset + viive + integraatioiden ylläpito.
-
-Tässä 3 piilokulua, jotka tekevät “halvasta backendistä” yllättävän kalliin.
-
-1) Reititys eri tarjoajille (routing) ei ole ilmainen
-Paperilla kuulostaa järkevältä: “helppo tehtävä halvalla mallilla, vaikea kalliilla”. Käytännössä reititys tuo:
-- 1–2 ylimääräistä mallikutsua pelkkään luokitteluun
-- lisää virhepolkuja (väärä ymmärrys → koko ketju uusiksi)
-- observability-työtä: miksi valinta meni pieleen ja missä ketju hajosi
-
-Jos agentti tekee 80 kutsua / työkeikka ja reititys lisää 10–20% kutsuja + 5% uudelleenajoja, “halpa” muuttuu nopeasti “melkein sama, mutta epävarmempi”.
-
-2) Välimuistin puute (cache) syö säästöt
-Agentit toistavat samoja asioita:
-- yrityksen perustiedot, palvelulupaus, tone-of-voice
-- asiakaskohtaiset faktat
-- saman prosessin vaiheet (esim. liidilistan rikastus + viestien personointi)
-
-Jos et cacheta näitä järkevästi (prompt/response cache, embeddings), maksat samoista tokeneista joka ajossa. Ja jos pinossa on monta provideriä + eri parametrit + eri vastausformaatit, cache jää usein “tehdään myöhemmin” -tasolle.
-
-Lopputulos: säästät senttejä per token, mutta poltat euroja toistoon.
-
-3) Pitkät kontekstit aiheuttavat kustannuspiikkejä
-Agenttityössä “konteksti” ei ole vain chat-historia. Se on:
-- CRM-notet
-- verkkosivutekstit
-- aiemmat sähköpostit
-- kilpailija- ja toimialadata
-- työjonot, ohjeet ja sääntökirjat
-
-Halvalla mallilla kompensoidaan usein heikompaa päättelyä syöttämällä enemmän kontekstia ja ohjeita. Se nostaa tokenimäärää, hidastaa suoritusta ja alkaa maksaa myös ihmisajassa: odotus, tarkistus, korjaus, uudelleenajo.
-
-Päätöspuu, jota käytän CTO-näkökulmasta
-A) Onko tehtävä rutiini vai päätöksenteko?
-- Rutiini: hae, muotoile, tiivistä, listaa, tee 10 variaatiota samalla kaavalla → halpa backend usein ok.
-- Päätöksenteko: priorisoi liidit, päätä viestikulma, tunnista riskit, tee kompromisseja → maksa paremmasta mallista.
-
-B) Onko virheen hinta matala vai korkea?
-- Matala: sisäinen luonnos, ideointi, ensimmäinen versio → halpa backend.
-- Korkea: asiakasviesti, tarjouksen pohja, soittoskripti, CRM-päivitys, joka ohjaa myyntiä → parempi malli + validointi.
-
-C) Tarvitseeko agentti pitkää muistia vai lyhyttä kontekstia?
-- Lyhyt: yksi tehtävä, selkeä input → halpa backend.
-- Pitkä: useita lähteitä, historiallinen data, monivaiheinen ketju → parempi malli tai arkkitehtuuri, jossa muistia pilkotaan (RAG + cache) eikä dumpata kaikkea promptiin.
-
-Se, mitä me oikeasti teemme
-Me emme ole AI-yritys. Me olemme lisää myynnin mahdollisuuksia -yritys. Meillä sattuu olemaan siihen erinomaisen hyvä AI-ekosysteemi.
-
-Siksi tärkein metriikka ei ole “€/1M tokenia”. Se on:
-- montako oikeaa myyntimahdollisuutta syntyy viikossa
-- montako tapaamista buukataan
-- montako follow-uppia lähtee ajallaan
-
-Arkkitehtuuri ratkaisee: reititys vain kun se oikeasti säästää, cache oletuksena ja kalliimpi malli niihin kohtiin, joissa yhden virheen korjaaminen maksaa enemmän kuin parempi päättely.
-
-CTA: Varaa 30 min konsultaatio. Käydään teidän agentti-/automaatio-setup läpi ja päätetään selkeästi, missä halpa backend riittää ja missä kannattaa maksaa paremmasta mallista.
-
-Lähde: Reddit r/ClaudeCode (https://www.reddit.com/r/ClaudeCode/comments/1t3hrcx/deepclaude_full_claude_code_agent_loop_on/)"
-  date: 2026-06-05
-  description: "Tekoäly ilmainen kuulostaa hyvältä—mutta agenttien TCO voi räjähtää. Katso laskentamalli, riskimatriisi ja päätöspuu. Varaa 30 min."
-  tags: [tekoäly ilmainen]
-  draft: false
+title: '"95 % halvempi malli" on monessa agenttiprojektissa kallein päätös, jonka voit tehdä'
+date: 2026-06-05
+description: "Tekoäly ilmainen kuulostaa hyvältä—mutta agenttien TCO voi räjähtää. Katso laskentamalli, riskimatriisi ja päätöspuu. Varaa 30 min."
+tags: [tekoäly ilmainen]
+draft: false
 ---
 # tekoäly ilmainen? Halpa malli voi maksaa eniten
 
