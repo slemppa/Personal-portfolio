@@ -26,7 +26,7 @@ enemmän kuin koskaan, mutta **[ymmärrystä ei yhtään enempää](/blog/pesa-a
 mitä niille pitäisi tehdä.
 
 Superhuman lähtee päinvastaisesta ajatuksesta: yksi paikka, joka kerää palaset
-yhteen ja kääntää ne selkeiksi, [henkilökohtaisiksi neuvoiksi](/blog/pesa-anna-jokaiselle-eurolle-koti).
+yhteen ja kääntää ne selkeiksi, henkilökohtaisiksi neuvoiksi.
 
 ## Kaikki yhdessä näkymässä
 
@@ -43,7 +43,7 @@ miten palautuminen seuraa rytmiä, miten pienet teot kasaantuvat tuloksiksi.
 
 ## Valmentaja, joka oikeasti tuntee sinut
 
-Superhumanin sydän on **AI-valmentaja** — mutta ei sellainen, joka toistaa
+Superhumanin sydän on **[AI-valmentaja](https://www.rayfit.com/blog/2026/02/best-ai-personal-trainer-app/)** — mutta ei sellainen, joka toistaa
 internetin yleisviisauksia. Se katsoo sinun dataasi ja keskustelee sen pohjalta.
 
 Erona tavalliseen chatbottiin on kaksi asiaa: valmentaja **muistaa** aiemmat
@@ -60,7 +60,7 @@ Useimmat ohjelmat on tehty keskivertoihmiselle. Superhumanin treeni rakentuu
 sinun tavoitteistasi ja päivittyy sen mukaan, miten todella jaksat ja palaudut.
 Hyvän viikon jälkeen se nostaa rimaa, kuormittavan jakson jälkeen se antaa tilaa.
 
-Tavoite ei ole tehdä mahdollisimman paljon, vaan **[oikea määrä oikeaan aikaan](/blog/pesa-anna-jokaiselle-eurolle-koti)** —
+Tavoite ei ole tehdä mahdollisimman paljon, vaan **oikea määrä oikeaan aikaan** —
 niin että edistyt ilman että ajat itsesi loppuun.
 
 ## Mihin tämä on menossa
