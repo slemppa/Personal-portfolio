@@ -1,17 +1,17 @@
 ---
 title: '"95 % halvempi malli" on monessa agenttiprojektissa kallein päätös, jonka voit tehdä'
 date: 2026-06-05
-description: "Tekoäly ilmainen kuulostaa hyvältä—mutta agenttien TCO voi räjähtää. Katso laskentamalli, riskimatriisi ja päätöspuu. Varaa 30 min."
+description: "Tekoäly ilmainen kuulostaa hyvältä – mutta agenttien TCO voi räjähtää. Katso laskentamalli, riskimatriisi ja päätöspuu. Varaa 30 min."
 tags: [tekoäly ilmainen]
 draft: false
 ---
-# tekoäly ilmainen? Halpa malli voi maksaa eniten
+# Tekoäly ilmainen? Halpa malli voi maksaa eniten
 
-Tekoäly ilmainen -ajatus on monessa agenttiprojektissa kallein oletus, jonka voit tehdä. Kun agentti ei ole “yksi prompti” vaan 50–200 pientä mallikutsua, hinta ei muodostu vain tokenirivistä vaan epäonnistumisista, viiveestä ja ylläpidosta. Tässä CTO-näkökulma siihen, milloin halpa malli oikeasti säästää—ja milloin se syö myyntituloksen.
+Tekoäly ilmainen -ajatus on monessa agenttiprojektissa kallein oletus, jonka voit tehdä. Kun agentti ei ole “yksi prompti” vaan 50–200 pientä mallikutsua, hinta ei muodostu vain tokenirivistä vaan epäonnistumisista, viiveestä ja ylläpidosta. Tässä CTO-näkökulma siihen, milloin halpa malli oikeasti säästää – ja milloin se syö myyntituloksen.
 
 ## Mitä “tekoäly ilmainen” oikeasti tarkoittaa yrityskäytössä? (UI vs API)
 
-Kun puhutaan **tekoäly ilmaisesta**, moni ajattelee ensisijaisesti ilmaisia chat-käyttöliittymiä, kuten ChatGPT:n tai Googlen Gemin välilehteä selaimessa. Näillä voi kokeilla ideoita, kirjoittaa sähköposteja tai generoida markkinointitekstejä ilman alkuinvestointeja. Mutta kun siirrytään yrityskäyttöön – erityisesti myynti- ja CRM-prosesseihin – “ilmainen” muuttuu nopeasti harhaanjohtavaksi käsitteeksi.
+Kun puhutaan **tekoäly ilmaisesta**, moni ajattelee ensisijaisesti ilmaisia chat-käyttöliittymiä, kuten ChatGPT:n tai Googlen Geminin välilehteä selaimessa. Näillä voi kokeilla ideoita, kirjoittaa sähköposteja tai generoida markkinointitekstejä ilman alkuinvestointeja. Mutta kun siirrytään yrityskäyttöön – erityisesti myynti- ja CRM-prosesseihin – “ilmainen” muuttuu nopeasti harhaanjohtavaksi käsitteeksi.
 
 Ilmaiset käyttöliittymät on suunniteltu yksittäisille käyttäjille, ei automaatioille tai agentteille. Ne rajoittuvat usein muutamaan sataan pyyntöön päivässä, eikä niissä ole tarjolla kriittisiä ominaisuuksia, kuten tool use -toimintoja, JSON-muotoisia vastauksia tai räätälöityjä integraatioita. Lisäksi ne voivat olla hitaampia, sillä resurssit jaetaan miljoonien käyttäjien kesken. Esimerkiksi yrityksen myyntiputkessa, jossa käsitellään satoja liidejä päivässä, ilmainen chat-käyttöliittymä ei yksinkertaisesti skaalaudu.
 
@@ -35,7 +35,7 @@ Ylläpito on neljäs, usein unohdettu kustannustekijä. Agenttien rakentaminen, 
 Agenttiloopeissa virheet kertautuvat, koska yksi väärä oletus voi johtaa ketjuun epäonnistumisia. Esimerkiksi jos agentti luokittelee liidin väärin, se voi lähettää väärän viestin, päivittää CRM:n virheellisesti ja jättää follow-upin tekemättä. Jokainen näistä virheistä vaatii manuaalisen korjauksen, mikä nostaa kustannuksia entisestään. Siksi on olennaista mitata agentin suorituskykyä tunnusluvuilla, kuten success rate (onnistumisprosentti), retry rate (uudelleenyritysten määrä), p95 latency (viive) ja **cost per opportunity** (kustannus per myyntimahdollisuus). Nämä mittarit kertovat, kuinka tehokkaasti agentti todella toimii – ja missä on parantamisen varaa.
 
 
-## Esimerkkilaskelma numeroilla: miksi “95% halvempi malli” voi olla kallein
+## Esimerkkilaskelma numeroilla: miksi “95 % halvempi malli” voi olla kallein
 
 Kun vertaillaan tekoälymalleja, tokenihinta on usein ensimmäinen – ja joskus ainoa – mittari. Mutta kuten edellä todettiin, tokenihinta on vain yksi osa kokonaiskustannusta. Katsotaanpa konkreettista esimerkkilaskelmaa, jossa vertaillaan kahta vaihtoehtoa: (A) vahvempaa, kalliimpaa mallia ja (B) halvempaa, mutta epäluotettavampaa mallia. Skenaariomme on liidien rikastus, viestin generointi ja CRM-päivitys, joka vaatii keskimäärin 80 API-kutsua per keikka.
 
@@ -82,7 +82,20 @@ Routing kannattaa silloin, kun tehtävät ovat selkeästi rajattuja ja laatuvaat
 
 Yksi suurimmista piilokuluista tekoälyagenttien käytössä on se, että samoista tokeneista maksetaan uudestaan ja uudestaan – ellei cachea hyödynnetä systemaattisesti. Cache, eli välimuisti, tarkoittaa sitä, että agentti tallentaa aiemmin generoidut vastaukset ja käyttää niitä uudelleen samanlaisissa tilanteissa. Tämä voi vähentää kustannuksia jopa 50–80 %, mutta silti moni yritys jättää sen hyödyntämättä.
 
-Agentit toistavat usein samoja asioita. Esimerkiksi yrityksen profiili, palvelulupaus, tone-of-voice -ohjeet tai prosessikuvaukset lähetetään agentille joka kerta, kun se generoi viestin tai päivittää CRM:ää. Jos näitä tietoja ei cache
+Agentit toistavat usein samoja asioita. Esimerkiksi yrityksen profiili, palvelulupaus, tone-of-voice -ohjeet tai prosessikuvaukset lähetetään agentille joka kerta, kun se generoi viestin tai päivittää CRM:ää. Jos näitä tietoja ei cacheta järkevästi, maksat samoista tokeneista yhä uudelleen – joka ajossa.
+
+Cachea kannattaa rakentaa kahdella tasolla. Ensimmäinen on prompt/response-cache deterministisissä kohdissa: kun lämpötila (temperature) on matala ja syöte on sama, vastaus voidaan tallentaa ja palauttaa suoraan välimuistista. Cache-avain muodostetaan mallista, parametreista ja promptin hashista, jolloin sama kysely ei mene mallille kahta kertaa. Toinen on embedding-cache usein haetuille dokumenteille, kuten yritysesittelylle, palvelukuvauksille ja ohjeistuksille – näitä ei kannata laskea uudelleen joka kerta.
+
+Sudenkuoppa piilee monimallipinossa. Jos käytössä on monta provideria, eri parametreja ja eri vastausformaatteja, cache jää usein “tehdään myöhemmin” -tasolle, koska yhtenäistä avainta ja formaattia on vaikea ylläpitää. Lopputulos on nurinkurinen: säästät senttejä per token, mutta poltat euroja toistoon. Siksi vasteformaatit kannattaa yhtenäistää ja TTL- sekä invalidointilogiikka miettiä heti, ei vasta optimointivaiheessa.
+
+
+## Piilokulu #3 – Pitkä konteksti: kustannuspiikit ja hidastuva suoritus
+
+Kolmas piilokulu syntyy siitä, että halvempaa mallia paikataan syöttämällä sille enemmän kontekstia. Kun malli ei päättele yhtä luotettavasti, houkutus on lisätä ohjeita, esimerkkejä ja taustatietoa promptiin “varmuuden vuoksi”. Agenttityössä konteksti ei ole vain chat-historia, vaan CRM-merkinnät, verkkosivutekstit, aiemmat sähköpostit, kilpailija- ja toimialadata sekä työjonot ja sääntökirjat. Jokainen lisätty rivi maksaa tokeneina joka kutsulla.
+
+Pitkä konteksti kostautuu kolmella tavalla. Se nostaa tokenimäärää suoraan, se hidastaa suoritusta (pidempi syöte = suurempi viive), ja se alkaa maksaa myös ihmisajassa: odotus, tarkistus, korjaus ja uudelleenajo. Halvan mallin “säästö” valuu siis hukkaan, kun sama tieto työnnetään ketjun läpi yhä uudelleen.
+
+Ratkaisu ei ole dumpata kaikkea promptiin. Käytä RAGia (retrieval-augmented generation) hakemaan vain relevantit pätkät, pilko muisti loogisiin osiin (esimerkiksi CRM, tuote ja tone-of-voice erikseen) ja ota käyttöön context budgeting: rajaa erikseen, kuinka monta tokenia varataan lähteille, ohjeille ja itse tuotokselle. Jos siitä huolimatta joudut kasvattamaan kontekstia vain siksi, että halpa malli ymmärtäisi tehtävän, vaihto parempaan malliin kriittisessä vaiheessa on yleensä halvempi kuin jatkuva kontekstin paisuttaminen.
 
 
 ## Usein kysytyt kysymykset
@@ -91,7 +104,7 @@ Agentit toistavat usein samoja asioita. Esimerkiksi yrityksen profiili, palvelul
 
 Usein “ilmainen” koskee vain chat-käyttöä tai lyhyttä kokeilua. Yrityksen agentissa maksat tokeneiden lisäksi epäonnistumisista (retry-ajot), viiveestä (ihmisen odotus ja tarkistus) sekä integraatioiden ja monitoroinnin ylläpidosta. Siksi kannattaa mitata TCO per ajokerta ja lopulta cost per myyntimahdollisuus, ei vain €/token.
 
-### Milloin ‘halpa malli’ on agenttiprojektissa kallein päätös?
+### Milloin “halpa malli” on agenttiprojektissa kallein päätös?
 
 Kun tehtävä vaatii päätöksentekoa (liidien priorisointi, viestikulma, riskit) ja virheen hinta on korkea (asiakasviestit, CRM-toimet). Halpa malli “korjataan” usein lisäämällä kontekstia ja reittejä, mikä nostaa kutsumäärää, retry-prosenttia ja ihmistyötä. Lopputulos: heikompi luotettavuus ja lähes sama kustannus.
 
