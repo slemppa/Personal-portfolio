@@ -4,7 +4,7 @@ date: 2026-06-05
 description: Miksi rakensin local-first-budjetointisovelluksen, joka kääntää rahankäytön päälaelleen — ja miten se toimii.
 tags:
   - budjetointi
-  - henkilökohtainentalous
+  - [henkilökohtainentalous](/blog/nain-superhuman-on-rakennettu)
   - talousapp
   - mobiilisovellus
   - react-native
@@ -46,7 +46,7 @@ Pitkän aikavälin tavoite on käyttää tässä kuussa viime kuussa ansaittua r
 
 Tämä on Pesän selkein ero verrattuna automaattisiin sovelluksiin. Pesä **ei pollaa pankkiasi taustalla**. Sen sijaan se rakentuu yhden tietoisen hetken ympärille: palkkapäivän.
 
-Kun palkka kolahtaa tilille, avaat **“Palkka tuli”** -näkymän. Se kirjaa tulon, lisää summan jaettavaan ja kutsuu sinut jakamaan rahat kirjekuoriin. Se on pieni kuukausittainen rituaali, joka tekee rahankäytöstä tietoista — viisi minuuttia, jotka antavat sinulle hallinnan tunteen koko kuukaudeksi.
+Kun palkka kolahtaa tilille, avaat **“Palkka tuli”** -näkymän. Se kirjaa tulon, lisää summan jaettavaan ja kutsuu sinut jakamaan rahat kirjekuoriin. Se on pieni kuukausittainen rituaali, joka tekee rahankäytöstä tietoista — viisi minuuttia, jotka antavat sinulle [hallinnan tunteen koko kuukaudeksi](/blog/nain-superhuman-on-rakennettu).
 
 Pesä tukee erilaisia palkkasyklejä:
 
@@ -108,8 +108,3 @@ Pesä on tarkoituksella aloittanut tiukasti rajatusta, viimeistellystä ytimest�
 Pesä syntyi yksinkertaisesta uskomuksesta: budjetoinnin ei pitäisi tarkoittaa menneen suremista, vaan tulevan suunnittelua — eikä sen pitäisi vaatia luovuttamaan yksityisyyttäsi. Anna jokaiselle eurolle koti, tee rauhassa se viiden minuutin palkkapäivärituaali, ja anna rahan tehdä töitä puolestasi.
 
 **Pesä — joka eurolle koti.**
-
-<!-- xlink:start -->
-## Liittyvät kirjoitukset
-- [Superhuman: valmentaja datan pohjalta](/blog/nain-superhuman-on-rakennettu)
-<!-- xlink:end -->
