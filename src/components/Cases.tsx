@@ -37,7 +37,7 @@ const cases = [
       { icon: Activity, value: 'iOS', label: 'HealthKit-data' },
       { icon: Brain, value: 'AI-valmentaja', label: 'pgvector-muisti' }
     ],
-    tech: ['SwiftUI', 'Supabase', 'Deno', 'pgvector', 'HealthKit'],
+    tech: ['React Native', 'Supabase', 'Deno', 'pgvector', 'HealthKit'],
     featured: false
   },
   {
