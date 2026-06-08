@@ -28,7 +28,7 @@ export default function Nav() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-bg-primary/80 backdrop-blur-xl border-b border-border">
       <div className="max-w-6xl mx-auto px-6 sm:px-8 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
             <span className="text-white font-bold text-sm">SK</span>
           </div>
           <span className="hidden sm:block text-text-primary font-semibold">Sami Kiias</span>
@@ -66,7 +66,7 @@ export default function Nav() {
 
           <a
             href="/#contact"
-            className="px-4 py-2 bg-gradient-to-r from-accent to-purple-500 text-white text-sm font-medium rounded-lg hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/30 transition-all"
+            className="px-4 py-2 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/30 transition-all"
           >
             Ota yhteyttä
           </a>
@@ -125,7 +125,7 @@ export default function Nav() {
             <a
               href="/#contact"
               onClick={() => setOpen(false)}
-              className="mt-3 px-4 py-3 bg-gradient-to-r from-accent to-purple-500 text-white text-base font-medium rounded-lg text-center"
+              className="mt-3 px-4 py-3 bg-accent hover:bg-accent-hover text-white text-base font-medium rounded-lg text-center"
             >
               Ota yhteyttä
             </a>

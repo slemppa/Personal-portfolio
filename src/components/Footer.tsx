@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
               <span className="text-white font-bold text-xs">SK</span>
             </div>
             <span className="text-text-muted text-sm">Sami Kiias</span>
