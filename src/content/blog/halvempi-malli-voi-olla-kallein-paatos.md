@@ -1,21 +1,22 @@
 ---
 title: '"95 % halvempi malli" on monessa agenttiprojektissa kallein päätös, jonka voit tehdä'
 date: 2026-06-05
-description: "Tekoäly ilmainen kuulostaa hyvältä – mutta agenttien TCO voi räjähtää. Katso laskentamalli, riskimatriisi ja päätöspuu. Varaa 30 min."
-tags: [tekoäly ilmainen]
+description: Ilmainen tekoäly kuulostaa hyvältä – mutta agenttien TCO voi räjähtää. Katso laskentamalli, riskimatriisi ja päätöspuu. Varaa 30 min.
+tags:
+  - tekoäly ilmainen
 draft: false
 ---
-# Tekoäly ilmainen? Halpa malli voi maksaa eniten
+# Tekoäly, ilmainen? Halpa malli voi maksaa eniten
 
-Tekoäly ilmainen -ajatus on monessa agenttiprojektissa kallein oletus, jonka voit tehdä. Kun agentti ei ole “yksi prompti” vaan 50–200 pientä mallikutsua, hinta ei muodostu vain tokenirivistä vaan epäonnistumisista, viiveestä ja ylläpidosta. Tässä CTO-näkökulma siihen, milloin halpa malli oikeasti säästää – ja milloin se syö myyntituloksen.
+Ilmainen tekoäly -ajatus on monessa agenttiprojektissa kallein oletus, jonka voit tehdä. Kun agentti ei ole “yksi prompti” vaan 50–200 pientä mallikutsua, hinta ei muodostu vain tokenirivistä vaan epäonnistumisista, viiveestä ja ylläpidosta. Tässä näkökulma siihen, milloin halpa malli oikeasti säästää – ja milloin se syö myyntituloksen.
 
-## Mitä “tekoäly ilmainen” oikeasti tarkoittaa yrityskäytössä? (UI vs API)
+## Mitä “ilmainen tekoäly” oikeasti tarkoittaa yrityskäytössä? (UI vs API)
 
-Kun puhutaan **tekoäly ilmaisesta**, moni ajattelee ensisijaisesti ilmaisia chat-käyttöliittymiä, kuten ChatGPT:n tai Googlen Geminin välilehteä selaimessa. Näillä voi kokeilla ideoita, kirjoittaa sähköposteja tai generoida markkinointitekstejä ilman alkuinvestointeja. Mutta kun siirrytään yrityskäyttöön – erityisesti myynti- ja CRM-prosesseihin – “ilmainen” muuttuu nopeasti harhaanjohtavaksi käsitteeksi.
+Kun puhutaan **ilmaisesta tekoälystä**, moni ajattelee ensisijaisesti ilmaisia chat-käyttöliittymiä, kuten ChatGPT:n tai Googlen Geminin välilehteä selaimessa. Näillä voi kokeilla ideoita, kirjoittaa sähköposteja tai generoida markkinointitekstejä ilman alkuinvestointeja. Mutta kun siirrytään yrityskäyttöön – erityisesti myynti- ja CRM-prosesseihin – “ilmainen” muuttuu nopeasti harhaanjohtavaksi käsitteeksi.
 
 Ilmaiset käyttöliittymät on suunniteltu yksittäisille käyttäjille, ei automaatioille tai agentteille. Ne rajoittuvat usein muutamaan sataan pyyntöön päivässä, eikä niissä ole tarjolla kriittisiä ominaisuuksia, kuten tool use -toimintoja, JSON-muotoisia vastauksia tai räätälöityjä integraatioita. Lisäksi ne voivat olla hitaampia, sillä resurssit jaetaan miljoonien käyttäjien kesken. Esimerkiksi yrityksen myyntiputkessa, jossa käsitellään satoja liidejä päivässä, ilmainen chat-käyttöliittymä ei yksinkertaisesti skaalaudu.
 
-API-käytössä tilanne on toinen. Tekoäly ilmainen -avainsanalla markkinoidut palvelut, kuten tietyt avoimen lähdekoodin mallit tai rajoitetut API-tasot, voivat tarjota alhaisemman lähtöhinnan per token. Mutta tässä piilee suurin kompastuskivi: **yrityskäytössä kustannus ei ole pelkästään tokenien hinta, vaan agentin kokonaiskustannus (TCO)**. Tämä tarkoittaa tokenien lisäksi epäonnistumisia, viiveitä, ylläpitoa ja integraatioita. Esimerkiksi jos agentti epäonnistuu 10 %:ssa tapauksista ja jokainen epäonnistuminen vaatii manuaalisen tarkistuksen, kustannus nousee nopeasti – vaikka tokenihinta olisi nolla.
+API-käytössä tilanne on toinen. Ilmainen tekoäly -avainsanalla markkinoidut palvelut, kuten tietyt avoimen lähdekoodin mallit tai rajoitetut API-tasot, voivat tarjota alhaisemman lähtöhinnan per token. Mutta tässä piilee suurin kompastuskivi: **yrityskäytössä kustannus ei ole pelkästään tokenien hinta, vaan agentin kokonaiskustannus (TCO)**. Tämä tarkoittaa tokenien lisäksi epäonnistumisia, viiveitä, ylläpitoa ja integraatioita. Esimerkiksi jos agentti epäonnistuu 10 %:ssa tapauksista ja jokainen epäonnistuminen vaatii manuaalisen tarkistuksen, kustannus nousee nopeasti – vaikka tokenihinta olisi nolla.
 
 Yrityksille on myös olennaista ymmärtää, missä “ilmainen” loppuu. Käyttörajat, kuten rate limitit, voivat katkaista kampanjan kesken. Saatavuusongelmat, kuten API-katkokset, voivat hidastaa myyntiprosessia. Ja jos dataa käytetään mallin koulutukseen, se voi aiheuttaa tietoturvariskejä, jotka eivät ole hyväksyttäviä yritystasolla. Ilmainen tekoäly ei myöskään tarjoa SLA-takuita, lokitusta tai tietosuojakäytäntöjä, joita yritykset tarvitsevat luotettavan toiminnan takaamiseksi.
 
@@ -65,7 +66,7 @@ Johtopäätös on selvä: **kustannus per myyntimahdollisuus** on ainoa relevant
 
 ## Piilokulu #1 – Routing ja monimallipino: luokittelukutsu(t), virhepolut ja observability
 
-Routing ja monimallipino ovat tehokkaita työkaluja, mutta ne tuovat mukanaan piilokuluja, joita harvoin huomioidaan “tekoäly ilmainen” -keskusteluissa. Routing tarkoittaa sitä, että agentti valitsee tehtävälle sopivimman mallin tai työkalun sen perusteella, mitä tehtävää ollaan suorittamassa. Esimerkiksi liidien segmentointi voi käyttää kevyttä mallia, kun taas tarjouspohjan generointi vaatii vahvempaa mallia. Mutta tämä valinta ei tapahdu ilmaiseksi.
+Routing ja monimallipino ovat tehokkaita työkaluja, mutta ne tuovat mukanaan piilokuluja, joita harvoin huomioidaan “ilmainen tekoäly” -keskusteluissa. Routing tarkoittaa sitä, että agentti valitsee tehtävälle sopivimman mallin tai työkalun sen perusteella, mitä tehtävää ollaan suorittamassa. Esimerkiksi liidien segmentointi voi käyttää kevyttä mallia, kun taas tarjouspohjan generointi vaatii vahvempaa mallia. Mutta tämä valinta ei tapahdu ilmaiseksi.
 
 Ensimmäinen piilokulu on luokittelukutsu. Ennen kuin agentti voi valita oikean mallin, sen on ensin määritettävä, mikä tehtävä on kyseessä. Tämä vaatii usein erillisen API-kutsun luokittelijamallille. Jos luokittelija epäonnistuu, koko ketju voi mennä pieleen. Esimerkiksi jos luokittelija määrittelee liidin väärin, agentti voi lähettää sille väärän viestin tai käyttää väärää mallia. Tämä johtaa retry-kutsujen ketjuun, mikä nostaa kustannuksia ja viiveitä.
 
@@ -123,4 +124,4 @@ Aloita prompt/response-cachella deterministisissä kohdissa: pidä temperature m
 
 ## Yhteenveto
 
-“Tekoäly ilmainen” on hyvä lähtö kokeiluun, mutta agenttien maailmassa se harvoin on ilmainen lopputulos. Kun mittaat tokenit, retryt, p95-viiveen ja ihmistyön, huomaat nopeasti missä halpa backend riittää ja missä se syö myyntiputken luotettavuuden. Varaa 30 min konsultaatio: käydään teidän agentti-/automaatio-setup läpi ja päätetään selkeästi, missä kannattaa maksaa paremmasta mallista.
+“Ilmainen tekoäly” on hyvä lähtö kokeiluun, mutta agenttien maailmassa se harvoin on ilmainen lopputulos. Kun mittaat tokenit, retryt, p95-viiveen ja ihmistyön, huomaat nopeasti missä halpa backend riittää ja missä se syö myyntiputken luotettavuuden. Varaa 30 min konsultaatio: käydään teidän agentti-/automaatio-setup läpi ja päätetään selkeästi, missä kannattaa maksaa paremmasta mallista.
