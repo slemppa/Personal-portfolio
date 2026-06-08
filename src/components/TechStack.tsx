@@ -233,11 +233,11 @@ export default function TechStack() {
         {categories.map((category) => (
           <div key={category.title}>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
                 <span className="text-white text-sm">⚡</span>
               </div>
               <div>
-                <h3 className="text-lg font-semibold uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
+                <h3 className="text-lg font-semibold uppercase tracking-wider text-accent">
                   {category.title}
                 </h3>
                 <p className="text-text-muted text-sm">{category.subtitle}</p>
@@ -248,10 +248,10 @@ export default function TechStack() {
               {category.tools.map((tool) => (
                 <div
                   key={tool.name}
-                  className="group relative bg-bg-secondary border border-border rounded-xl p-4 hover:border-emerald-500/50 hover:bg-bg-tertiary transition-all"
+                  className="group relative bg-bg-secondary border border-border rounded-xl p-4 hover:border-accent/50 hover:bg-bg-tertiary transition-all"
                 >
                   {tool.active && (
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full"></span>
                   )}
 
                   <div className="mb-2">

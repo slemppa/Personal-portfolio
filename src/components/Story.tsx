@@ -60,7 +60,7 @@ export default function Story() {
               key={item.title}
               className={`group relative flex gap-6 p-6 rounded-2xl border transition-all ${
                 item.active
-                  ? 'bg-gradient-to-r from-accent/10 to-purple-500/10 border-accent/30'
+                  ? 'bg-accent-soft border-accent/30'
                   : 'bg-bg-secondary border-border hover:border-border-hover'
               }`}
             >
@@ -68,7 +68,7 @@ export default function Story() {
               <div className="hidden sm:flex flex-col items-center">
                 <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
                   item.active
-                    ? 'bg-gradient-to-br from-accent to-purple-500'
+                    ? 'bg-accent'
                     : 'bg-bg-tertiary border border-border'
                 }`}>
                   <item.icon className={`w-6 h-6 ${item.active ? 'text-white' : 'text-text-muted'}`} />
@@ -92,7 +92,7 @@ export default function Story() {
 
               {/* Active indicator */}
               {item.active && (
-                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-accent to-purple-500 rounded-full" />
+                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-1 h-8 bg-accent rounded-full" />
               )}
             </div>
           ))}
@@ -107,7 +107,7 @@ export default function Story() {
             Epätyypillinen tausta on vahvuus – ymmärrän sekä bisneksen että teknologian kielen.
           </p>
           <footer className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
               <span className="text-white text-sm font-bold">SK</span>
             </div>
             <div>

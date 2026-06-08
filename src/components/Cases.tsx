@@ -59,7 +59,7 @@ export default function Cases() {
   return (
     <section id="cases" className="py-24 px-8 max-w-6xl mx-auto">
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent to-purple-500 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
           <Sparkles className="w-5 h-5 text-white" />
         </div>
         <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Projektit</h2>
@@ -76,7 +76,7 @@ export default function Cases() {
               }`}
           >
             {item.featured && (
-              <div className="absolute -top-3 right-6 px-3 py-1 bg-gradient-to-r from-accent to-purple-500 rounded-full text-xs font-medium text-white">
+              <div className="absolute -top-3 right-6 px-3 py-1 bg-accent rounded-full text-xs font-medium text-white">
                 Featured
               </div>
             )}

@@ -32,12 +32,12 @@ export default function Contact() {
     <section id="contact" className="py-24 px-8">
       {/* CTA Banner */}
       <div className="max-w-4xl mx-auto mb-16">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-accent via-purple-500 to-emerald-500 p-[1px]">
+        <div className="relative overflow-hidden rounded-3xl bg-accent/25 p-[1px]">
           <div className="bg-bg-primary rounded-3xl p-8 md:p-12">
             <div className="text-center">
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
                 <span className="text-text-primary">Rakennetaan jotain </span>
-                <span className="bg-gradient-to-r from-accent via-purple-400 to-emerald-400 bg-clip-text text-transparent">merkittävää</span>
+                <span className="text-gradient-accent">merkittävää</span>
               </h2>
 
               <p className="text-text-secondary text-lg mb-8 max-w-xl mx-auto">
@@ -47,7 +47,7 @@ export default function Contact() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="mailto:sami@rascalai.fi"
-                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-accent to-purple-500 text-white font-semibold rounded-xl hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/25 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/25 transition-all duration-300"
                 >
                   <Mail className="w-5 h-5" />
                   sami@rascalai.fi
@@ -105,7 +105,7 @@ export default function Contact() {
                   className="group block p-6 bg-bg-secondary border border-border rounded-xl hover:border-accent/50 hover:bg-bg-tertiary transition-all"
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    <h4 className="text-lg font-semibold bg-gradient-to-r from-accent to-purple-500 bg-clip-text text-transparent">
+                    <h4 className="text-lg font-semibold text-gradient-accent">
                       {company.name}
                     </h4>
                     <span className="px-2 py-0.5 bg-accent/10 rounded text-xs text-accent font-medium">
