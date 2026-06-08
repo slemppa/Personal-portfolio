@@ -7,8 +7,6 @@ tags:
   - integraatiot
 draft: false
 ---
-# Markkinoinnin automaatio: 30 päivän päätöspuu
-
 Markkinoinnin automaatio ei vaadi raskasta “otetaan HubSpot ja katsotaan” -projektia. Tässä artikkelissa saat 30 päivän päätöspuun pk-tiimille: mitä kannattaa automatisoida ensin, missä järjestyksessä ja millä minimi-stackilla, jotta ROI näkyy nopeasti (ja riskit pysyy pieninä).
 
 ## 30 päivän päätöspuu: mitä automatisoida ensin (nopea ROI, pienin riski)
