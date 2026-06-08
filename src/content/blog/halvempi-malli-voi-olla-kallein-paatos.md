@@ -3,7 +3,7 @@ title: '"95 % halvempi malli" on monessa agenttiprojektissa kallein päätös, j
 date: 2026-06-05
 description: Ilmainen tekoäly kuulostaa hyvältä – mutta agenttien TCO voi räjähtää. Katso laskentamalli, riskimatriisi ja päätöspuu. Varaa 30 min.
 tags:
-  - tekoäly ilmainen
+  - ilmainentekoäly
 draft: false
 ---
 # Tekoäly, ilmainen? Halpa malli voi maksaa eniten
