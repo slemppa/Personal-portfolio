@@ -1,9 +1,11 @@
 ---
-  title: "Markkinoinnin automaatio: 30 päivän päätöspuu"
-  date: 2026-06-08
-  description: "Markkinoinnin automaatio pk-tiimille: 30 päivän päätöspuu, kevyet integraatiot, KPI:t ja ROI-laskenta. Ota malli käyttöön."
-  tags: [markkinoinnin automaatio]
-  draft: true
+title: "Markkinoinnin automaatio: 30 päivän päätöspuu"
+date: 2026-06-08
+description: "Markkinoinnin automaatio pk-tiimille: 30 päivän päätöspuu, kevyet integraatiot, KPI:t ja ROI-laskenta. Ota malli käyttöön."
+tags:
+  - markkinoinninautomaatio
+  - integraatiot
+draft: false
 ---
 # Markkinoinnin automaatio: 30 päivän päätöspuu
 
