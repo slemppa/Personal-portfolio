@@ -1,305 +1,176 @@
-const categories = [
+import { Brain, Terminal, Boxes, Workflow, Sparkles } from 'lucide-react'
+
+type Tool = { name: string; primary?: boolean }
+
+type Layer = {
+  index: string
+  icon: typeof Brain
+  name: string
+  role: string
+  tools: Tool[]
+}
+
+// Stack kuvattuna järjestelmänä, ei työkalulistana: jokainen kerros
+// kertoo mitä se TEKEE koneistossa. Työkalut ovat tukevaa detaljia.
+const layers: Layer[] = [
   {
-    title: 'AI & LLM',
-    subtitle: 'Tekoäly ja kielimallit',
+    index: '01',
+    icon: Brain,
+    name: 'Reasoning',
+    role: 'Päättely ja generointi. Claude vetää tuotannossa ja kehityksessä — muut mallit erikoistehtäviin ja vertailuun.',
     tools: [
-      {
-        name: 'Claude',
-        provider: 'ANTHROPIC',
-        description: 'Pääasiallinen LLM tuotanto- ja kehityskäytössä. Opus, Sonnet ja Haiku eri tarpeisiin.',
-        tags: ['LLM', 'Reasoning', 'Code'],
-        active: true
-      },
-      {
-        name: 'OpenAI',
-        provider: 'OPENAI',
-        description: 'GPT-4 ja embedding-mallit RAG-järjestelmiin. o1 ja o3 reasoning-tehtäviin.',
-        tags: ['GPT-4', 'Embeddings', 'o1'],
-        active: true
-      },
-      {
-        name: 'Gemini',
-        provider: 'GOOGLE',
-        description: 'Googlen multimodaalinen malli. Pitkä konteksti-ikkuna ja integraatio Google-palveluihin.',
-        tags: ['Multimodal', 'Long context', 'Google'],
-        active: true
-      },
-      {
-        name: 'Mistral',
-        provider: 'MISTRAL AI',
-        description: 'Eurooppalainen vaihtoehto. Nopea ja kustannustehokas, hyvä koodaukseen.',
-        tags: ['EU', 'Fast', 'Code'],
-        active: true
-      },
-      {
-        name: 'Perplexity',
-        provider: 'PERPLEXITY',
-        description: 'AI-hakukone reaaliaikaiseen tiedonhakuun. Lähdeviittaukset ja tuore data.',
-        tags: ['Search', 'Real-time', 'Sources'],
-        active: true
-      },
-      {
-        name: 'Leonardo.ai',
-        provider: 'LEONARDO',
-        description: 'AI-kuvageneraattori markkinointimateriaaleihin ja tuotekuviin.',
-        tags: ['Image Gen', 'Marketing'],
-        active: true
-      },
-      {
-        name: 'Kie.ai',
-        provider: 'KIE.AI',
-        description: 'Videogeneraattori lyhyisiin markkinointivideoihin ja somecontentiin.',
-        tags: ['Video Gen', 'Social'],
-        active: true
-      },
-      {
-        name: 'Veo 2',
-        provider: 'GOOGLE',
-        description: 'Googlen videomalli. Korkealaatuinen videogenerointi prompteista.',
-        tags: ['Video', 'High quality'],
-        active: true
-      },
-      {
-        name: 'Sora',
-        provider: 'OPENAI',
-        description: 'OpenAI:n videogeneraattori. Realistiset videot tekstikuvauksista.',
-        tags: ['Video', 'Realistic'],
-        active: true
-      },
-      {
-        name: 'ElevenLabs',
-        provider: 'ELEVENLABS',
-        description: 'AI-äänisynteesi ja voice cloning. Luonnolliset äänet eri kielillä.',
-        tags: ['Voice', 'TTS', 'Clone'],
-        active: true
-      },
-      {
-        name: 'Hedra',
-        provider: 'HEDRA',
-        description: 'AI-avatarit ja talking head -videot. Lifelike-animaatiot kuvista.',
-        tags: ['Avatar', 'Talking Head'],
-        active: true
-      }
+      { name: 'Claude', primary: true },
+      { name: 'OpenAI' },
+      { name: 'Gemini' },
+      { name: 'Mistral' },
+      { name: 'Perplexity' }
     ]
   },
   {
-    title: 'Development',
-    subtitle: 'Kehitys ja infrastruktuuri',
+    index: '02',
+    icon: Terminal,
+    name: 'Build',
+    role: 'Agenttinen kehitys. Kirjoitan järjestelmät Claude Codella ja kytken työkalut MCP:llä — APIn yli, ei käyttöliittymää klikkaamalla.',
     tools: [
-      {
-        name: 'React & Vite',
-        provider: 'META • VITE',
-        description: 'Nopea frontend-kehitys. Hot reload, optimoitu build ja moderni tooling.',
-        tags: ['Frontend', 'Fast', 'HMR'],
-        active: true
-      },
-      {
-        name: 'Next.js & Node',
-        provider: 'VERCEL',
-        description: 'Full-stack kehitys. Server components, API routes ja edge functions.',
-        tags: ['Full-stack', 'SSR', 'API'],
-        active: true
-      },
-      {
-        name: 'Supabase',
-        provider: 'SUPABASE',
-        description: 'PostgreSQL, autentikointi, RLS ja vektorihaut. Multi-tenant arkkitehtuuri.',
-        tags: ['PostgreSQL', 'RLS', 'pgvector'],
-        active: true
-      },
-      {
-        name: 'Airtable',
-        provider: 'AIRTABLE',
-        description: 'No-code tietokanta ja CRM-pohja. Nopea prototypointi ja asiakasprojektit.',
-        tags: ['No-code', 'CRM', 'Prototype'],
-        active: true
-      },
-      {
-        name: 'TypeScript',
-        provider: 'MICROSOFT',
-        description: 'Tyypitetty JavaScript kaikissa projekteissa. Parempi DX ja vähemmän bugeja.',
-        tags: ['Types', 'DX', 'Safety'],
-        active: true
-      },
-      {
-        name: 'Vercel',
-        provider: 'VERCEL',
-        description: 'Edge-deployment ja CI/CD. Preview-ympäristöt jokaiselle PR:lle.',
-        tags: ['Edge', 'CI/CD', 'Preview'],
-        active: true
-      }
+      { name: 'Claude Code', primary: true },
+      { name: 'MCP', primary: true },
+      { name: 'Cursor' },
+      { name: 'Mistral CLI' }
     ]
   },
   {
-    title: 'Tools',
-    subtitle: 'Työkalut ja apuohjelmat',
+    index: '03',
+    icon: Boxes,
+    name: 'Product',
+    role: 'Missä järjestelmät ajetaan. Multi-tenant SaaS, RLS-eristetty data, vektorihaut ja edge-deploy jokaiselle muutokselle.',
     tools: [
-      {
-        name: 'Claude Code',
-        provider: 'ANTHROPIC',
-        description: 'Terminaalipohjainen agenttinen koodaustyökalu. Autonominen iterointi.',
-        tags: ['Agentic', 'Terminal', 'AI'],
-        active: true
-      },
-      {
-        name: 'Cursor',
-        provider: 'CURSOR',
-        description: 'AI-first IDE. Composer, tab-completion ja codebase-aware chat.',
-        tags: ['IDE', 'AI', 'Autocomplete'],
-        active: true
-      },
-      {
-        name: 'Mistral CLI',
-        provider: 'MISTRAL AI',
-        description: 'Mistralin terminaalityökalu. Komentorivipohjainen AI-koodausavustaja.',
-        tags: ['CLI', 'Terminal', 'AI'],
-        active: true
-      },
-      {
-        name: 'Antigravity',
-        provider: 'OPEN SOURCE',
-        description: 'Koodaamisen iloa ja yllätyksiä. Hauska työkalu kehittäjille.',
-        tags: ['Fun', 'Easter egg', 'Dev'],
-        active: true
-      },
-      {
-        name: 'MCP',
-        provider: 'ANTHROPIC',
-        description: 'Model Context Protocol. Avoin standardi LLM-integraatioihin. Yhdistää AI-mallit ulkoisiin työkaluihin, tietokantoihin ja tiedostoihin.',
-        tags: ['AI', 'Protocol', 'Integration'],
-        active: true
-      }
+      { name: 'Supabase', primary: true },
+      { name: 'React & Vite' },
+      { name: 'Next.js & Node' },
+      { name: 'TypeScript' },
+      { name: 'Vercel' }
     ]
   },
   {
-    title: 'Automation',
-    subtitle: 'Automaatiot ja integraatiot',
+    index: '04',
+    icon: Workflow,
+    name: 'Automation',
+    role: 'Koneiston liima. Self-hosted n8n hoitaa workflowt, webhookit ja integraatiot palasta toiseen — täysi kontrolli dataan.',
     tools: [
-      {
-        name: 'n8n',
-        provider: 'N8N GMBH',
-        description: 'Self-hosted workflow-automaatiot. Täysi kontrolli dataan ja rajaton skaalaus.',
-        tags: ['Self-hosted', 'Workflows', 'Open source'],
-        active: true
-      },
-      {
-        name: 'Make.com',
-        provider: 'MAKE',
-        description: 'Visuaalinen automaatioalusta. 1000+ integraatiota ja helppo käyttöliittymä.',
-        tags: ['Visual', 'Integrations', 'No-code'],
-        active: true
-      },
-      {
-        name: 'Power Automate',
-        provider: 'MICROSOFT',
-        description: 'Enterprise-automaatiot. Microsoft 365 -integraatiot ja RPA-ominaisuudet.',
-        tags: ['Enterprise', 'M365', 'RPA'],
-        active: true
-      },
-      {
-        name: 'GitHub',
-        provider: 'MICROSOFT',
-        description: 'Versionhallinta ja CI/CD. Actions-automaatiot ja yhteistyötyökalut.',
-        tags: ['Git', 'Actions', 'CI/CD'],
-        active: true
-      },
-      {
-        name: 'Nango',
-        provider: 'NANGO',
-        description: 'Unified API integraatioihin. OAuth-hallinta ja synkronointi kolmansien osapuolien palveluihin.',
-        tags: ['Integrations', 'OAuth', 'API'],
-        active: true
-      }
+      { name: 'n8n', primary: true },
+      { name: 'Make.com' },
+      { name: 'Power Automate' },
+      { name: 'GitHub Actions' },
+      { name: 'Nango' },
+      { name: 'Airtable' }
+    ]
+  },
+  {
+    index: '05',
+    icon: Sparkles,
+    name: 'Generative media',
+    role: 'AI-natiivi sisältö. Kuva, video, ääni ja avatarit promptista valmiiksi materiaaliksi — sama API-logiikka kuin muuallakin.',
+    tools: [
+      { name: 'ElevenLabs', primary: true },
+      { name: 'Leonardo.ai' },
+      { name: 'Veo 2' },
+      { name: 'Sora' },
+      { name: 'Kie.ai' },
+      { name: 'Hedra' }
     ]
   }
 ]
 
+const principles = [
+  {
+    title: 'API-first',
+    body: 'Lähes kaikki ajetaan rajapintojen yli, ei käyttöliittymistä klikkaamalla. Koneisto, ei kasa tilauksia.'
+  },
+  {
+    title: 'Rakennettu, ei ostettu',
+    body: 'Kun rakentaminen kannattaa, rakennan sen itse. Ostan vain siellä missä se ei oikeasti kannata.'
+  },
+  {
+    title: 'Sama stack, oikeat asiakkaat',
+    body: 'Tämä ei ole demo-stack. Sama koneisto pyörittää Rascal AI:ta ja asiakasprojekteja tuotannossa.'
+  }
+]
+
+function Chip({ tool }: { tool: Tool }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+        tool.primary
+          ? 'border-accent/40 bg-accent-soft text-text-primary'
+          : 'border-border bg-bg-tertiary text-text-secondary hover:border-border-hover'
+      }`}
+    >
+      {tool.primary && <span className="w-1.5 h-1.5 rounded-full bg-accent" />}
+      {tool.name}
+    </span>
+  )
+}
+
 export default function TechStack() {
   return (
-    <section id="tech" className="py-24 px-8 max-w-6xl mx-auto">
-      <div className="text-center mb-16">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full mb-6">
-          <span className="w-2 h-2 bg-accent rounded-full"></span>
-          <span className="text-accent text-sm font-medium">Päivittäisessä käytössä</span>
+    <section id="tech" className="py-24 px-8 max-w-5xl mx-auto">
+      {/* Thesis */}
+      <div className="max-w-3xl mb-16">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent-soft border border-accent/20 rounded-full mb-6">
+          <span className="w-1.5 h-1.5 bg-accent rounded-full" />
+          <span className="text-accent text-sm font-medium">Rakennettu, ei ostettu</span>
         </div>
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">Tech Stack</h2>
-        <p className="text-text-muted max-w-2xl mx-auto">
-          Modernit työkalut AI-järjestelmien ja automaatioiden rakentamiseen.
-          Kaikki tuotantokäytössä oikeissa projekteissa.
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+          Näin rakennan koneiston
+        </h2>
+        <p className="text-lg text-text-secondary leading-relaxed">
+          En osta valmista markkinointi- tai tuotekoneistoa. Rakennan sen — AI-natiivina
+          päättelystä ajoon, kytkettynä yhteen APIn yli. Sama stack pyörittää sekä omia
+          tuotteitani että asiakasprojekteja.
         </p>
       </div>
 
-      <div className="space-y-12">
-        {categories.map((category) => (
-          <div key={category.title}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-                <span className="text-white text-sm">⚡</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold uppercase tracking-wider text-accent">
-                  {category.title}
+      {/* Layered system */}
+      <div className="relative space-y-px">
+        {layers.map((layer) => (
+          <div
+            key={layer.name}
+            className="group grid md:grid-cols-[300px_1fr] gap-6 p-6 bg-bg-secondary border border-border first:rounded-t-2xl last:rounded-b-2xl hover:bg-bg-tertiary/50 hover:border-border-hover transition-colors"
+          >
+            {/* Layer identity */}
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="font-mono text-xs text-text-muted">{layer.index}</span>
+                <div className="w-9 h-9 rounded-lg bg-bg-tertiary border border-border flex items-center justify-center group-hover:border-accent/30 transition-colors">
+                  <layer.icon className="w-4 h-4 text-accent" />
+                </div>
+                <h3 className="text-base font-semibold uppercase tracking-wider text-text-primary">
+                  {layer.name}
                 </h3>
-                <p className="text-text-muted text-sm">{category.subtitle}</p>
               </div>
+              <p className="text-sm text-text-muted leading-relaxed md:pr-4">{layer.role}</p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {category.tools.map((tool) => (
-                <div
-                  key={tool.name}
-                  className="group relative bg-bg-secondary border border-border rounded-xl p-4 hover:border-accent/50 hover:bg-bg-tertiary transition-all"
-                >
-                  {tool.active && (
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full"></span>
-                  )}
-
-                  <div className="mb-2">
-                    <h4 className="font-semibold text-sm text-text-primary leading-tight">{tool.name}</h4>
-                    <p className="text-[10px] text-text-muted uppercase tracking-wider">{tool.provider}</p>
-                  </div>
-
-                  <p className="text-xs text-text-secondary mb-3 leading-relaxed">
-                    {tool.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1">
-                    {tool.tags.slice(0, 2).map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-1.5 py-0.5 text-[10px] bg-bg-tertiary border border-border rounded text-text-muted"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+            {/* Tools as compact chips */}
+            <div className="flex flex-wrap gap-2 content-start md:border-l md:border-border md:pl-6">
+              {layer.tools.map((tool) => (
+                <Chip key={tool.name} tool={tool} />
               ))}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Summary stats */}
-      <div className="mt-16 pt-12 border-t border-border">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="text-3xl font-bold text-text-primary mb-1">30+</div>
-            <div className="text-sm text-text-muted">Työkalua hallinnassa</div>
+      {/* Principles — korvaa vanity-statsit */}
+      <div className="mt-16 grid md:grid-cols-3 gap-6">
+        {principles.map((p, i) => (
+          <div key={p.title} className="relative pl-5">
+            <span className="absolute left-0 top-1 bottom-1 w-0.5 bg-accent rounded-full" />
+            <span className="font-mono text-xs text-text-muted">0{i + 1}</span>
+            <h4 className="text-base font-semibold text-text-primary mt-1 mb-2">{p.title}</h4>
+            <p className="text-sm text-text-secondary leading-relaxed">{p.body}</p>
           </div>
-          <div>
-            <div className="text-3xl font-bold text-text-primary mb-1">4</div>
-            <div className="text-sm text-text-muted">Osaamisaluetta</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-text-primary mb-1">100%</div>
-            <div className="text-sm text-text-muted">Tuotantokäytössä</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-text-primary mb-1">2026</div>
-            <div className="text-sm text-text-muted">Jatkuvasti päivitetty</div>
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   )
