@@ -1,8 +1,10 @@
-import { Sparkles, Phone, Clock, Users, Activity, Brain, Wallet, Shield } from 'lucide-react'
+import { Sparkles, Phone, Clock, Users, Activity, Brain, Wallet, Shield, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router'
 
 const cases = [
   {
     icon: Sparkles,
+    slug: 'rascal-ai',
     title: 'Rascal AI',
     client: 'Rascal Company',
     role: 'CTO & Founder',
@@ -16,6 +18,7 @@ const cases = [
   },
   {
     icon: Users,
+    slug: 'rascal-crm',
     title: 'Rascal CRM',
     client: 'Rascal Company',
     role: 'CTO & Founder',
@@ -29,6 +32,7 @@ const cases = [
   },
   {
     icon: Activity,
+    slug: 'superhuman',
     title: 'Superhuman',
     client: 'Henkilökohtainen projekti',
     role: 'Solo Developer',
@@ -42,6 +46,7 @@ const cases = [
   },
   {
     icon: Wallet,
+    slug: 'pesa',
     title: 'Pesä',
     client: 'Henkilökohtainen projekti',
     role: 'Solo Developer',
@@ -68,9 +73,10 @@ export default function Cases() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cases.map((item) => (
-          <article
+          <Link
             key={item.title}
-            className={`group relative bg-bg-secondary border rounded-2xl p-8 hover:-translate-y-1 transition-all duration-300 ${item.featured
+            to={`/projektit/${item.slug}`}
+            className={`group relative block bg-bg-secondary border rounded-2xl p-8 hover:-translate-y-1 transition-all duration-300 ${item.featured
                 ? 'border-accent/30 hover:border-accent/60 hover:shadow-xl hover:shadow-accent/10'
                 : 'border-border hover:border-border-hover'
               }`}
@@ -115,12 +121,17 @@ export default function Cases() {
 
             <div className="flex flex-wrap gap-2">
               {item.tech.map((t) => (
-                <span key={t} className="px-3 py-1 bg-bg-tertiary border border-border/50 rounded-full text-xs text-text-muted hover:text-accent hover:border-accent/30 transition-colors">
+                <span key={t} className="px-3 py-1 bg-bg-tertiary border border-border/50 rounded-full text-xs text-text-muted group-hover:text-accent group-hover:border-accent/30 transition-colors">
                   {t}
                 </span>
               ))}
             </div>
-          </article>
+
+            <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent">
+              Lue case study
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
         ))}
       </div>
     </section>
