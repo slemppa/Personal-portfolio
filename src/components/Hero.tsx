@@ -1,4 +1,8 @@
+import { usePostHog } from '@posthog/react'
+
 export default function Hero() {
+  const posthog = usePostHog()
+
   return (
     <section className="min-h-screen relative overflow-hidden">
       {/* Subtle gradient background */}
@@ -58,6 +62,7 @@ export default function Hero() {
             <div className="flex flex-wrap gap-4 mb-10 animate-fade-in-up animation-delay-500">
               <a
                 href="#contact"
+                onClick={() => posthog?.capture('hero_cta_clicked', { cta_label: 'Keskustellaan projektista' })}
                 className="group px-8 py-4 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/25 transition-all duration-300"
               >
                 Keskustellaan projektista
@@ -65,6 +70,7 @@ export default function Hero() {
               </a>
               <a
                 href="#cases"
+                onClick={() => posthog?.capture('hero_cta_clicked', { cta_label: 'Katso projektit' })}
                 className="px-8 py-4 bg-bg-secondary border border-border text-text-primary font-semibold rounded-xl hover:bg-bg-tertiary hover:border-border-hover transition-all duration-300"
               >
                 Katso projektit

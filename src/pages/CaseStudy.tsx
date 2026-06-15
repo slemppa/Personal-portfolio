@@ -3,12 +3,14 @@ import { ArrowLeft, ArrowRight, ExternalLink, ImageIcon } from 'lucide-react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { getCaseStudy } from '../lib/cases'
+import { usePostHog } from '@posthog/react'
 
 function isExternal(href: string) {
   return href.startsWith('http')
 }
 
 export default function CaseStudy() {
+  const posthog = usePostHog()
   const { slug } = useParams()
   const study = slug ? getCaseStudy(slug) : undefined
 
@@ -62,6 +64,7 @@ export default function CaseStudy() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => posthog?.capture('case_study_external_link_clicked', { case_slug: slug, link_label: link.label })}
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-bg-secondary border border-border rounded-lg text-sm font-medium text-text-primary hover:border-accent/50 hover:bg-bg-tertiary transition-all"
                   >
                     {link.label}
@@ -190,6 +193,7 @@ export default function CaseStudy() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href="mailto:sami@rascalai.fi"
+                onClick={() => posthog?.capture('case_study_contact_clicked', { case_slug: slug })}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-colors"
               >
                 Ota yhteyttä <ArrowRight className="w-4 h-4" />

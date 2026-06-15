@@ -1,4 +1,5 @@
 import { Youtube, Play, ExternalLink, Video } from 'lucide-react'
+import { usePostHog } from '@posthog/react'
 
 const topics = [
   { title: 'n8n-automaatiot', description: 'Workflow-automaatioiden rakentaminen alusta loppuun' },
@@ -8,6 +9,8 @@ const topics = [
 ]
 
 export default function YouTube() {
+  const posthog = usePostHog()
+
   return (
     <section id="youtube" className="py-24 px-8 bg-gradient-to-b from-bg-primary to-bg-secondary/30">
       <div className="max-w-6xl mx-auto">
@@ -39,6 +42,7 @@ export default function YouTube() {
                 href="https://www.youtube.com/@samikiias?sub_confirmation=1"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => posthog?.capture('youtube_subscribe_clicked')}
                 className="mt-4 w-full flex items-center justify-center gap-2 px-6 py-3 bg-red-500 text-white font-medium rounded-xl hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30 transition-all"
               >
                 <Youtube className="w-5 h-5" />
