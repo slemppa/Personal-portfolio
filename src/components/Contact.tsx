@@ -1,4 +1,5 @@
 import { Mail, Linkedin, Youtube, Github, ArrowRight, Calendar, MessageSquare } from 'lucide-react'
+import { usePostHog } from '@posthog/react'
 
 const links = [
   { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/in/samikiias', description: 'Verkostoidu' },
@@ -28,6 +29,8 @@ const companies = [
 ]
 
 export default function Contact() {
+  const posthog = usePostHog()
+
   return (
     <section id="contact" className="py-24 px-8">
       {/* CTA Banner */}
@@ -47,6 +50,7 @@ export default function Contact() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="mailto:sami@rascalai.fi"
+                  onClick={() => posthog?.capture('contact_email_clicked')}
                   className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/25 transition-all duration-300"
                 >
                   <Mail className="w-5 h-5" />
@@ -74,6 +78,7 @@ export default function Contact() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => posthog?.capture('social_link_clicked', { platform: link.label })}
                   className="group flex items-center gap-4 p-4 bg-bg-secondary border border-border rounded-xl hover:border-accent/50 hover:bg-bg-tertiary transition-all"
                 >
                   <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
@@ -102,6 +107,7 @@ export default function Contact() {
                   href={company.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => posthog?.capture('company_link_clicked', { company_name: company.name })}
                   className="group block p-6 bg-bg-secondary border border-border rounded-xl hover:border-accent/50 hover:bg-bg-tertiary transition-all"
                 >
                   <div className="flex items-center gap-3 mb-2">

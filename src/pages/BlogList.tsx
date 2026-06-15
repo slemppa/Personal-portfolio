@@ -3,8 +3,10 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { getAllPosts } from '../lib/posts'
 import { formatDate } from '../lib/format'
+import { usePostHog } from '@posthog/react'
 
 export default function BlogList() {
+  const posthog = usePostHog()
   const posts = getAllPosts()
   return (
     <>
@@ -20,6 +22,7 @@ export default function BlogList() {
               <li key={post.slug}>
                 <Link
                   to={`/blog/${post.slug}`}
+                  onClick={() => posthog?.capture('blog_post_clicked', { post_slug: post.slug, post_title: post.title })}
                   className="group block rounded-2xl border border-border hover:border-border-hover bg-bg-secondary p-6 transition-colors"
                 >
                   {post.cover && (

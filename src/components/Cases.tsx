@@ -1,5 +1,6 @@
 import { Sparkles, Phone, Clock, Users, Activity, Brain, Wallet, Shield, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router'
+import { usePostHog } from '@posthog/react'
 
 const cases = [
   {
@@ -61,6 +62,8 @@ const cases = [
 ]
 
 export default function Cases() {
+  const posthog = usePostHog()
+
   return (
     <section id="cases" className="py-24 px-8 max-w-6xl mx-auto">
       <div className="flex items-center gap-3 mb-2">
@@ -76,6 +79,7 @@ export default function Cases() {
           <Link
             key={item.title}
             to={`/projektit/${item.slug}`}
+            onClick={() => posthog?.capture('case_study_clicked', { case_slug: item.slug, case_title: item.title, featured: item.featured })}
             className={`group relative block bg-bg-secondary border rounded-2xl p-8 hover:-translate-y-1 transition-all duration-300 ${item.featured
                 ? 'border-accent/30 hover:border-accent/60 hover:shadow-xl hover:shadow-accent/10'
                 : 'border-border hover:border-border-hover'
