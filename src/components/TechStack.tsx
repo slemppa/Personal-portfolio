@@ -1,4 +1,6 @@
 import { Brain, Terminal, Boxes, Workflow, Sparkles } from 'lucide-react'
+import SectionHeading from './SectionHeading'
+import Reveal from './Reveal'
 
 type Tool = { name: string; primary?: boolean }
 
@@ -99,10 +101,10 @@ const principles = [
 function Chip({ tool }: { tool: Tool }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[13px] border transition-colors ${
         tool.primary
-          ? 'border-accent/40 bg-accent-soft text-text-primary'
-          : 'border-border bg-bg-tertiary text-text-secondary hover:border-border-hover'
+          ? 'border-accent-line bg-accent-soft text-text-primary'
+          : 'border-border bg-bg-tertiary/60 text-text-secondary hover:border-border-hover'
       }`}
     >
       {tool.primary && <span className="w-1.5 h-1.5 rounded-full bg-accent" />}
@@ -113,61 +115,55 @@ function Chip({ tool }: { tool: Tool }) {
 
 export default function TechStack() {
   return (
-    <section id="tech" className="py-24 px-8 max-w-5xl mx-auto">
-      {/* Thesis */}
-      <div className="max-w-3xl mb-16">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent-soft border border-accent/20 rounded-full mb-6">
-          <span className="w-1.5 h-1.5 bg-accent rounded-full" />
-          <span className="text-accent text-sm font-medium">Rakennettu, ei ostettu</span>
-        </div>
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-          Näin rakennan koneiston
-        </h2>
-        <p className="text-lg text-text-secondary leading-relaxed">
-          En osta valmista markkinointi- tai tuotekoneistoa. Rakennan sen — AI-natiivina
-          päättelystä ajoon, kytkettynä yhteen APIn yli. Sama stack pyörittää sekä omia
-          tuotteitani että asiakasprojekteja.
-        </p>
-      </div>
+    <section id="tech" className="py-24 px-6 sm:px-8 max-w-5xl mx-auto scroll-mt-20">
+      <SectionHeading
+        index="02"
+        eyebrow="Rakennettu, ei ostettu"
+        title="Näin rakennan koneiston"
+        description="En osta valmista markkinointi- tai tuotekoneistoa. Rakennan sen — AI-natiivina päättelystä ajoon, kytkettynä yhteen APIn yli. Sama stack pyörittää sekä omia tuotteitani että asiakasprojekteja."
+      />
 
       {/* Layered system */}
-      <div className="relative space-y-px">
-        {layers.map((layer) => (
-          <div
-            key={layer.name}
-            className="group grid md:grid-cols-[300px_1fr] gap-6 p-6 bg-bg-secondary border border-border first:rounded-t-2xl last:rounded-b-2xl hover:bg-bg-tertiary/50 hover:border-border-hover transition-colors"
-          >
-            {/* Layer identity */}
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="font-mono text-xs text-text-muted">{layer.index}</span>
-                <div className="w-9 h-9 rounded-lg bg-bg-tertiary border border-border flex items-center justify-center group-hover:border-accent/30 transition-colors">
-                  <layer.icon className="w-4 h-4 text-accent" />
+      <div className="relative mt-14 rounded-2xl border border-border overflow-hidden">
+        {layers.map((layer, i) => (
+          <Reveal key={layer.name} delay={i * 50}>
+            <div
+              className={`group grid md:grid-cols-[300px_1fr] gap-6 p-6 bg-bg-secondary hover:bg-bg-tertiary/40 transition-colors ${
+                i > 0 ? 'border-t border-border' : ''
+              }`}
+            >
+              {/* Layer identity */}
+              <div>
+                <div className="flex items-center gap-3 mb-2.5">
+                  <span className="font-mono text-xs text-accent">{layer.index}</span>
+                  <div className="w-8 h-8 rounded-lg bg-bg-tertiary border border-border flex items-center justify-center group-hover:border-accent-line transition-colors">
+                    <layer.icon className="w-4 h-4 text-accent" />
+                  </div>
+                  <h3 className="text-[13px] font-semibold uppercase tracking-[0.12em] text-text-primary">
+                    {layer.name}
+                  </h3>
                 </div>
-                <h3 className="text-base font-semibold uppercase tracking-wider text-text-primary">
-                  {layer.name}
-                </h3>
+                <p className="text-sm text-text-muted leading-relaxed md:pr-4">{layer.role}</p>
               </div>
-              <p className="text-sm text-text-muted leading-relaxed md:pr-4">{layer.role}</p>
-            </div>
 
-            {/* Tools as compact chips */}
-            <div className="flex flex-wrap gap-2 content-start md:border-l md:border-border md:pl-6">
-              {layer.tools.map((tool) => (
-                <Chip key={tool.name} tool={tool} />
-              ))}
+              {/* Tools as compact chips */}
+              <div className="flex flex-wrap gap-2 content-start md:border-l md:border-border md:pl-6">
+                {layer.tools.map((tool) => (
+                  <Chip key={tool.name} tool={tool} />
+                ))}
+              </div>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
 
       {/* Principles — korvaa vanity-statsit */}
-      <div className="mt-16 grid md:grid-cols-3 gap-6">
+      <div className="mt-12 grid md:grid-cols-3 gap-x-8 gap-y-10">
         {principles.map((p, i) => (
           <div key={p.title} className="relative pl-5">
-            <span className="absolute left-0 top-1 bottom-1 w-0.5 bg-accent rounded-full" />
+            <span className="absolute left-0 top-1 bottom-1 w-px bg-accent-line" />
             <span className="font-mono text-xs text-text-muted">0{i + 1}</span>
-            <h4 className="text-base font-semibold text-text-primary mt-1 mb-2">{p.title}</h4>
+            <h4 className="text-base font-semibold text-text-primary mt-1.5 mb-2">{p.title}</h4>
             <p className="text-sm text-text-secondary leading-relaxed">{p.body}</p>
           </div>
         ))}

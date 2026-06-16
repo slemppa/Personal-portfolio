@@ -1,101 +1,109 @@
 import { usePostHog } from '@posthog/react'
+import { ArrowRight } from 'lucide-react'
+
+const metrics = [
+  { value: '50+', label: 'Tuotantoautomaatiota' },
+  { value: '8–10h', label: 'Aikasäästö / asiakas / vko' },
+  { value: '11v', label: 'Yrittäjäkokemus' }
+]
+
+const tech = ['n8n', 'Supabase', 'React', 'Voice AI', 'RAG', 'Multi-tenant']
 
 export default function Hero() {
   const posthog = usePostHog()
 
   return (
-    <section className="min-h-screen relative overflow-hidden">
-      {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-bg-primary via-bg-primary to-accent/5"></div>
+    <section className="relative overflow-hidden">
+      {/* Aurora bloom + dotted grid, layered behind everything */}
+      <div className="absolute inset-0 aurora" aria-hidden="true" />
+      <div className="absolute inset-0 grid-texture" aria-hidden="true" />
+      {/* Fade the texture into the page below */}
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bg-primary" aria-hidden="true" />
 
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]"></div>
-
-      {/* Background Image - Right Side */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[40%] h-[60vh] hidden lg:block animate-fade-in-up animation-delay-300">
-        <div className="absolute inset-0 bg-gradient-to-r from-bg-primary via-bg-primary/80 to-transparent z-10 w-32"></div>
+      {/* Portfolio image — softly masked into the background on the right */}
+      <div className="absolute right-0 top-0 bottom-0 w-[42%] hidden lg:block animate-fade-in-up animation-delay-300">
+        <div className="absolute inset-0 bg-gradient-to-r from-bg-primary via-bg-primary/60 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-bg-primary z-10" />
         <img
           src="/portfolio-hero-fix.png"
           alt="Sami Kiias"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-center opacity-90"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-bg-primary/50 z-10"></div>
       </div>
 
-      {/* Main Content */}
-      <div className="relative min-h-screen flex items-center">
-        <div className="w-full max-w-7xl mx-auto px-8 lg:px-16 py-24 lg:py-0">
+      {/* Content */}
+      <div className="relative">
+        <div className="w-full max-w-6xl mx-auto px-6 sm:px-8 pt-40 pb-28 lg:pt-48 lg:pb-36">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 animate-fade-in-up animation-delay-200">
+            {/* Status pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded-full border border-border bg-bg-secondary/60 backdrop-blur-sm animate-fade-in-up animation-delay-100">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400/70 animate-ping" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              <span className="text-text-secondary text-[13px] font-medium">Avoinna uusille projekteille</span>
+            </div>
+
+            <h1 className="text-[2.6rem] leading-[1.05] md:text-6xl md:leading-[1.04] font-semibold tracking-tight mb-6 animate-fade-in-up animation-delay-200">
               <span className="text-text-primary">Rakennan </span>
               <span className="text-gradient-accent">AI-järjestelmiä</span>
               <br />
               <span className="text-text-primary">jotka säästävät aikaa</span>
             </h1>
 
-            <p className="text-xl text-text-secondary mb-4 animate-fade-in-up animation-delay-300">
+            <p className="text-base text-text-secondary mb-3 animate-fade-in-up animation-delay-300">
               CTO @ Rascal AI · Founder @ Mak8r.fi
             </p>
 
-            <p className="text-lg text-text-muted mb-8 max-w-xl animate-fade-in-up animation-delay-300">
+            <p className="text-lg text-text-secondary mb-10 max-w-xl leading-relaxed animate-fade-in-up animation-delay-300">
               Rakennan tuotantokäytössä olevia multi-tenant SaaS-järjestelmiä, n8n-automaatioita
               ja Voice AI -integraatioita. 11 vuotta yrittäjyyttä — ymmärrän sekä bisneksen että koodin.
             </p>
 
-            {/* Key metrics */}
-            <div className="grid grid-cols-3 gap-6 mb-10 animate-fade-in-up animation-delay-400">
-              <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-text-primary">50+</div>
-                <div className="text-sm text-text-muted">Tuotantoautomaatiota</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-text-primary">8–10h</div>
-                <div className="text-sm text-text-muted">Aikasäästö / asiakas / vko</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-text-primary">11v</div>
-                <div className="text-sm text-text-muted">Yrittäjäkokemus</div>
-              </div>
-            </div>
-
             {/* CTA buttons */}
-            <div className="flex flex-wrap gap-4 mb-10 animate-fade-in-up animation-delay-500">
+            <div className="flex flex-wrap gap-3 mb-12 animate-fade-in-up animation-delay-400">
               <a
                 href="#contact"
                 onClick={() => posthog?.capture('hero_cta_clicked', { cta_label: 'Keskustellaan projektista' })}
-                className="group px-8 py-4 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/25 transition-all duration-300"
+                className="group inline-flex items-center gap-2 px-5 py-3 bg-text-primary text-bg-primary font-semibold rounded-xl hover:opacity-90 transition-opacity"
               >
                 Keskustellaan projektista
-                <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
               <a
                 href="#cases"
                 onClick={() => posthog?.capture('hero_cta_clicked', { cta_label: 'Katso projektit' })}
-                className="px-8 py-4 bg-bg-secondary border border-border text-text-primary font-semibold rounded-xl hover:bg-bg-tertiary hover:border-border-hover transition-all duration-300"
+                className="px-5 py-3 bg-bg-secondary/60 backdrop-blur-sm border border-border text-text-primary font-semibold rounded-xl hover:border-border-hover hover:bg-bg-tertiary transition-all"
               >
                 Katso projektit
               </a>
             </div>
 
+            {/* Metrics — hairline-separated, not boxed */}
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mb-10 animate-fade-in-up animation-delay-400">
+              {metrics.map((m, i) => (
+                <div key={m.label} className="flex items-center gap-8">
+                  {i > 0 && <span className="hidden sm:block w-px h-9 bg-border" aria-hidden="true" />}
+                  <div>
+                    <div className="text-2xl font-semibold tracking-tight text-text-primary tabular-nums">{m.value}</div>
+                    <div className="text-[13px] text-text-muted">{m.label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             {/* Tech tags */}
             <div className="flex flex-wrap gap-2 animate-fade-in-up animation-delay-500">
-              {['n8n', 'Supabase', 'React', 'Voice AI', 'RAG', 'Multi-tenant'].map((tech) => (
+              {tech.map((t) => (
                 <span
-                  key={tech}
-                  className="px-3 py-1.5 bg-bg-secondary/50 border border-border/50 rounded-lg text-xs text-text-muted hover:border-accent/50 hover:text-accent transition-colors cursor-default"
+                  key={t}
+                  className="px-3 py-1.5 rounded-lg text-xs font-medium text-text-muted border border-border bg-bg-secondary/40 hover:border-border-hover hover:text-text-secondary transition-colors cursor-default"
                 >
-                  {tech}
+                  {t}
                 </span>
               ))}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden lg:block">
-        <div className="w-6 h-10 border-2 border-border rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-text-muted rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>

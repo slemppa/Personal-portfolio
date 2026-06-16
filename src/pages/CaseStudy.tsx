@@ -185,7 +185,7 @@ export default function CaseStudy() {
 
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-8 mt-24">
-          <div className="rounded-2xl border border-border bg-bg-secondary p-8 text-center">
+          <div className="surface-card rounded-2xl p-8 md:p-10 text-center">
             <h2 className="text-2xl font-semibold text-text-primary mb-3">Rakennetaanko sinulle vastaava?</h2>
             <p className="text-text-secondary mb-6 max-w-lg mx-auto">
               Kerro projektistasi — katsotaan miten sama koneisto-ajattelu ratkaisee sinun ongelmasi.
@@ -194,9 +194,9 @@ export default function CaseStudy() {
               <a
                 href="mailto:sami@rascalai.fi"
                 onClick={() => posthog?.capture('case_study_contact_clicked', { case_slug: slug })}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-colors"
+                className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-text-primary text-bg-primary font-semibold rounded-xl hover:opacity-90 transition-opacity"
               >
-                Ota yhteyttä <ArrowRight className="w-4 h-4" />
+                Ota yhteyttä <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
               <Link
                 to="/#cases"
