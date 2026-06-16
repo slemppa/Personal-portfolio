@@ -1,6 +1,8 @@
 import { Sparkles, Phone, Clock, Users, Activity, Brain, Wallet, Shield, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router'
 import { usePostHog } from '@posthog/react'
+import SectionHeading from './SectionHeading'
+import Reveal from './Reveal'
 
 const cases = [
   {
@@ -65,77 +67,72 @@ export default function Cases() {
   const posthog = usePostHog()
 
   return (
-    <section id="cases" className="py-24 px-8 max-w-6xl mx-auto">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
-          <Sparkles className="w-5 h-5 text-white" />
-        </div>
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">Projektit</h2>
-      </div>
-      <p className="text-text-muted mb-12 ml-13">Todistettuja tuloksia tuotantojärjestelmistä</p>
+    <section id="cases" className="py-24 px-6 sm:px-8 max-w-6xl mx-auto scroll-mt-20">
+      <SectionHeading
+        index="01"
+        eyebrow="Projektit"
+        title="Tuotantojärjestelmiä, ei demoja"
+        description="Todistettuja tuloksia järjestelmistä, jotka pyörivät oikeilla asiakkailla joka päivä."
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {cases.map((item) => (
-          <Link
-            key={item.title}
-            to={`/projektit/${item.slug}`}
-            onClick={() => posthog?.capture('case_study_clicked', { case_slug: item.slug, case_title: item.title, featured: item.featured })}
-            className={`group relative block bg-bg-secondary border rounded-2xl p-8 hover:-translate-y-1 transition-all duration-300 ${item.featured
-                ? 'border-accent/30 hover:border-accent/60 hover:shadow-xl hover:shadow-accent/10'
-                : 'border-border hover:border-border-hover'
-              }`}
-          >
-            {item.featured && (
-              <div className="absolute -top-3 right-6 px-3 py-1 bg-accent rounded-full text-xs font-medium text-white">
-                Featured
-              </div>
-            )}
-
-            <div className="flex items-start justify-between mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-bg-tertiary to-bg-secondary border border-border rounded-xl flex items-center justify-center group-hover:border-accent/30 transition-colors">
-                <item.icon className="w-6 h-6 text-accent" />
-              </div>
-            </div>
-
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold mb-1 text-text-primary">{item.title}</h3>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-accent">{item.client}</span>
-                <span className="text-text-muted">·</span>
-                <span className="text-text-muted">{item.role}</span>
-              </div>
-            </div>
-
-            <p className="text-text-secondary text-sm mb-6 leading-relaxed">{item.description}</p>
-
-            {/* Results metrics */}
-            <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-bg-tertiary/50 rounded-xl border border-border/50">
-              {item.results.map((result, idx) => (
-                <div key={idx} className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
-                    <result.icon className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <div className="text-lg font-bold text-text-primary">{result.value}</div>
-                    <div className="text-xs text-text-muted">{result.label}</div>
-                  </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
+        {cases.map((item, i) => (
+          <Reveal key={item.title} delay={(i % 2) * 80}>
+            <Link
+              to={`/projektit/${item.slug}`}
+              onClick={() => posthog?.capture('case_study_clicked', { case_slug: item.slug, case_title: item.title, featured: item.featured })}
+              className="group relative flex h-full flex-col surface-card rounded-2xl p-7 transition-all duration-300 hover:border-border-hover hover:-translate-y-0.5"
+            >
+              <div className="flex items-start justify-between mb-6">
+                <div className="w-11 h-11 rounded-xl bg-bg-tertiary border border-border flex items-center justify-center group-hover:border-accent-line transition-colors">
+                  <item.icon className="w-5 h-5 text-accent" />
                 </div>
-              ))}
-            </div>
+                {item.featured && (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-accent-line bg-accent-soft text-[11px] font-medium text-accent">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                    Featured
+                  </span>
+                )}
+              </div>
 
-            <div className="flex flex-wrap gap-2">
-              {item.tech.map((t) => (
-                <span key={t} className="px-3 py-1 bg-bg-tertiary border border-border/50 rounded-full text-xs text-text-muted group-hover:text-accent group-hover:border-accent/30 transition-colors">
-                  {t}
-                </span>
-              ))}
-            </div>
+              <div className="mb-3">
+                <h3 className="text-lg font-semibold text-text-primary tracking-tight">{item.title}</h3>
+                <div className="flex items-center gap-2 text-[13px] mt-1">
+                  <span className="text-accent">{item.client}</span>
+                  <span className="text-text-muted">·</span>
+                  <span className="text-text-muted">{item.role}</span>
+                </div>
+              </div>
 
-            <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent">
-              Lue case study
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
+              <p className="text-text-secondary text-sm mb-6 leading-relaxed">{item.description}</p>
+
+              {/* Results — hairline split, quiet */}
+              <div className="grid grid-cols-2 gap-px bg-border rounded-xl overflow-hidden border border-border mb-6">
+                {item.results.map((result, idx) => (
+                  <div key={idx} className="flex items-center gap-3 bg-bg-tertiary/60 p-4">
+                    <result.icon className="w-4 h-4 text-accent shrink-0" />
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold text-text-primary truncate">{result.value}</div>
+                      <div className="text-[11px] text-text-muted truncate">{result.label}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 mb-6">
+                {item.tech.map((t) => (
+                  <span key={t} className="px-2.5 py-1 rounded-md text-[11px] font-medium text-text-muted border border-border bg-bg-tertiary/40 group-hover:text-text-secondary transition-colors">
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-text-secondary group-hover:text-accent transition-colors">
+                Lue case study
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Link>
+          </Reveal>
         ))}
       </div>
     </section>

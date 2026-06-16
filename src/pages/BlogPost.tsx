@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router'
+import { ArrowLeft } from 'lucide-react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Markdown from '../components/Markdown'
@@ -12,9 +13,9 @@ export default function BlogPost() {
   return (
     <>
       <Nav />
-      <main className="max-w-3xl mx-auto px-8 pt-32 pb-24 min-h-screen">
-        <Link to="/blog" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-          ← Takaisin blogiin
+      <main className="max-w-3xl mx-auto px-6 sm:px-8 pt-36 pb-24 min-h-screen">
+        <Link to="/blog" className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Takaisin blogiin
         </Link>
         {!post ? (
           <div className="mt-12">
@@ -24,12 +25,12 @@ export default function BlogPost() {
         ) : (
           <article className="mt-8">
             <header className="mb-10">
-              <time className="text-xs uppercase tracking-wide text-text-muted">{formatDate(post.date)}</time>
-              <h1 className="mt-2 text-4xl font-bold text-text-primary">{post.title}</h1>
+              <time className="eyebrow">{formatDate(post.date)}</time>
+              <h1 className="mt-3 text-4xl font-semibold tracking-tight text-text-primary leading-[1.1]">{post.title}</h1>
               {post.tags.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   {post.tags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-bg-tertiary px-3 py-1 text-xs text-text-secondary">
+                    <span key={tag} className="rounded-md border border-border bg-bg-tertiary/60 px-2.5 py-1 text-[11px] font-medium text-text-secondary">
                       {tag}
                     </span>
                   ))}

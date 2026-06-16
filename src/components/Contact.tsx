@@ -1,5 +1,6 @@
-import { Mail, Linkedin, Youtube, Github, ArrowRight, Calendar, MessageSquare } from 'lucide-react'
+import { Mail, Linkedin, Youtube, Github, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { usePostHog } from '@posthog/react'
+import Reveal from './Reveal'
 
 const links = [
   { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/in/samikiias', description: 'Verkostoidu' },
@@ -32,94 +33,94 @@ export default function Contact() {
   const posthog = usePostHog()
 
   return (
-    <section id="contact" className="py-24 px-8">
+    <section id="contact" className="py-24 px-6 sm:px-8 scroll-mt-20">
       {/* CTA Banner */}
-      <div className="max-w-4xl mx-auto mb-16">
-        <div className="relative overflow-hidden rounded-3xl bg-accent/25 p-[1px]">
-          <div className="bg-bg-primary rounded-3xl p-8 md:p-12">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-                <span className="text-text-primary">Rakennetaan jotain </span>
-                <span className="text-gradient-accent">merkittävää</span>
-              </h2>
+      <div className="max-w-4xl mx-auto mb-20">
+        <div className="relative overflow-hidden rounded-3xl surface-card px-8 py-14 md:px-14 md:py-20 text-center">
+          {/* Aurora wash behind the CTA */}
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-line to-transparent" aria-hidden="true" />
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[60%] h-48 aurora blur-2xl opacity-70" aria-hidden="true" />
 
-              <p className="text-text-secondary text-lg mb-8 max-w-xl mx-auto">
-                Kerro projektistasi ja katsotaan miten AI-automaatiot voivat säästää aikaasi ja tehostaa liiketoimintaasi.
-              </p>
+          <div className="relative">
+            <span className="eyebrow text-accent">Ota yhteyttä</span>
+            <h2 className="mt-4 text-3xl md:text-[2.75rem] md:leading-[1.08] font-semibold tracking-tight">
+              <span className="text-text-primary">Rakennetaan jotain </span>
+              <span className="text-gradient-accent">merkittävää</span>
+            </h2>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="mailto:sami@rascalai.fi"
-                  onClick={() => posthog?.capture('contact_email_clicked')}
-                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/25 transition-all duration-300"
-                >
-                  <Mail className="w-5 h-5" />
-                  sami@rascalai.fi
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </div>
+            <p className="mt-4 text-text-secondary text-lg max-w-xl mx-auto leading-relaxed">
+              Kerro projektistasi ja katsotaan miten AI-automaatiot voivat säästää aikaasi ja tehostaa liiketoimintaasi.
+            </p>
+
+            <div className="mt-9 flex justify-center">
+              <a
+                href="mailto:sami@rascalai.fi"
+                onClick={() => posthog?.capture('contact_email_clicked')}
+                className="group inline-flex items-center gap-3 px-6 py-3.5 bg-text-primary text-bg-primary font-semibold rounded-xl hover:opacity-90 transition-opacity"
+              >
+                <Mail className="w-5 h-5" />
+                sami@rascalai.fi
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </a>
             </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-10">
           {/* Social links */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-accent" />
-              Seuraa ja verkostoidu
-            </h3>
-            <div className="space-y-3">
-              {links.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => posthog?.capture('social_link_clicked', { platform: link.label })}
-                  className="group flex items-center gap-4 p-4 bg-bg-secondary border border-border rounded-xl hover:border-accent/50 hover:bg-bg-tertiary transition-all"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
-                    <link.icon className="w-5 h-5 text-accent" />
-                  </div>
-                  <div className="flex-1">
-                    <span className="font-medium text-text-primary">{link.label}</span>
-                    <p className="text-sm text-text-muted">{link.description}</p>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all" />
-                </a>
+            <span className="eyebrow">Seuraa ja verkostoidu</span>
+            <div className="mt-5 space-y-2">
+              {links.map((link, i) => (
+                <Reveal key={link.label} delay={i * 50}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => posthog?.capture('social_link_clicked', { platform: link.label })}
+                    className="group flex items-center gap-4 p-4 surface-card rounded-xl hover:border-border-hover transition-colors"
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-bg-tertiary border border-border flex items-center justify-center group-hover:border-accent-line transition-colors">
+                      <link.icon className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors" />
+                    </div>
+                    <div className="flex-1">
+                      <span className="font-medium text-text-primary">{link.label}</span>
+                      <p className="text-[13px] text-text-muted">{link.description}</p>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-text-muted group-hover:text-accent transition-colors" />
+                  </a>
+                </Reveal>
               ))}
             </div>
           </div>
 
           {/* Companies */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-accent" />
-              Yritykset
-            </h3>
-            <div className="space-y-3">
-              {companies.map((company) => (
-                <a
-                  key={company.name}
-                  href={company.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => posthog?.capture('company_link_clicked', { company_name: company.name })}
-                  className="group block p-6 bg-bg-secondary border border-border rounded-xl hover:border-accent/50 hover:bg-bg-tertiary transition-all"
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <h4 className="text-lg font-semibold text-gradient-accent">
-                      {company.name}
-                    </h4>
-                    <span className="px-2 py-0.5 bg-accent/10 rounded text-xs text-accent font-medium">
-                      {company.role}
-                    </span>
-                  </div>
-                  <p className="text-text-secondary text-sm">{company.description}</p>
-                </a>
+            <span className="eyebrow">Yritykset</span>
+            <div className="mt-5 space-y-2">
+              {companies.map((company, i) => (
+                <Reveal key={company.name} delay={i * 50}>
+                  <a
+                    href={company.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => posthog?.capture('company_link_clicked', { company_name: company.name })}
+                    className="group block p-5 surface-card rounded-xl hover:border-border-hover transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5 mb-1.5">
+                      <h4 className="text-base font-semibold text-text-primary tracking-tight group-hover:text-accent transition-colors">
+                        {company.name}
+                      </h4>
+                      <span className="px-2 py-0.5 rounded-md border border-border bg-bg-tertiary/60 text-[11px] text-text-muted font-medium">
+                        {company.role}
+                      </span>
+                      <ArrowUpRight className="w-4 h-4 ml-auto text-text-muted group-hover:text-accent transition-colors" />
+                    </div>
+                    <p className="text-text-secondary text-sm leading-relaxed">{company.description}</p>
+                  </a>
+                </Reveal>
               ))}
             </div>
           </div>

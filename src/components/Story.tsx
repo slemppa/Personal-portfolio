@@ -1,4 +1,6 @@
 import { Briefcase, GraduationCap, Code, Rocket } from 'lucide-react'
+import SectionHeading from './SectionHeading'
+import Reveal from './Reveal'
 
 const timeline = [
   {
@@ -43,86 +45,80 @@ const credentials = [
 
 export default function Story() {
   return (
-    <section id="story" className="py-24 px-8 max-w-6xl mx-auto">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">Tarina</h2>
-        <p className="text-text-muted max-w-xl mx-auto">
-          Epätyypillinen polku yrittäjästä AI-järjestelmien rakentajaksi.
-          Jokainen vaihe toi uuden näkökulman.
-        </p>
-      </div>
+    <section id="story" className="py-24 px-6 sm:px-8 max-w-6xl mx-auto scroll-mt-20">
+      <SectionHeading
+        index="04"
+        eyebrow="Tarina"
+        title="Yrittäjästä AI-rakentajaksi"
+        description="Epätyypillinen polku yrittäjästä AI-järjestelmien rakentajaksi. Jokainen vaihe toi uuden näkökulman."
+      />
 
-      {/* Timeline */}
-      <div className="max-w-3xl mx-auto mb-16">
-        <div className="grid gap-6">
-          {timeline.map((item) => (
-            <div
-              key={item.title}
-              className={`group relative flex gap-6 p-6 rounded-2xl border transition-all ${
-                item.active
-                  ? 'bg-accent-soft border-accent/30'
-                  : 'bg-bg-secondary border-border hover:border-border-hover'
-              }`}
-            >
-              {/* Year badge */}
-              <div className="hidden sm:flex flex-col items-center">
-                <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
-                  item.active
-                    ? 'bg-accent'
-                    : 'bg-bg-tertiary border border-border'
-                }`}>
-                  <item.icon className={`w-6 h-6 ${item.active ? 'text-white' : 'text-text-muted'}`} />
+      {/* Timeline — vertical rail with connected nodes */}
+      <div className="max-w-3xl mt-14 mb-16">
+        <div className="relative pl-6 sm:pl-0">
+          {/* Rail */}
+          <span className="absolute left-[7px] sm:left-[27px] top-2 bottom-2 w-px bg-border" aria-hidden="true" />
+          <div className="flex flex-col gap-3">
+            {timeline.map((item, i) => (
+              <Reveal key={item.title} delay={i * 60}>
+                <div className="relative flex gap-4 sm:gap-6">
+                  {/* Node + year */}
+                  <div className="relative flex sm:flex-col items-center shrink-0">
+                    <span
+                      className={`absolute -left-[22px] sm:static top-1.5 w-3.5 h-3.5 rounded-full ring-4 ring-bg-primary ${
+                        item.active ? 'bg-accent' : 'bg-bg-elevated border border-border-hover'
+                      }`}
+                    />
+                    <span className={`hidden sm:flex w-14 h-14 rounded-xl items-center justify-center mt-0 ${
+                      item.active ? 'bg-accent-soft border border-accent-line' : 'bg-bg-tertiary border border-border'
+                    }`}>
+                      <item.icon className={`w-5 h-5 ${item.active ? 'text-accent' : 'text-text-muted'}`} />
+                    </span>
+                  </div>
+
+                  {/* Content card */}
+                  <div className={`flex-1 mb-1 rounded-2xl border p-5 transition-colors ${
+                    item.active ? 'bg-accent-soft border-accent-line' : 'surface-card hover:border-border-hover'
+                  }`}>
+                    <div className="flex flex-wrap items-center gap-2.5 mb-1.5">
+                      <span className={`font-mono text-xs ${item.active ? 'text-accent' : 'text-text-muted'}`}>{item.year}</span>
+                      <h3 className="text-base font-semibold text-text-primary tracking-tight">{item.title}</h3>
+                      <span className="px-2 py-0.5 rounded-md border border-border bg-bg-tertiary/60 text-[11px] text-text-muted">
+                        {item.subtitle}
+                      </span>
+                    </div>
+                    <p className="text-text-secondary text-sm leading-relaxed">{item.description}</p>
+                  </div>
                 </div>
-                <span className={`mt-2 text-sm font-bold ${item.active ? 'text-accent' : 'text-text-muted'}`}>
-                  {item.year}
-                </span>
-              </div>
-
-              {/* Content */}
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="sm:hidden text-sm font-bold text-accent">{item.year}</span>
-                  <h3 className="text-lg font-semibold text-text-primary">{item.title}</h3>
-                  <span className="px-2 py-0.5 bg-bg-tertiary rounded text-xs text-text-muted">
-                    {item.subtitle}
-                  </span>
-                </div>
-                <p className="text-text-secondary text-sm leading-relaxed">{item.description}</p>
-              </div>
-
-              {/* Active indicator */}
-              {item.active && (
-                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-1 h-8 bg-accent rounded-full" />
-              )}
-            </div>
-          ))}
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Quote */}
-      <div className="max-w-2xl mx-auto mb-12">
-        <blockquote className="relative p-8 bg-bg-secondary border border-border rounded-2xl">
-          <div className="absolute -top-4 left-8 text-6xl text-accent/20 font-serif">"</div>
-          <p className="text-xl text-text-primary italic mb-4 relative z-10">
-            Epätyypillinen tausta on vahvuus – ymmärrän sekä bisneksen että teknologian kielen.
-          </p>
-          <footer className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
-              <span className="text-white text-sm font-bold">SK</span>
+      <div className="max-w-3xl mb-12">
+        <figure className="surface-card rounded-2xl p-8 md:p-10">
+          <blockquote className="text-xl md:text-2xl text-text-primary leading-snug tracking-tight font-medium">
+            “Epätyypillinen tausta on vahvuus – ymmärrän sekä bisneksen että teknologian kielen.”
+          </blockquote>
+          <figcaption className="mt-6 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-text-primary flex items-center justify-center">
+              <span className="text-bg-primary text-xs font-bold">SK</span>
             </div>
             <div>
-              <div className="font-medium text-text-primary">Sami Kiias</div>
-              <div className="text-sm text-text-muted">CTO @ Rascal AI</div>
+              <div className="text-sm font-medium text-text-primary">Sami Kiias</div>
+              <div className="text-[13px] text-text-muted">CTO @ Rascal AI</div>
             </div>
-          </footer>
-        </blockquote>
+          </figcaption>
+        </figure>
       </div>
 
       {/* Credentials */}
-      <div className="grid grid-cols-3 gap-4 max-w-xl mx-auto">
+      <div className="grid grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border border-border max-w-2xl">
         {credentials.map((cred) => (
-          <div key={cred.label} className="text-center p-4 bg-bg-secondary border border-border rounded-xl">
-            <div className="text-2xl font-bold text-text-primary mb-1">{cred.value}</div>
+          <div key={cred.label} className="bg-bg-secondary p-5 text-center">
+            <div className="text-2xl font-semibold tracking-tight text-text-primary mb-1 tabular-nums">{cred.value}</div>
             <div className="text-xs text-text-muted">{cred.label}</div>
           </div>
         ))}
