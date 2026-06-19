@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import CTASection from '../components/CTASection'
 import { getAllPosts } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { usePostHog } from '@posthog/react'
@@ -50,6 +51,17 @@ export default function BlogList() {
             ))}
           </ul>
         )}
+
+        <CTASection
+          source="blog_list"
+          title={
+            <>
+              Mietitkö, mikä näistä toimisi <span className="text-gradient-accent">teillä?</span>
+            </>
+          }
+          description="Lukemisesta tekoihin: kerro lyhyesti tilanteesta, niin katsotaan mikä kannattaisi automatisoida ensin."
+          secondary={{ label: 'Katso projektit', to: '/#cases' }}
+        />
       </main>
       <Footer />
     </>

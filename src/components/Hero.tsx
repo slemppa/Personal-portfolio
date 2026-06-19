@@ -56,8 +56,9 @@ export default function Hero() {
             </p>
 
             <p className="text-lg text-text-secondary mb-10 max-w-xl leading-relaxed animate-fade-in-up animation-delay-300">
-              Rakennan tuotantokäytössä olevia multi-tenant SaaS-järjestelmiä, n8n-automaatioita
-              ja Voice AI -integraatioita. 11 vuotta yrittäjyyttä — ymmärrän sekä bisneksen että koodin.
+              Autan pk- ja kasvuyrityksiä korvaamaan käsityön AI-järjestelmillä, jotka pyörivät
+              oikeilla asiakkailla tuotannossa — multi-tenant SaaS, n8n-automaatiot ja Voice AI.
+              11 vuotta yrittäjyyttä: puhun sekä bisneksen että koodin kieltä.
             </p>
 
             {/* CTA buttons */}
