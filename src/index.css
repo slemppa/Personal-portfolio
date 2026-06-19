@@ -115,6 +115,30 @@ h1, h2, h3, h4 {
   border: 1px solid var(--color-border);
 }
 
+/* Cursor spotlight — a soft accent glow that tracks the pointer across a card.
+   Sits above the card's own surface but below its content (the ::before child).
+   Position is driven by --mx/--my, set by the useSpotlight hook. */
+.spotlight { position: relative; }
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(124, 131, 255, 0.14),
+    transparent 60%
+  );
+}
+.spotlight:hover::before { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight::before { display: none; }
+}
+
 /* Keyboard-style chip, like Notion/Linear inline hints */
 .kbd {
   font-family: var(--font-mono);

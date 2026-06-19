@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router'
 import { ArrowLeft, ArrowRight, ExternalLink, ImageIcon } from 'lucide-react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import PageGlow from '../components/PageGlow'
 import { getCaseStudy } from '../lib/cases'
 import { usePostHog } from '@posthog/react'
 
@@ -33,7 +34,8 @@ export default function CaseStudy() {
   return (
     <>
       <Nav />
-      <main className="pt-32 pb-24 min-h-screen">
+      <PageGlow />
+      <main className="relative z-10 pt-32 pb-24 min-h-screen">
         {/* Hero */}
         <header className="max-w-4xl mx-auto px-8">
           <Link to="/#cases" className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">

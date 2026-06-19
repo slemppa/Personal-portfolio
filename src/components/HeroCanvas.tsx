@@ -25,7 +25,17 @@ type Node = {
 
 const ACCENT: [number, number, number] = [124, 131, 255]
 
-export default function HeroCanvas() {
+type HeroCanvasProps = {
+  /** Positioning / opacity classes. Defaults to a full-bleed hero layer. */
+  className?: string
+  /** Scales node density — lower it for quieter, secondary placements. */
+  intensity?: number
+}
+
+export default function HeroCanvas({
+  className = 'absolute inset-0 w-full h-full pointer-events-none',
+  intensity = 1,
+}: HeroCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -53,7 +63,7 @@ export default function HeroCanvas() {
     function buildNodes() {
       // Fewer nodes on small screens / low-power devices keep this buttery.
       const area = width * height
-      const target = Math.min(110, Math.max(34, Math.round(area / 16000)))
+      const target = Math.round(Math.min(110, Math.max(34, area / 16000)) * intensity)
       nodes = Array.from({ length: target }, () => ({
         x: (Math.random() * 2 - 1) * FIELD,
         y: (Math.random() * 2 - 1) * FIELD * 0.62,
@@ -228,13 +238,7 @@ export default function HeroCanvas() {
       window.removeEventListener('pointermove', onPointerMove)
       document.removeEventListener('visibilitychange', onVisibility)
     }
-  }, [])
+  }, [intensity])
 
-  return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="absolute inset-0 w-full h-full pointer-events-none"
-    />
-  )
+  return <canvas ref={canvasRef} aria-hidden="true" className={className} />
 }

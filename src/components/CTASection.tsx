@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 import { Mail, ArrowRight, Linkedin } from 'lucide-react'
 import { usePostHog } from '@posthog/react'
+import { useSpotlight } from '../hooks/useSpotlight'
 
 type CTASectionProps = {
   /** Where this CTA lives, e.g. "blog_list" or "blog_post" — used for analytics. */
@@ -28,10 +29,11 @@ export default function CTASection({
   secondary = { label: 'Katso projektit', to: '/#cases' }
 }: CTASectionProps) {
   const posthog = usePostHog()
+  const cardRef = useSpotlight<HTMLDivElement>()
 
   return (
     <section className="mt-20">
-      <div className="relative overflow-hidden rounded-3xl surface-card px-8 py-12 md:px-12 md:py-14 text-center">
+      <div ref={cardRef} className="spotlight relative overflow-hidden rounded-3xl surface-card px-8 py-12 md:px-12 md:py-14 text-center">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-line to-transparent" aria-hidden="true" />
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[60%] h-48 aurora blur-2xl opacity-70" aria-hidden="true" />
 
