@@ -89,21 +89,22 @@ export default function Hero() {
               <span className="text-text-secondary text-[13px] font-medium">Avoinna uusille projekteille</span>
             </div>
 
-            <h1 className="text-[2.6rem] leading-[1.05] md:text-6xl md:leading-[1.04] font-semibold tracking-tight mb-6 animate-fade-in-up animation-delay-200">
-              <span className="text-text-primary">Rakennan </span>
-              <span className="text-gradient-accent">AI-järjestelmiä</span>
+            <h1 className="display text-[2.9rem] leading-[1.0] md:text-7xl md:leading-[0.98] mb-6 animate-fade-in-up animation-delay-200">
+              <span className="text-text-primary">Automaatio on</span>
               <br />
-              <span className="text-text-primary">jotka säästävät aikaa</span>
+              <span className="text-text-primary">uusi lukutaito.</span>
+              <br />
+              <span className="text-gradient-accent">Opetan Suomen lukemaan.</span>
             </h1>
 
             <p className="text-base text-text-secondary mb-3 animate-fade-in-up animation-delay-300">
-              CTO @ Rascal AI · Founder @ Mak8r.fi
+              Sami Kiias · CTO @ Rascal AI · Founder @ Mak8r.fi
             </p>
 
             <p className="text-lg text-text-secondary mb-10 max-w-xl leading-relaxed animate-fade-in-up animation-delay-300">
-              Autan pk- ja kasvuyrityksiä korvaamaan käsityön AI-järjestelmillä, jotka pyörivät
-              oikeilla asiakkailla tuotannossa — multi-tenant SaaS, n8n-automaatiot ja Voice AI.
-              11 vuotta yrittäjyyttä: puhun sekä bisneksen että koodin kieltä.
+              Rakennan AI-järjestelmiä, jotka korvaavat käsityön ja pyörivät oikeilla asiakkailla
+              tuotannossa — multi-tenant SaaS, n8n-automaatiot ja Voice AI. 11 vuotta yrittäjyyttä:
+              puhun sekä bisneksen että koodin kieltä, enkä myy hypeä vaan koneistoja, jotka toimivat.
             </p>
 
             {/* CTA buttons */}
@@ -117,11 +118,11 @@ export default function Hero() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
               <a
-                href="#cases"
-                onClick={() => posthog?.capture('hero_cta_clicked', { cta_label: 'Katso projektit' })}
+                href="#manifesto"
+                onClick={() => posthog?.capture('hero_cta_clicked', { cta_label: 'Lue manifesti' })}
                 className="px-5 py-3 bg-bg-secondary/60 backdrop-blur-sm border border-border text-text-primary font-semibold rounded-xl hover:border-border-hover hover:bg-bg-tertiary transition-all"
               >
-                Katso projektit
+                Lue manifesti
               </a>
             </div>
 

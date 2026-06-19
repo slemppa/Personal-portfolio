@@ -17,7 +17,7 @@ export default function Footer() {
             </div>
             <div className="leading-tight">
               <div className="text-sm font-semibold text-text-primary">Sami Kiias</div>
-              <div className="text-[13px] text-text-muted">AI Systems Builder</div>
+              <div className="text-[13px] text-text-muted">Automaatio on uusi lukutaito.</div>
             </div>
           </div>
 

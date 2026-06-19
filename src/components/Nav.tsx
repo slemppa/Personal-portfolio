@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { Menu, X, ArrowUpRight } from 'lucide-react'
 
 const navLinks = [
+  { label: 'Manifesti', href: '/#manifesto' },
   { label: 'Projektit', href: '/#cases' },
   { label: 'Tech', href: '/#tech' },
   { label: 'Tarina', href: '/#story' }
