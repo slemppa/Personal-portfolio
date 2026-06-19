@@ -94,7 +94,7 @@ export default function Hero() {
               <br />
               <span className="text-text-primary">uusi lukutaito.</span>
               <br />
-              <span className="text-gradient-accent">Opetan Suomen lukemaan.</span>
+              <span className="text-gradient-accent">Rakennan sillä joka päivä.</span>
             </h1>
 
             <p className="text-base text-text-secondary mb-3 animate-fade-in-up animation-delay-300">
@@ -102,9 +102,9 @@ export default function Hero() {
             </p>
 
             <p className="text-lg text-text-secondary mb-10 max-w-xl leading-relaxed animate-fade-in-up animation-delay-300">
-              Rakennan AI-järjestelmiä, jotka korvaavat käsityön ja pyörivät oikeilla asiakkailla
-              tuotannossa — multi-tenant SaaS, n8n-automaatiot ja Voice AI. 11 vuotta yrittäjyyttä:
-              puhun sekä bisneksen että koodin kieltä, enkä myy hypeä vaan koneistoja, jotka toimivat.
+              Autan pk- ja kasvuyrityksiä korvaamaan käsityön AI-järjestelmillä, jotka pyörivät
+              oikeilla asiakkailla tuotannossa — multi-tenant SaaS, n8n-automaatiot ja Voice AI.
+              11 vuotta yrittäjyyttä: puhun sekä bisneksen että koodin kieltä.
             </p>
 
             {/* CTA buttons */}
