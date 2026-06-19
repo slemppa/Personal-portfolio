@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Markdown from '../components/Markdown'
+import CTASection from '../components/CTASection'
 import { getPost } from '../lib/posts'
 import { formatDate } from '../lib/format'
 
@@ -41,6 +42,17 @@ export default function BlogPost() {
               )}
             </header>
             <Markdown>{post.content}</Markdown>
+
+            <CTASection
+              source="blog_post"
+              title={
+                <>
+                  Tästä aiheesta <span className="text-gradient-accent">käytäntöön?</span>
+                </>
+              }
+              description="Jos haluat saman ratkaisun omaan liiketoimintaasi, kerro tilanteesta — vastaan itse."
+              secondary={{ label: 'Lue lisää kirjoituksia', to: '/blog' }}
+            />
           </article>
         )}
       </main>

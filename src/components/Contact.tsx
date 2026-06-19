@@ -1,4 +1,4 @@
-import { Mail, Linkedin, Youtube, Github, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { Mail, Linkedin, Youtube, Github, ArrowRight, ArrowUpRight, MessageCircle } from 'lucide-react'
 import { usePostHog } from '@posthog/react'
 import Reveal from './Reveal'
 
@@ -52,17 +52,30 @@ export default function Contact() {
               Kerro projektistasi ja katsotaan miten AI-automaatiot voivat säästää aikaasi ja tehostaa liiketoimintaasi.
             </p>
 
-            <div className="mt-9 flex justify-center">
+            <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href="mailto:sami@rascalai.fi"
                 onClick={() => posthog?.capture('contact_email_clicked')}
-                className="group inline-flex items-center gap-3 px-6 py-3.5 bg-text-primary text-bg-primary font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                className="group inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-text-primary text-bg-primary font-semibold rounded-xl hover:opacity-90 transition-opacity"
               >
                 <Mail className="w-5 h-5" />
                 sami@rascalai.fi
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
+              <a
+                href="https://linkedin.com/in/samikiias"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => posthog?.capture('contact_linkedin_clicked')}
+                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-bg-tertiary border border-border text-text-primary font-semibold rounded-xl hover:border-border-hover transition-colors"
+              >
+                <MessageCircle className="w-5 h-5 text-accent" />
+                Viesti LinkedInissä
+              </a>
             </div>
+            <p className="relative mt-4 text-[13px] text-text-muted">
+              Vastaan yleensä saman päivän aikana.
+            </p>
           </div>
         </div>
       </div>
