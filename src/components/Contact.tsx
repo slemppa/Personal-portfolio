@@ -47,12 +47,13 @@ export default function Contact() {
           <div className="relative">
             <span className="eyebrow text-accent">Ota yhteyttä</span>
             <h2 className="mt-4 text-3xl md:text-[2.75rem] md:leading-[1.08] font-semibold tracking-tight">
-              <span className="text-text-primary">Rakennetaan jotain </span>
-              <span className="text-gradient-accent">merkittävää</span>
+              <span className="text-text-primary">Opitaan automaatio </span>
+              <span className="text-gradient-accent">yhdessä</span>
             </h2>
 
             <p className="mt-4 text-text-secondary text-lg max-w-xl mx-auto leading-relaxed">
-              Kerro projektistasi ja katsotaan miten AI-automaatiot voivat säästää aikaasi ja tehostaa liiketoimintaasi.
+              Olipa kyse koneistosta, joka pyörittää yritystäsi, tai siitä mistä lähteä liikkeelle —
+              kerro tilanteestasi, niin katsotaan mitä automaatio voi sinulle tehdä.
             </p>
 
             <div className="mt-9 flex flex-col sm:flex-row gap-3 justify-center">

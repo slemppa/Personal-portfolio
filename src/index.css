@@ -69,6 +69,24 @@ h1, h2, h3, h4 {
   color: transparent;
 }
 
+/* Display type — oversized, tight, optically tracked. The manifesto voice.
+   Fluid from phone to desktop so the statement always fills the line. */
+.display {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+.display-xl { font-size: clamp(2.75rem, 8vw, 6.5rem); }
+.display-lg { font-size: clamp(2.25rem, 6vw, 4.5rem); }
+
+/* Outlined display word — hollow letters, used to make a key term recede
+   while the filled word punches forward. Falls back to muted if unsupported. */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-text-muted);
+}
+
 /* Eyebrow label: mono, uppercase, quiet — used above every section title */
 .eyebrow {
   font-family: var(--font-mono);
@@ -157,6 +175,22 @@ h1, h2, h3, h4 {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Marquee — the manifesto belt. Two identical tracks scroll as one loop;
+   translating by -50% lands seamlessly because the content is duplicated. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
@@ -190,6 +224,7 @@ h1, h2, h3, h4 {
     opacity: 1;
     transform: none;
   }
+  .marquee { animation: none; }
 }
 
 /* ── Scrollbar ───────────────────────────────────────────────── */

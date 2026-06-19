@@ -1,5 +1,6 @@
 import Nav from '../components/Nav'
 import Hero from '../components/Hero'
+import Manifesto from '../components/Manifesto'
 import Cases from '../components/Cases'
 import TechStack from '../components/TechStack'
 import YouTube from '../components/YouTube'
@@ -13,6 +14,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <Manifesto />
         <Cases />
         <TechStack />
         <YouTube />
