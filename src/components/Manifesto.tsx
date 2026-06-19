@@ -5,8 +5,8 @@ import Reveal from './Reveal'
 // The repeated slogans on the scrolling belt. Short, punchy, brand-defining.
 const belt = [
   'Automaatio on uusi lukutaito',
-  'Tylsät työt kuuluvat koneille',
-  'Rakennettu > ostettu',
+  'Toiston hoitaa kone',
+  'Rakennettu, ei ostettu',
   'Tuotantoa, ei demoja',
   'Jos teet sen kahdesti, automatisoi se',
   'Koodi on 2020-luvun kynä'
@@ -17,33 +17,33 @@ const belt = [
 const theses: { n: string; lead: string; rest: string }[] = [
   {
     n: '01',
-    lead: 'Automaatio ei ole IT-projekti.',
-    rest: 'Se on uusi lukutaito. Kuka sen oppii, kirjoittaa oman aikansa uusiksi — kuka ei, jää lukemaan muiden tekstiä.'
+    lead: 'Automaatio ei ole IT-projekti,',
+    rest: 'vaan tapa ajatella työtä: mitä koneen kannattaa hoitaa ja mitä ihmisen. Useimmiten se raja on eri kohdassa kuin aluksi luulee.'
   },
   {
     n: '02',
-    lead: 'Tylsät työt kuuluvat koneille.',
-    rest: 'Ihmiselle jää se mikä on oikeasti arvokasta: ajattelu, suhteet ja rakentaminen. Kone hoitaa toiston.'
+    lead: 'Toistuvat työt kannattaa antaa koneelle.',
+    rest: 'Silloin ihmiselle jää se, missä hän on oikeasti hyvä — ajattelu, suhteet ja ratkaisujen keksiminen. Kone hoitaa toiston paremmin.'
   },
   {
     n: '03',
-    lead: 'AI ei vie työtäsi.',
-    rest: 'Sen vie joku, joka osaa käyttää AI:ta paremmin kuin sinä. Valinta on kumpaa puolta seisot.'
+    lead: 'AI ei ole taikuri.',
+    rest: 'Se on työkalu, ja työkalu on juuri niin hyvä kuin se kuka sitä käyttää. Tulos riippuu siitä, miten huolella se rakennetaan.'
   },
   {
     n: '04',
-    lead: 'Rakennettu voittaa ostetun,',
-    rest: 'kun ymmärrät miten kone toimii. Valmis työkalu sopeuttaa sinut itseensä — oma järjestelmä sopeutuu sinuun.'
+    lead: 'Rakennettu ei aina voita ostettua,',
+    rest: 'mutta kun ymmärtää miten kone toimii, valinta on oma. Valmis työkalu sopeuttaa sinut itseensä — oma järjestelmä taipuu sinun mukaasi.'
   },
   {
     n: '05',
-    lead: 'Demo on helppo. Tuotanto on totuus.',
-    rest: 'Slide deck ei pyöritä yritystä. Arvo syntyy vasta kun järjestelmä toimii oikeilla asiakkailla, joka päivä.'
+    lead: 'Demo on helppo, tuotanto on vaikeaa.',
+    rest: 'Slide deck ei pyöritä yritystä. Arvo syntyy vasta kun järjestelmä toimii oikeilla asiakkailla, päivästä toiseen.'
   },
   {
     n: '06',
-    lead: 'Jos teet sen kahdesti,',
-    rest: 'kone tekee sen kolmannen kerran. Jokainen toistuva klikkaus on automaatio, jota et ole vielä rakentanut.'
+    lead: 'Jos teet saman asian kahdesti,',
+    rest: 'se kannattaa yleensä automatisoida kolmanteen kertaan. Pienistäkin toistoista kertyy yllättävän paljon aikaa.'
   }
 ]
 
@@ -82,16 +82,16 @@ export default function Manifesto() {
       <div className="relative max-w-6xl mx-auto px-6 sm:px-8 py-24 md:py-32">
         {/* The creed */}
         <Reveal>
-          <span className="eyebrow text-accent">Manifesti</span>
+          <span className="eyebrow text-accent">Periaatteet</span>
           <h2 className="display display-xl mt-5 text-text-primary">
             Automaatio on
             <br />
             <span className="text-gradient-accent">uusi lukutaito.</span>
           </h2>
           <p className="mt-8 max-w-2xl text-lg md:text-xl text-text-secondary leading-relaxed">
-            Edellinen sukupolvi oppi lukemaan ja kirjoittamaan. Tämä sukupolvi oppii
-            saamaan koneet tekemään työn puolestaan. En myy automaatiota palveluna —
-            <span className="text-text-primary"> julistan sitä taitona, jonka jokaisen kannattaa oppia.</span>
+            En pidä automaatiota hypenä vaan taitona — osa työtä, niin kuin lukeminen ja
+            kirjoittaminen aikoinaan. Se ei korvaa osaamista, vaan rakentuu sen päälle.
+            <span className="text-text-primary"> Tässä muutama periaate, joiden mukaan rakennan.</span>
           </p>
         </Reveal>
 
