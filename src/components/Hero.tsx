@@ -1,5 +1,7 @@
+import { useEffect, useRef } from 'react'
 import { usePostHog } from '@posthog/react'
 import { ArrowRight } from 'lucide-react'
+import HeroCanvas from './HeroCanvas'
 
 const metrics = [
   { value: '50+', label: 'Tuotantoautomaatiota' },
@@ -11,17 +13,60 @@ const tech = ['n8n', 'Supabase', 'React', 'Voice AI', 'RAG', 'Multi-tenant']
 
 export default function Hero() {
   const posthog = usePostHog()
+  const portraitRef = useRef<HTMLDivElement>(null)
+
+  // Subtle cursor-driven 3D tilt + parallax on the portrait. Pointer-only and
+  // disabled under reduced-motion, so it never fights touch scroll or a11y.
+  useEffect(() => {
+    const el = portraitRef.current
+    if (!el) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!window.matchMedia('(pointer: fine)').matches) return
+
+    let raf = 0
+    let tx = 0
+    let ty = 0
+    let cx = 0
+    let cy = 0
+
+    function onMove(e: PointerEvent) {
+      tx = (e.clientX / window.innerWidth) * 2 - 1
+      ty = (e.clientY / window.innerHeight) * 2 - 1
+      if (!raf) raf = requestAnimationFrame(apply)
+    }
+    function apply() {
+      raf = 0
+      cx += (tx - cx) * 0.08
+      cy += (ty - cy) * 0.08
+      el!.style.transform =
+        `perspective(1200px) rotateY(${(-cx * 5).toFixed(2)}deg) rotateX(${(cy * 4).toFixed(2)}deg) translateX(${(cx * -14).toFixed(1)}px) scale(1.03)`
+      if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) {
+        raf = requestAnimationFrame(apply)
+      }
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
 
   return (
     <section className="relative overflow-hidden">
       {/* Aurora bloom + dotted grid, layered behind everything */}
       <div className="absolute inset-0 aurora" aria-hidden="true" />
+      {/* Interactive 3D neural-network field — the showpiece on first paint */}
+      <HeroCanvas />
       <div className="absolute inset-0 grid-texture" aria-hidden="true" />
       {/* Fade the texture into the page below */}
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bg-primary" aria-hidden="true" />
 
       {/* Portfolio image — softly masked into the background on the right */}
-      <div className="absolute right-0 top-0 bottom-0 w-[42%] hidden lg:block animate-fade-in-up animation-delay-300">
+      <div
+        ref={portraitRef}
+        className="absolute right-0 top-0 bottom-0 w-[42%] hidden lg:block animate-fade-in-up animation-delay-300 will-change-transform"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-bg-primary via-bg-primary/60 to-transparent z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-bg-primary z-10" />
         <img

@@ -1,6 +1,7 @@
 import { Mail, Linkedin, Youtube, Github, ArrowRight, ArrowUpRight, MessageCircle } from 'lucide-react'
 import { usePostHog } from '@posthog/react'
 import Reveal from './Reveal'
+import { useSpotlight } from '../hooks/useSpotlight'
 
 const links = [
   { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/in/samikiias', description: 'Verkostoidu' },
@@ -31,12 +32,14 @@ const companies = [
 
 export default function Contact() {
   const posthog = usePostHog()
+  const bannerRef = useSpotlight<HTMLDivElement>()
+  const linksRef = useSpotlight<HTMLDivElement>()
 
   return (
     <section id="contact" className="py-24 px-6 sm:px-8 scroll-mt-20">
       {/* CTA Banner */}
-      <div className="max-w-4xl mx-auto mb-20">
-        <div className="relative overflow-hidden rounded-3xl surface-card px-8 py-14 md:px-14 md:py-20 text-center">
+      <div ref={bannerRef} className="max-w-4xl mx-auto mb-20">
+        <div className="spotlight relative overflow-hidden rounded-3xl surface-card px-8 py-14 md:px-14 md:py-20 text-center">
           {/* Aurora wash behind the CTA */}
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-line to-transparent" aria-hidden="true" />
           <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[60%] h-48 aurora blur-2xl opacity-70" aria-hidden="true" />
@@ -81,7 +84,7 @@ export default function Contact() {
       </div>
 
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-10">
+        <div ref={linksRef} className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-10">
           {/* Social links */}
           <div>
             <span className="eyebrow">Seuraa ja verkostoidu</span>
@@ -93,7 +96,7 @@ export default function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => posthog?.capture('social_link_clicked', { platform: link.label })}
-                    className="group flex items-center gap-4 p-4 surface-card rounded-xl hover:border-border-hover transition-colors"
+                    className="spotlight group flex items-center gap-4 p-4 surface-card rounded-xl hover:border-border-hover transition-colors"
                   >
                     <div className="w-9 h-9 rounded-lg bg-bg-tertiary border border-border flex items-center justify-center group-hover:border-accent-line transition-colors">
                       <link.icon className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors" />
@@ -120,7 +123,7 @@ export default function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => posthog?.capture('company_link_clicked', { company_name: company.name })}
-                    className="group block p-5 surface-card rounded-xl hover:border-border-hover transition-colors"
+                    className="spotlight group block p-5 surface-card rounded-xl hover:border-border-hover transition-colors"
                   >
                     <div className="flex items-center gap-2.5 mb-1.5">
                       <h4 className="text-base font-semibold text-text-primary tracking-tight group-hover:text-accent transition-colors">

@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import CTASection from '../components/CTASection'
+import PageGlow from '../components/PageGlow'
 import { getAllPosts } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { usePostHog } from '@posthog/react'
@@ -12,7 +13,8 @@ export default function BlogList() {
   return (
     <>
       <Nav />
-      <main className="max-w-3xl mx-auto px-6 sm:px-8 pt-36 pb-24 min-h-screen">
+      <PageGlow />
+      <main className="relative z-10 max-w-3xl mx-auto px-6 sm:px-8 pt-36 pb-24 min-h-screen">
         <span className="eyebrow">Blogi</span>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight text-text-primary mb-2">Ajatuksia &amp; muistiinpanoja</h1>
         <p className="text-text-secondary mb-12">Rakentamisesta, AI-järjestelmistä ja yrittäjyydestä.</p>

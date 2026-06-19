@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { usePostHog } from '@posthog/react'
 import SectionHeading from './SectionHeading'
 import Reveal from './Reveal'
+import { useSpotlight } from '../hooks/useSpotlight'
 
 const cases = [
   {
@@ -65,6 +66,7 @@ const cases = [
 
 export default function Cases() {
   const posthog = usePostHog()
+  const gridRef = useSpotlight<HTMLDivElement>()
 
   return (
     <section id="cases" className="py-24 px-6 sm:px-8 max-w-6xl mx-auto scroll-mt-20">
@@ -75,13 +77,13 @@ export default function Cases() {
         description="Todistettuja tuloksia järjestelmistä, jotka pyörivät oikeilla asiakkailla joka päivä."
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
+      <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
         {cases.map((item, i) => (
           <Reveal key={item.title} delay={(i % 2) * 80}>
             <Link
               to={`/projektit/${item.slug}`}
               onClick={() => posthog?.capture('case_study_clicked', { case_slug: item.slug, case_title: item.title, featured: item.featured })}
-              className="group relative flex h-full flex-col surface-card rounded-2xl p-7 transition-all duration-300 hover:border-border-hover hover:-translate-y-0.5"
+              className="spotlight group relative flex h-full flex-col surface-card rounded-2xl p-7 transition-all duration-300 hover:border-border-hover hover:-translate-y-0.5"
             >
               <div className="flex items-start justify-between mb-6">
                 <div className="w-11 h-11 rounded-xl bg-bg-tertiary border border-border flex items-center justify-center group-hover:border-accent-line transition-colors">

@@ -4,6 +4,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Markdown from '../components/Markdown'
 import CTASection from '../components/CTASection'
+import PageGlow from '../components/PageGlow'
 import { getPost } from '../lib/posts'
 import { formatDate } from '../lib/format'
 
@@ -14,7 +15,8 @@ export default function BlogPost() {
   return (
     <>
       <Nav />
-      <main className="max-w-3xl mx-auto px-6 sm:px-8 pt-36 pb-24 min-h-screen">
+      <PageGlow />
+      <main className="relative z-10 max-w-3xl mx-auto px-6 sm:px-8 pt-36 pb-24 min-h-screen">
         <Link to="/blog" className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-text-primary transition-colors">
           <ArrowLeft className="w-4 h-4" /> Takaisin blogiin
         </Link>
