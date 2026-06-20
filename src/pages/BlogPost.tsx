@@ -7,10 +7,16 @@ import CTASection from '../components/CTASection'
 import PageGlow from '../components/PageGlow'
 import { getPost } from '../lib/posts'
 import { formatDate } from '../lib/format'
+import { useDocumentMeta } from '../hooks/useDocumentMeta'
 
 export default function BlogPost() {
   const { slug } = useParams()
   const post = slug ? getPost(slug) : undefined
+  useDocumentMeta({
+    title: post ? `${post.title} | Sami Kiias` : 'Postausta ei löytynyt | Sami Kiias',
+    description: post?.description,
+    path: slug ? `/blog/${slug}` : undefined,
+  })
 
   return (
     <>

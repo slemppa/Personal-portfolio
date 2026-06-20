@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 import PageGlow from '../components/PageGlow'
 import { getCaseStudy } from '../lib/cases'
 import { usePostHog } from '@posthog/react'
+import { useDocumentMeta } from '../hooks/useDocumentMeta'
 
 function isExternal(href: string) {
   return href.startsWith('http')
@@ -14,6 +15,11 @@ export default function CaseStudy() {
   const posthog = usePostHog()
   const { slug } = useParams()
   const study = slug ? getCaseStudy(slug) : undefined
+  useDocumentMeta({
+    title: study ? `${study.title} | Sami Kiias` : 'Projektia ei löytynyt | Sami Kiias',
+    description: study?.summary ?? study?.tagline,
+    path: slug ? `/projektit/${slug}` : undefined,
+  })
 
   if (!study) {
     return (

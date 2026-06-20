@@ -6,10 +6,16 @@ import PageGlow from '../components/PageGlow'
 import { getAllPosts } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { usePostHog } from '@posthog/react'
+import { useDocumentMeta } from '../hooks/useDocumentMeta'
 
 export default function BlogList() {
   const posthog = usePostHog()
   const posts = getAllPosts()
+  useDocumentMeta({
+    title: 'Blogi | Sami Kiias',
+    description: 'Ajatuksia ja muistiinpanoja rakentamisesta, AI-järjestelmistä ja yrittäjyydestä.',
+    path: '/blog',
+  })
   return (
     <>
       <Nav />
