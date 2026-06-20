@@ -1,35 +1,128 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Interactive 3D neural-network field rendered on a single canvas.
+ * Flowing aurora field rendered on a single WebGL canvas.
  *
- * A point cloud lives in real 3D space, slowly auto-rotates around the Y axis,
- * and tilts toward the cursor (parallax). Points are perspective-projected, so
- * nearer nodes are larger and brighter; pairs that sit close together in 3D get
- * a hairline connection whose opacity falls off with both distance and depth —
- * the "synapse" look that fits an AI-systems portfolio.
+ * A full-screen fragment shader domain-warps fractal noise into slow, liquid
+ * ribbons of light in the brand's periwinkle-indigo palette — the animated
+ * "mesh gradient" look (Stripe / Linear / Vercel) rather than the dated
+ * particle-network motif. The field drifts on its own and leans toward the
+ * cursor for a touch of parallax. Colour is emitted with alpha that tracks the
+ * ribbon intensity, so it layers cleanly over the page background.
  *
- * Deliberately dependency-free (no three.js) to keep the bundle tiny and the
- * first paint instant. Pauses when off-screen or the tab is hidden, caps DPR,
- * scales node count to viewport, and fully disables under prefers-reduced-motion.
+ * Deliberately dependency-free (raw WebGL, no three.js) to keep the bundle tiny
+ * and first paint instant. Pauses when off-screen or the tab is hidden, caps
+ * DPR, and fully disables under prefers-reduced-motion (a single static frame).
+ * If WebGL is unavailable the canvas stays transparent and the CSS aurora
+ * behind it carries the look.
  */
-
-type Node = {
-  x: number
-  y: number
-  z: number
-  // Per-node phase so the field breathes instead of moving in lockstep.
-  phase: number
-  size: number
-}
-
-const ACCENT: [number, number, number] = [124, 131, 255]
 
 type HeroCanvasProps = {
   /** Positioning / opacity classes. Defaults to a full-bleed hero layer. */
   className?: string
-  /** Scales node density — lower it for quieter, secondary placements. */
+  /** Scales the ribbon brightness — lower it for quieter, secondary placements. */
   intensity?: number
+}
+
+const VERT = `
+attribute vec2 a_pos;
+void main() {
+  gl_Position = vec4(a_pos, 0.0, 1.0);
+}
+`
+
+const FRAG = `
+precision highp float;
+
+uniform vec2 u_res;
+uniform float u_time;
+uniform vec2 u_ptr;
+uniform float u_intensity;
+
+float hash(vec2 p) {
+  p = fract(p * vec2(127.1, 311.7));
+  p += dot(p, p + 34.56);
+  return fract(p.x * p.y);
+}
+
+float noise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(
+    mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+    mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+    u.y
+  );
+}
+
+const mat2 M = mat2(1.62, 1.18, -1.18, 1.62);
+
+float fbm(vec2 p) {
+  float v = 0.0;
+  float a = 0.5;
+  for (int i = 0; i < 5; i++) {
+    v += a * noise(p);
+    p = M * p;
+    a *= 0.5;
+  }
+  return v;
+}
+
+void main() {
+  // Aspect-correct, centred coordinates.
+  vec2 p = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y;
+  p += u_ptr * 0.05;
+
+  float t = u_time * 0.04;
+
+  // Domain warp the noise twice -> liquid, flowing aurora ribbons.
+  vec2 q = vec2(
+    fbm(p * 1.4 + vec2(0.0, t)),
+    fbm(p * 1.4 + vec2(3.2, -t) + 5.0)
+  );
+  vec2 r = vec2(
+    fbm(p * 1.4 + 1.7 * q + vec2(1.7, 9.2) + 0.10 * t),
+    fbm(p * 1.4 + 1.7 * q + vec2(8.3, 2.8) - 0.08 * t)
+  );
+  float f = fbm(p * 1.4 + 1.9 * r);
+
+  // Shape the noise into mid-tone bands plus brighter highlight cores.
+  float ribbon = smoothstep(0.35, 0.85, f);
+  float glow = smoothstep(0.55, 1.0, f + 0.3 * length(r));
+
+  // Brand palette: deep violet -> accent indigo -> lilac highlight.
+  vec3 violet = vec3(0.33, 0.27, 0.78);
+  vec3 indigo = vec3(0.486, 0.514, 1.0);
+  vec3 lilac = vec3(0.62, 0.65, 1.0);
+
+  vec3 col = mix(violet, indigo, ribbon);
+  col = mix(col, lilac, glow);
+
+  // Concentrate the light toward the upper-centre and fade to nothing at the
+  // edges, so the layer melts seamlessly into the page background.
+  float falloff = smoothstep(1.15, 0.15, length(p - vec2(0.0, -0.25)));
+
+  float a = (ribbon * 0.55 + glow * 0.65) * falloff * u_intensity;
+  a = clamp(a, 0.0, 0.92);
+
+  // Ordered-ish dither to kill banding on the dark gradient.
+  a += (hash(gl_FragCoord.xy + t) - 0.5) * 0.02;
+
+  gl_FragColor = vec4(col, a);
+}
+`
+
+function compile(gl: WebGLRenderingContext, type: number, src: string) {
+  const sh = gl.createShader(type)
+  if (!sh) return null
+  gl.shaderSource(sh, src)
+  gl.compileShader(sh)
+  if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+    gl.deleteShader(sh)
+    return null
+  }
+  return sh
 }
 
 export default function HeroCanvas({
@@ -43,151 +136,95 @@ export default function HeroCanvas({
     if (!canvas) return
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const ctx = canvas.getContext('2d', { alpha: true })
-    if (!ctx) return
+
+    const gl =
+      (canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false, antialias: false }) as
+        | WebGLRenderingContext
+        | null) ||
+      (canvas.getContext('experimental-webgl', {
+        alpha: true,
+        premultipliedAlpha: false,
+        antialias: false,
+      }) as WebGLRenderingContext | null)
+
+    // No WebGL — leave the canvas transparent; the CSS aurora behind it shows.
+    if (!gl) return
+
+    const vert = compile(gl, gl.VERTEX_SHADER, VERT)
+    const frag = compile(gl, gl.FRAGMENT_SHADER, FRAG)
+    if (!vert || !frag) return
+
+    const prog = gl.createProgram()
+    if (!prog) return
+    gl.attachShader(prog, vert)
+    gl.attachShader(prog, frag)
+    gl.linkProgram(prog)
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return
+    gl.useProgram(prog)
+
+    // Full-screen quad as a triangle strip.
+    const buf = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW)
+    const aPos = gl.getAttribLocation(prog, 'a_pos')
+    gl.enableVertexAttribArray(aPos)
+    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0)
+
+    const uRes = gl.getUniformLocation(prog, 'u_res')
+    const uTime = gl.getUniformLocation(prog, 'u_time')
+    const uPtr = gl.getUniformLocation(prog, 'u_ptr')
+    const uIntensity = gl.getUniformLocation(prog, 'u_intensity')
+
+    gl.enable(gl.BLEND)
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+    gl.uniform1f(uIntensity, intensity)
 
     let width = 0
     let height = 0
-    let dpr = 1
-
-    // Smoothed pointer-driven rotation targets, in radians.
-    const pointer = { x: 0, y: 0 }
-    const rot = { x: 0, y: 0 }
-    let autoYaw = 0
-
-    let nodes: Node[] = []
-    const FIELD = 460 // half-extent of the cube the cloud occupies
-    const FOCAL = 620 // perspective focal length
-    const LINK_DIST = 168 // max 3D distance for a connection
-
-    function buildNodes() {
-      // Fewer nodes on small screens / low-power devices keep this buttery.
-      const area = width * height
-      const target = Math.round(Math.min(110, Math.max(34, area / 16000)) * intensity)
-      nodes = Array.from({ length: target }, () => ({
-        x: (Math.random() * 2 - 1) * FIELD,
-        y: (Math.random() * 2 - 1) * FIELD * 0.62,
-        z: (Math.random() * 2 - 1) * FIELD,
-        phase: Math.random() * Math.PI * 2,
-        size: 0.6 + Math.random() * 1.4,
-      }))
-    }
 
     function resize() {
       const rect = canvas!.getBoundingClientRect()
       width = rect.width
       height = rect.height
-      dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas!.width = Math.round(width * dpr)
-      canvas!.height = Math.round(height * dpr)
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
-      buildNodes()
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas!.width = Math.max(1, Math.round(width * dpr))
+      canvas!.height = Math.max(1, Math.round(height * dpr))
+      gl!.viewport(0, 0, canvas!.width, canvas!.height)
+      gl!.uniform2f(uRes, canvas!.width, canvas!.height)
     }
 
-    // Reusable projected-point buffer to avoid per-frame allocation.
-    const proj = { x: 0, y: 0, scale: 0, depth: 0 }
-    function project(x: number, y: number, z: number) {
-      const d = FOCAL / (FOCAL + z)
-      proj.x = width / 2 + x * d
-      proj.y = height / 2 + y * d
-      proj.scale = d
-      proj.depth = z
-    }
+    // Smoothed pointer parallax target, normalised to roughly [-1, 1].
+    const ptr = { x: 0, y: 0 }
+    const cur = { x: 0, y: 0 }
 
     let raf = 0
     let running = true
-    let t = 0
+    const start = performance.now()
 
-    function draw() {
-      t += 0.016
-
-      // Ease rotation toward the pointer; keep a slow ambient yaw alive.
-      autoYaw += 0.0016
-      rot.y += (pointer.x * 0.5 + autoYaw - rot.y) * 0.05
-      rot.x += (-pointer.y * 0.32 - rot.x) * 0.05
-
-      const cosY = Math.cos(rot.y)
-      const sinY = Math.sin(rot.y)
-      const cosX = Math.cos(rot.x)
-      const sinX = Math.sin(rot.x)
-
-      ctx!.clearRect(0, 0, width, height)
-
-      // Rotate every node once; cache screen-space results for the link pass.
-      const screen = nodes.map((n) => {
-        const breath = Math.sin(t * 0.6 + n.phase) * 10
-        let x = n.x
-        let y = n.y + breath
-        let z = n.z
-        // Y axis
-        const nx = x * cosY - z * sinY
-        let nz = x * sinY + z * cosY
-        x = nx
-        z = nz
-        // X axis
-        const ny = y * cosX - z * sinX
-        nz = y * sinX + z * cosX
-        y = ny
-        z = nz
-        project(x, y, z)
-        return { sx: proj.x, sy: proj.y, scale: proj.scale, z, size: n.size }
-      })
-
-      // Links first, so nodes glow on top of the web.
-      for (let i = 0; i < screen.length; i++) {
-        const a = screen[i]
-        for (let j = i + 1; j < screen.length; j++) {
-          const b = screen[j]
-          const dx = a.sx - b.sx
-          const dy = a.sy - b.sy
-          const dist = Math.hypot(dx, dy)
-          const maxLink = LINK_DIST * ((a.scale + b.scale) / 2)
-          if (dist > maxLink) continue
-          const depth = (a.scale + b.scale) / 2
-          const fade = (1 - dist / maxLink) * depth
-          if (fade < 0.02) continue
-          ctx!.strokeStyle = `rgba(${ACCENT[0]}, ${ACCENT[1]}, ${ACCENT[2]}, ${(fade * 0.5).toFixed(3)})`
-          ctx!.lineWidth = Math.max(0.4, fade * 1.1)
-          ctx!.beginPath()
-          ctx!.moveTo(a.sx, a.sy)
-          ctx!.lineTo(b.sx, b.sy)
-          ctx!.stroke()
-        }
-      }
-
-      // Nodes, painted back-to-front so closer ones sit above.
-      screen
-        .slice()
-        .sort((p, q) => q.z - p.z)
-        .forEach((p) => {
-          const r = p.size * p.scale * 1.7
-          const alpha = Math.min(1, 0.25 + p.scale * 0.7)
-          // Soft accent halo.
-          const grad = ctx!.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, r * 4)
-          grad.addColorStop(0, `rgba(${ACCENT[0]}, ${ACCENT[1]}, ${ACCENT[2]}, ${(alpha * 0.5).toFixed(3)})`)
-          grad.addColorStop(1, 'rgba(124, 131, 255, 0)')
-          ctx!.fillStyle = grad
-          ctx!.beginPath()
-          ctx!.arc(p.sx, p.sy, r * 4, 0, Math.PI * 2)
-          ctx!.fill()
-          // Bright core.
-          ctx!.fillStyle = `rgba(220, 224, 255, ${alpha.toFixed(3)})`
-          ctx!.beginPath()
-          ctx!.arc(p.sx, p.sy, r, 0, Math.PI * 2)
-          ctx!.fill()
-        })
+    function draw(now: number) {
+      cur.x += (ptr.x - cur.x) * 0.04
+      cur.y += (ptr.y - cur.y) * 0.04
+      gl!.uniform1f(uTime, (now - start) / 1000)
+      gl!.uniform2f(uPtr, cur.x, cur.y)
+      gl!.clear(gl!.COLOR_BUFFER_BIT)
+      gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4)
     }
 
-    function frame() {
+    function frame(now: number) {
       if (!running) return
       raf = requestAnimationFrame(frame)
-      draw()
+      draw(now)
     }
 
     function onPointerMove(e: PointerEvent) {
-      // Normalise to roughly [-1, 1] around the viewport centre.
-      pointer.x = (e.clientX / window.innerWidth) * 2 - 1
-      pointer.y = (e.clientY / window.innerHeight) * 2 - 1
+      ptr.x = (e.clientX / window.innerWidth) * 2 - 1
+      ptr.y = (e.clientY / window.innerHeight) * 2 - 1
+    }
+
+    function onContextLost(e: Event) {
+      e.preventDefault()
+      running = false
+      cancelAnimationFrame(raf)
     }
 
     // Only animate while the hero is actually on screen.
@@ -196,7 +233,7 @@ export default function HeroCanvas({
         if (entry.isIntersecting && !document.hidden) {
           if (!running) {
             running = true
-            frame()
+            raf = requestAnimationFrame(frame)
           }
         } else {
           running = false
@@ -211,24 +248,28 @@ export default function HeroCanvas({
       if (document.hidden) {
         running = false
         cancelAnimationFrame(raf)
-      } else {
+      } else if (!running) {
         running = true
-        frame()
+        raf = requestAnimationFrame(frame)
       }
     }
 
     resize()
+    canvas.addEventListener('webglcontextlost', onContextLost, false)
 
     if (reduceMotion) {
-      // Paint a single static frame — no loop, no pointer/visibility listeners.
-      draw()
-      return () => io.disconnect()
+      // Paint a single static frame — no loop, no listeners.
+      draw(start)
+      return () => {
+        io.disconnect()
+        canvas.removeEventListener('webglcontextlost', onContextLost)
+      }
     }
 
     window.addEventListener('resize', resize)
     window.addEventListener('pointermove', onPointerMove, { passive: true })
     document.addEventListener('visibilitychange', onVisibility)
-    frame()
+    raf = requestAnimationFrame(frame)
 
     return () => {
       running = false
@@ -237,6 +278,7 @@ export default function HeroCanvas({
       window.removeEventListener('resize', resize)
       window.removeEventListener('pointermove', onPointerMove)
       document.removeEventListener('visibilitychange', onVisibility)
+      canvas.removeEventListener('webglcontextlost', onContextLost)
     }
   }, [intensity])
 
