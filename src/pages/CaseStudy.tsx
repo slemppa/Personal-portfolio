@@ -2,7 +2,6 @@ import { Link, useParams } from 'react-router'
 import { ArrowLeft, ArrowRight, ExternalLink, ImageIcon } from 'lucide-react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
-import PageGlow from '../components/PageGlow'
 import { getCaseStudy } from '../lib/cases'
 import { usePostHog } from '@posthog/react'
 
@@ -34,8 +33,7 @@ export default function CaseStudy() {
   return (
     <>
       <Nav />
-      <PageGlow />
-      <main className="relative z-10 pt-32 pb-24 min-h-screen">
+      <main className="pt-32 pb-24 min-h-screen">
         {/* Hero */}
         <header className="max-w-4xl mx-auto px-8">
           <Link to="/#cases" className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
@@ -187,7 +185,7 @@ export default function CaseStudy() {
 
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-8 mt-24">
-          <div className="surface-card rounded-2xl p-8 md:p-10 text-center">
+          <div className="rounded-2xl border border-border bg-bg-secondary p-8 text-center">
             <h2 className="text-2xl font-semibold text-text-primary mb-3">Rakennetaanko sinulle vastaava?</h2>
             <p className="text-text-secondary mb-6 max-w-lg mx-auto">
               Kerro projektistasi — katsotaan miten sama koneisto-ajattelu ratkaisee sinun ongelmasi.
@@ -196,9 +194,9 @@ export default function CaseStudy() {
               <a
                 href="mailto:sami@rascalai.fi"
                 onClick={() => posthog?.capture('case_study_contact_clicked', { case_slug: slug })}
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-text-primary text-bg-primary font-semibold rounded-xl hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-colors"
               >
-                Ota yhteyttä <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                Ota yhteyttä <ArrowRight className="w-4 h-4" />
               </a>
               <Link
                 to="/#cases"

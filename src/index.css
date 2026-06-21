@@ -2,238 +2,153 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  /* Surfaces — near-black with a faint cool cast, layered like Linear */
-  --color-bg-primary: #08090a;
-  --color-bg-secondary: #0c0d0f;
-  --color-bg-tertiary: #131417;
-  --color-bg-elevated: #16181c;
+  --color-bg-primary: #0a0a0b;
+  --color-bg-secondary: #121214;
+  --color-bg-tertiary: #1a1a1d;
+  --color-text-primary: #f5f5f7;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #71717a;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #60a5fa;
+  --color-accent-soft: rgba(59, 130, 246, 0.1);
+  --color-border: #232327;
+  --color-border-hover: #34343a;
+}
 
-  /* Text — high-contrast white stepping down to quiet greys */
-  --color-text-primary: #f5f6f7;
-  --color-text-secondary: #9ea2ab;
-  --color-text-muted: #6a6e76;
-
-  /* Accent — refined periwinkle indigo */
-  --color-accent: #7c83ff;
-  --color-accent-hover: #9aa0ff;
-  --color-accent-soft: rgba(124, 131, 255, 0.12);
-  --color-accent-line: rgba(124, 131, 255, 0.32);
-
-  /* Hairline borders — alpha white reads cleaner than a fixed grey */
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.16);
-
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
+* {
+  box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 90px;
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: var(--color-bg-primary);
+  margin: 0;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #0a0b0d;
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Refined Inter: contextual alternates + tabular-friendly tuning */
-  font-feature-settings: 'cv11', 'ss01', 'cv02', 'cv03', 'cv04';
-  font-variant-ligatures: contextual;
-}
-
-/* Headings inherit tight, optical tracking — the Linear signature */
-h1, h2, h3, h4 {
-  letter-spacing: -0.022em;
-  text-wrap: balance;
 }
 
 ::selection {
-  background: var(--color-accent-soft);
-  color: var(--color-text-primary);
+  background: #f2f3f4;
+  color: #0a0b0d;
 }
 
-/* Focus ring — visible, on-brand, never the default browser blue */
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: 4px;
+/* Design keyframes ported from the "Sami Kiias" export. */
+@keyframes gridDrift { from { background-position: 0 0; } to { background-position: 0 56px; } }
+@keyframes scanSweep { 0% { transform: translateY(-20vh); opacity: 0; } 10% { opacity: .5; } 90% { opacity: .5; } 100% { transform: translateY(120vh); opacity: 0; } }
+@keyframes blink { 0%, 48% { opacity: 1; } 49%, 100% { opacity: 0; } }
+@keyframes ping { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(2.6); opacity: 0; } }
+@keyframes glowPulse { 0%, 100% { opacity: .35; } 50% { opacity: .7; } }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes revealIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ── Tokens reused across components ─────────────────────────── */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
 
+.animation-delay-100 { animation-delay: 0.1s; }
+.animation-delay-200 { animation-delay: 0.2s; }
+.animation-delay-300 { animation-delay: 0.3s; }
+.animation-delay-400 { animation-delay: 0.4s; }
+.animation-delay-500 { animation-delay: 0.5s; }
+
+/* Subtle glow effect for accent elements */
+.glow-accent {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Single-hue accent gradient for restrained headline emphasis.
+   Replaces the previous accent → purple → emerald rainbow. */
 .text-gradient-accent {
-  background-image: linear-gradient(120deg, var(--color-text-primary), var(--color-accent-hover));
+  background-image: linear-gradient(120deg, var(--color-accent), var(--color-accent-hover));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Display type — oversized, tight, optically tracked. The manifesto voice.
-   Fluid from phone to desktop so the statement always fills the line. */
-.display {
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 0.98;
-  text-wrap: balance;
-}
-.display-xl { font-size: clamp(2.75rem, 8vw, 6.5rem); }
-.display-lg { font-size: clamp(2.25rem, 6vw, 4.5rem); }
-
-/* Outlined display word — hollow letters, used to make a key term recede
-   while the filled word punches forward. Falls back to muted if unsupported. */
-.text-outline {
-  color: transparent;
-  -webkit-text-stroke: 1px var(--color-text-muted);
-}
-
-/* Eyebrow label: mono, uppercase, quiet — used above every section title */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-/* Hairline section divider */
+/* Hairline section divider used between major blocks */
 .section-rule {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--color-border), transparent);
 }
 
-/* Aurora: a single soft accent bloom, sits behind the hero */
-.aurora {
-  background:
-    radial-gradient(60% 50% at 50% 0%, rgba(124, 131, 255, 0.16), transparent 70%),
-    radial-gradient(40% 40% at 85% 10%, rgba(124, 131, 255, 0.08), transparent 70%);
+/* Gradient text animation */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
-/* Fine dotted grid — barely-there texture, not a loud overlay */
-.grid-texture {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: radial-gradient(70% 60% at 50% 30%, #000 30%, transparent 100%);
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
 }
 
-/* Film grain — kills banding on the dark gradients, adds a tactile finish */
-.grain::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* Card with a subtle top-edge highlight — that glassy, lit-from-above look */
-.surface-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 40%), var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-}
-
-/* Cursor spotlight — a soft accent glow that tracks the pointer across a card.
-   Sits above the card's own surface but below its content (the ::before child).
-   Position is driven by --mx/--my, set by the useSpotlight hook. */
-.spotlight { position: relative; }
-.spotlight::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  background: radial-gradient(
-    340px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(124, 131, 255, 0.14),
-    transparent 60%
-  );
-}
-.spotlight:hover::before { opacity: 1; }
-
-@media (prefers-reduced-motion: reduce) {
-  .spotlight::before { display: none; }
-}
-
-/* Keyboard-style chip, like Notion/Linear inline hints */
-.kbd {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  padding: 0.1rem 0.4rem;
-  border-radius: 5px;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-tertiary);
-  color: var(--color-text-secondary);
-}
-
-/* ── Motion ──────────────────────────────────────────────────── */
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Marquee — the manifesto belt. Two identical tracks scroll as one loop;
-   translating by -50% lands seamlessly because the content is duplicated. */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 38s linear infinite;
-}
-.marquee-mask {
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  opacity: 0;
-}
-
-.animation-delay-100 { animation-delay: 0.06s; }
-.animation-delay-200 { animation-delay: 0.12s; }
-.animation-delay-300 { animation-delay: 0.2s; }
-.animation-delay-400 { animation-delay: 0.3s; }
-.animation-delay-500 { animation-delay: 0.42s; }
-
-/* Scroll reveal — staggered, applied via the Reveal component */
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .animate-fade-in-up,
-  .reveal {
-    animation: none;
-    transition: none;
-    opacity: 1;
-    transform: none;
+/* Scale up animation for cards */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  .marquee { animation: none; }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-/* ── Scrollbar ───────────────────────────────────────────────── */
+.animate-scale-in {
+  animation: scaleIn 0.5s ease forwards;
+  opacity: 0;
+}
 
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0b0d;
+}
+
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 999px;
-  border: 2px solid var(--color-bg-primary);
+  background: #26292e;
+  border-radius: 6px;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--color-border-hover); }
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-hover);
+}
+
+/* Build in Public live section: stack the two columns on narrow screens. */
+@media (max-width: 860px) {
+  .bip-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

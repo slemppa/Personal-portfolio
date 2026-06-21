@@ -1,9 +1,10 @@
 ---
-  title: "Sisältömarkkinointi + AI: ensimmäinen viikko pk-yritykselle"
-  date: 2026-06-08
-  description: "Sisältömarkkinointi pk-yritykselle: realistinen 1. AI-viikko, promptit, mittarit, ROI ja sudenkuopat. Ota malli käyttöön tänään."
-  tags: [sisältömarkkinointi]
-  draft: true
+title: "Sisältömarkkinointi + AI: ensimmäinen viikko pk-yritykselle"
+date: 2026-06-08
+description: "Sisältömarkkinointi pk-yritykselle: realistinen 1. AI-viikko, promptit, mittarit, ROI ja sudenkuopat. Ota malli käyttöön tänään."
+tags:
+  - sisältömarkkinointi
+draft: false
 ---
 # Sisältömarkkinointi + AI: ensimmäinen viikko pk-yritykselle
 

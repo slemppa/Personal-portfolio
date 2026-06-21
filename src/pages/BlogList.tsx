@@ -1,8 +1,6 @@
 import { Link } from 'react-router'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
-import CTASection from '../components/CTASection'
-import PageGlow from '../components/PageGlow'
 import { getAllPosts } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { usePostHog } from '@posthog/react'
@@ -13,36 +11,34 @@ export default function BlogList() {
   return (
     <>
       <Nav />
-      <PageGlow />
-      <main className="relative z-10 max-w-3xl mx-auto px-6 sm:px-8 pt-36 pb-24 min-h-screen">
-        <span className="eyebrow">Blogi</span>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight text-text-primary mb-2">Ajatuksia &amp; muistiinpanoja</h1>
-        <p className="text-text-secondary mb-12">Rakentamisesta, AI-järjestelmistä ja yrittäjyydestä.</p>
+      <main className="max-w-3xl mx-auto px-8 pt-32 pb-24 min-h-screen">
+        <h1 className="text-4xl font-bold text-text-primary mb-2">Blogi</h1>
+        <p className="text-text-secondary mb-12">Ajatuksia ja muistiinpanoja.</p>
         {posts.length === 0 ? (
           <p className="text-text-muted">Ei vielä postauksia.</p>
         ) : (
-          <ul className="flex flex-col gap-4">
+          <ul className="flex flex-col gap-8">
             {posts.map((post) => (
               <li key={post.slug}>
                 <Link
                   to={`/blog/${post.slug}`}
                   onClick={() => posthog?.capture('blog_post_clicked', { post_slug: post.slug, post_title: post.title })}
-                  className="group block rounded-2xl surface-card p-6 transition-all hover:border-border-hover hover:-translate-y-0.5"
+                  className="group block rounded-2xl border border-border hover:border-border-hover bg-bg-secondary p-6 transition-colors"
                 >
                   {post.cover && (
-                    <img src={post.cover} alt="" className="mb-5 aspect-video w-full rounded-xl object-cover" />
+                    <img src={post.cover} alt="" className="mb-4 aspect-video w-full rounded-xl object-cover" />
                   )}
-                  <time className="eyebrow">
+                  <time className="text-xs uppercase tracking-wide text-text-muted">
                     {formatDate(post.date)}
                   </time>
-                  <h2 className="mt-2 text-xl font-semibold tracking-tight text-text-primary group-hover:text-accent transition-colors">
+                  <h2 className="mt-1 text-xl font-semibold text-text-primary group-hover:text-accent transition-colors">
                     {post.title}
                   </h2>
-                  {post.description && <p className="mt-2 text-text-secondary leading-relaxed">{post.description}</p>}
+                  {post.description && <p className="mt-2 text-text-secondary">{post.description}</p>}
                   {post.tags.length > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-1.5">
+                    <div className="mt-4 flex flex-wrap gap-2">
                       {post.tags.map((tag) => (
-                        <span key={tag} className="rounded-md border border-border bg-bg-tertiary/60 px-2.5 py-1 text-[11px] font-medium text-text-secondary">
+                        <span key={tag} className="rounded-full bg-bg-tertiary px-3 py-1 text-xs text-text-secondary">
                           {tag}
                         </span>
                       ))}
@@ -53,17 +49,6 @@ export default function BlogList() {
             ))}
           </ul>
         )}
-
-        <CTASection
-          source="blog_list"
-          title={
-            <>
-              Mietitkö, mikä näistä toimisi <span className="text-gradient-accent">teillä?</span>
-            </>
-          }
-          description="Lukemisesta tekoihin: kerro lyhyesti tilanteesta, niin katsotaan mikä kannattaisi automatisoida ensin."
-          secondary={{ label: 'Katso projektit', to: '/#cases' }}
-        />
       </main>
       <Footer />
     </>
