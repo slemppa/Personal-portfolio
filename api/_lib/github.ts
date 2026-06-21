@@ -1,4 +1,4 @@
-import type { GithubActivity, RecentCommit } from './types'
+import type { GithubActivity, RecentCommit } from './types.js'
 
 const UA = 'samikiias-site/1.0 (+https://github.com/slemppa)'
 

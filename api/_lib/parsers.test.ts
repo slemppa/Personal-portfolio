@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { parseVideosPage } from './youtube'
-import { shapeContributionCalendar, shapeEvents } from './github'
+import { parseVideosPage } from './youtube.js'
+import { shapeContributionCalendar, shapeEvents } from './github.js'
 
 describe('parseVideosPage', () => {
   // Minimal shape mirroring the lockupViewModel entries on a /videos tab page.
