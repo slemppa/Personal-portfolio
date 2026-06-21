@@ -1,4 +1,4 @@
-import type { Video } from './types'
+import type { Video } from './types.js'
 
 // A browser-like User-Agent + consent cookie avoids YouTube's EU cookie
 // interstitial, which otherwise returns a page without the data we need.

@@ -1,6 +1,6 @@
-import type { Activity } from './types'
-import { fetchLatestVideos } from './youtube'
-import { fetchGithubActivity } from './github'
+import type { Activity } from './types.js'
+import { fetchLatestVideos } from './youtube.js'
+import { fetchGithubActivity } from './github.js'
 
 export type ActivityEnv = {
   GITHUB_TOKEN?: string

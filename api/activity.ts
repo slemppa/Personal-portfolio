@@ -1,4 +1,4 @@
-import { buildActivity } from './_lib/activity'
+import { buildActivity } from './_lib/activity.js'
 
 // Vercel serverless function: GET /api/activity
 // Returns the live build-in-public payload, CDN-cached ~15 min.
