@@ -183,6 +183,24 @@ body {
     border-bottom: 1px solid rgba(255,255,255,.07) !important;
   }
 
+  /* Hero: drop the forced full-viewport height (which centred a stacked
+     column and left a huge empty void) and trim its heavy padding. */
+  #top {
+    min-height: auto !important;
+    padding-top: 96px !important;
+    padding-bottom: 44px !important;
+    align-items: flex-start !important;
+  }
+
+  /* Tighten the very generous section rhythm so the page isn't mostly dead
+     space once everything is one column. Targets the shared inline padding
+     clamps; padding-top/bottom override the shorthand regardless. */
+  [style*="clamp(90px,12vh,150px)"],
+  [style*="clamp(70px,9vh,110px)"] {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+
   /* Drop the manifesto's sticky intro so it doesn't hover over the list. */
   [style*="position:sticky;top:120px"] {
     position: static !important;
