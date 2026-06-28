@@ -146,9 +146,110 @@ body {
   background: var(--color-border-hover);
 }
 
-/* Build in Public live section: stack the two columns on narrow screens. */
+/* ==========================================================================
+   Responsive / mobile
+   The homepage is a faithful port of a design export built entirely with
+   inline styles, so its multi-column layouts can't carry media queries of
+   their own. We reach them here via attribute selectors on their (static)
+   inline style strings and collapse them on tablet/phone widths.
+   ========================================================================== */
+
+/* Build in Public live section + the homepage's two-column inline grids:
+   stack into a single column on narrow screens. */
 @media (max-width: 860px) {
-  .bip-grid {
+  .bip-grid,
+  [style*="grid-template-columns:1.15fr .85fr"],
+  [style*="grid-template-columns:1.1fr .9fr"],
+  [style*="grid-template-columns:1.4fr 1fr"],
+  [style*="grid-template-columns:1.5fr 1fr"],
+  [style*="grid-template-columns:1fr 1fr"] {
     grid-template-columns: 1fr !important;
+  }
+
+  /* Story timeline: 4 columns → 2 on tablets. */
+  [style*="grid-template-columns:repeat(4,1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Vertical column dividers turn into horizontal ones once stacked. */
+  [style*="border-left:1px solid rgba(255,255,255,.09)"] {
+    border-left: none !important;
+    border-top: 1px solid rgba(255,255,255,.09) !important;
+    padding-left: 0 !important;
+    padding-top: 22px !important;
+  }
+  [style*="border-right:1px solid rgba(255,255,255,.07)"] {
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255,255,255,.07) !important;
+  }
+
+  /* Drop the manifesto's sticky intro so it doesn't hover over the list. */
+  [style*="position:sticky;top:120px"] {
+    position: static !important;
+  }
+}
+
+/* Story timeline collapses fully on phones. */
+@media (max-width: 520px) {
+  [style*="grid-template-columns:repeat(4,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ---- Mobile navigation -------------------------------------------------- */
+@media (max-width: 768px) {
+  #nav-toggle {
+    display: flex !important;
+  }
+
+  /* Collapse the link row into a dropdown sheet anchored under the bar. */
+  #nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+    padding: 14px clamp(20px, 5vw, 56px) 22px !important;
+    background: rgba(10, 11, 13, .97);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+    transform: translateY(-10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  #nav.open #nav-links {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  /* Every link (including the otherwise-hidden Manifesti) shows in the sheet. */
+  #nav-links a {
+    display: block !important;
+    padding: 13px 6px !important;
+    font-size: 14px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .05);
+  }
+  /* The CTA keeps its filled-button styling, full width at the foot. */
+  #nav-links a:last-child {
+    text-align: center;
+    margin-top: 10px;
+    border-bottom: none;
+    padding: 14px 16px !important;
+  }
+
+  /* Hamburger → X animation. */
+  #nav.open #nav-toggle span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  #nav.open #nav-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+  #nav.open #nav-toggle span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
   }
 }

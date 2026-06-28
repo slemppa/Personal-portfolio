@@ -34,6 +34,27 @@ export default function Nav() {
       disposers.push(() => logo.removeEventListener('click', onLogo))
     }
 
+    // Mobile menu: toggle the `open` class on the nav, and close it whenever a
+    // link inside the sheet is tapped (anchor jump or route change).
+    const toggle = root.querySelector<HTMLButtonElement>('#nav-toggle')
+    const links = root.querySelector<HTMLElement>('#nav-links')
+    if (nav && toggle) {
+      const setOpen = (open: boolean) => {
+        nav.classList.toggle('open', open)
+        toggle.setAttribute('aria-expanded', String(open))
+      }
+      const onToggle = () => setOpen(!nav.classList.contains('open'))
+      toggle.addEventListener('click', onToggle)
+      disposers.push(() => toggle.removeEventListener('click', onToggle))
+
+      if (links) {
+        const linkEls = Array.from(links.querySelectorAll<HTMLAnchorElement>('a'))
+        const close = () => setOpen(false)
+        linkEls.forEach((a) => a.addEventListener('click', close))
+        disposers.push(() => linkEls.forEach((a) => a.removeEventListener('click', close)))
+      }
+    }
+
     return () => disposers.forEach((d) => d())
   }, [html, isHome, navigate])
 
