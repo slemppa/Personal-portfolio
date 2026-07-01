@@ -2,8 +2,13 @@
   title: "Mallidependenssin riskit: opit Sonnet 5:stä ja Fable 5:stä"
   date: 2026-07-01
   description: "Sonnet 5 tuo agenttitehon Sonnet-hintaan. Fable 5 katosi 2 viikoksi vientirajoitusten takia. Näin varaudut mallidependenssin riskeihin."
-  tags: []
-  draft: true
+  tags:
+    - mallidependenssi
+    - anthropic
+    - tekoäly
+    - ai-agentit
+    - riskienhallinta
+  draft: false
 ---
 # Mallidependenssin riskit: mitä Sonnet 5 ja Fable 5 opettavat AI-mallien rakentajille
 
