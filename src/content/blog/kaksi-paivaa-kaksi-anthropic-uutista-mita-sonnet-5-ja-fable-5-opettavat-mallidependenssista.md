@@ -1,11 +1,16 @@
 ---
-  title: "Kaksi päivää, kaksi Anthropic-uutista: mitä Sonnet 5 ja Fable 5 opettavat mallidependenssistä"
+  title: "Mallidependenssin riskit: opit Sonnet 5:stä ja Fable 5:stä"
   date: 2026-07-01
   description: "Sonnet 5 tuo agenttitehon Sonnet-hintaan. Fable 5 katosi 2 viikoksi vientirajoitusten takia. Näin varaudut mallidependenssin riskeihin."
-  tags: []
-  draft: true
+  tags:
+    - mallidependenssi
+    - anthropic
+    - tekoäly
+    - ai-agentit
+    - riskienhallinta
+  draft: false
 ---
-# Kaksi päivää, kaksi Anthropic-uutista: mitä Sonnet 5 ja Fable 5 opettavat mallidependenssistä
+# Mallidependenssin riskit: mitä Sonnet 5 ja Fable 5 opettavat AI-mallien rakentajille
 
 30. kesäkuuta ja 1. heinäkuuta 2026 Anthropic julkaisi kaksi uutista, jotka näyttävät päällisin puolin täysin erilaisilta. Toinen on lanseeraus: uusi malli, parempi hinta-suorituskykysuhde, agenttiteho josta rakentajat ovat innoissaan. Toinen on selittely: miksi yksi heidän malleistaan katosi käytöstä yli kahdeksi viikoksi ja mitä sen palauttamiseksi tehtiin.
 
