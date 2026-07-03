@@ -1,7 +1,7 @@
 ---
-title: "Mallidependenssin riskit: opit Sonnet 5:stä ja Fable 5:stä"
+title: "Kun malli katoaa yön yli — miksi ajan tuotannossa useaa mallia"
 date: 2026-07-01
-description: "Sonnet 5 toi agenttitehon Sonnet-hintaan, Fable 5 katosi kahdeksi viikoksi vientirajoitusten takia. Kaksi Anthropic-uutista ja se, mitä ne opettavat mallidependenssistä."
+description: "Sonnet 5 halpensi agenttitehon ja Fable 5 katosi kahdeksi viikoksi vientirajoitusten takia. Kaksi Anthropic-uutista kahden päivän sisään, ja se miksi en enää nojaa yhteen malliin."
 tags:
   - mallidependenssi
   - anthropic
@@ -10,84 +10,45 @@ tags:
   - riskienhallinta
 draft: false
 ---
-30. kesäkuuta ja 1. heinäkuuta 2026 Anthropic julkaisi kaksi uutista, jotka näyttävät päällisin puolin täysin erilaisilta. Toinen on lanseeraus: uusi malli, parempi hinta-suorituskykysuhde, agenttiteho josta rakentajat innostuvat. Toinen on selittely: miksi yksi malleista katosi käytöstä yli kahdeksi viikoksi ja mitä sen palauttamiseksi tehtiin.
+Pyöritän sisältö- ja automaatiostackini n8n:n ja Claude Coden päällä, ja ajan tuotannossa useampaa mallia rinnakkain eri tehtäviin. Se on tuntunut ajoittain ylisuunnittelulta. Kesäkuun lopun kahtena päivänä sain aika suoran muistutuksen siitä, miksi teen niin.
 
-Luettuna yhdessä ne kertovat saman tarinan kahdesta suunnasta: mitä tekoälymallit osaavat tänä päivänä, ja miten epävarmaa on se, saatko käyttää niitä huomenna. Jos rakennat mitä tahansa AI-mallien päälle — automaatioputkia, agentteja, sisällöntuotantoa — kumpikin uutinen kannattaa lukea, ei vain se hauskempi.
+30. kesäkuuta Anthropic julkaisi uuden mallin, joka teki agenttitason työstä selvästi halvempaa. Seuraavana aamuna se selitti, miksi yksi sen malleista oli ollut kokonaan poissa käytöstä yli kaksi viikkoa. Kaksi uutista, jotka näyttävät päinvastaisilta — hyvä ja huono — mutta jotka minulle kertoivat saman asian: mitä mallit tänään osaavat, ja miten vähän voit luottaa siihen, että saat käyttää niitä huomenna.
 
-## Osa 1: Claude Sonnet 5 — agenttiteho tuli Sonnet-hintaan
+## Sonnet 5 halpensi sen, mikä oli äsken kallista
 
-Anthropic julkaisi Claude Sonnet 5:n 30.6. Ydinviesti on yksinkertainen mutta merkittävä: mallin agenttimainen suorituskyky on lähellä Opus 4.8:aa, mutta hinnoittelu on murto-osa siitä.
+Sonnet 5:n juttu on yhdellä lauseella tämä: se tekee suunnilleen sitä mitä Opus 4.8, mutta murto-osalla hinnasta.
 
-### Mikä muuttui
+"Sitä mitä Opus" tarkoittaa tässä agenttimaista työtä — mallia, joka suunnittelee, käyttää työkaluja, debuggaa ja vie monivaiheisen homman loppuun asti ilman että sitä paimennetaan joka askeleella. Tähän asti se on ollut Opus-tason juttu. Halvemmat mallit olivat nopeampia, mutta vaativan tehtävän kohdalla ne tyypillisesti pysähtyivät kesken, kysyivät varmistusta tai jättivät oman virheensä huomaamatta.
 
-Viime kuukaudet agenttimainen AI — malli joka suunnittelee, käyttää työkaluja, debuggaa ja vie monivaiheisen tehtävän maaliin ilman jatkuvaa ohjausta — on ollut käytännössä Opus-tason juttu. Jos halusit mallin joka oikeasti hoitaa homman loppuun eikä jää puoliväliin, maksoit siitä. Sonnet-tason mallit olivat nopeampia ja halvempia, mutta vaativia tehtäviä tehdessään ne tyypillisesti pysähtyivät, kysyivät varmistusta tai jättivät virheen huomaamatta.
+Minua vakuutti eniten yksi testaajien kuvaama esimerkki. Malli sai bugiraportin, kirjoitti bugille toistavan testin, korjasi bugin — ja perui korjauksen hetkeksi varmistaakseen, että testi todella menee punaiselle ilman fixiä. Kaikki yhdellä ajolla, ilman että sitä käskettiin tekemään niin. Juuri tuo on agenttiputken heikoin lenkki: ei raaka älykkyys, vaan se luottaako malliin sen verran, että uskaltaa jättää sen tekemään loppuun yksin. Kun malli tarkistaa oman jälkensä, uskallan antaa sille enemmän.
 
-Sonnet 5 kuroo tämän kuilun kiinni. Testaajien kuvausten mukaan malli vie loppuun tehtäviä joissa edellinen sukupolvi pysähtyi, ja tarkistaa oman jälkensä ilman erillistä pyyntöä. Yksi konkreettinen esimerkki: malli sai bugiraportin, kirjoitti sille toistavan testin, korjasi bugin, ja palautti korjauksen väliaikaisesti varmistaakseen että testi todella epäonnistuu ilman fixiä — kaiken tämän yhdellä ajolla, ilman että sitä erikseen käskettiin.
+Hinta ratkaisee, kun tällaista ajaa isolla volyymilla. Lanseeraushinta on 2 ja 10 dollaria per miljoona input- ja output-tokenia elokuun loppuun, sen jälkeen 3 ja 15. Opus 4.8 maksaa 5 ja 25. Käytännössä ne agenttitason ajot, jotka ennen kannatti kustannussyistä varata vain Opukselle, voi nyt ajaa Sonnet-hinnalla ilman että laatu romahtaa. Hinta-suorituskykykäyrä liikkuu koko ajan alaspäin, ja se on hyvä uutinen kaikille jotka rakentavat mallien varaan.
 
-Tämä on olennainen ero. Agenttiputken heikoin lenkki ei useimmiten ole raaka älykkyys — se on se, että malli luovuttaa liian aikaisin, ei huomaa omaa virhettään, tai tarvitsee ihmisen validoimaan välitulokset. Jos malli tarkistaa itsensä luotettavasti, se muuttaa sitä kuinka paljon työtä agentille uskaltaa antaa kokonaan ilman ihmistä väliin.
+Mutta se ei ole koko kuva. Seuraava uutinen muistutti siitä, mitä hintalappu ei kerro.
 
-### Hinnoittelu
+## Fable 5 katosi kolme päivää julkaisunsa jälkeen
 
-Lanseeraushinta on 2 dollaria per miljoona input-tokenia ja 10 dollaria per miljoona output-tokenia, voimassa elokuun loppuun asti. Sen jälkeen hinta nousee tasolle 3 / 15 dollaria. Vertailun vuoksi Opus 4.8 maksaa 5 / 25 dollaria per miljoona tokenia.
+1. heinäkuuta Anthropic kertoi, mitä Fable 5:lle oli tapahtunut. Malli oli julkaistu 9. kesäkuuta, ja se oli ollut poissa käytöstä kaikilta, kaikkialla, yli kaksi viikkoa. Syy ei ollut tekninen vika vaan Yhdysvaltain hallituksen määräämät vientirajoitukset.
 
-Tiimille joka pyörittää koko sisältö- ja automaatiostackinsa esimerkiksi n8n:n ja Claude Coden päällä, tämä ei ole marginaalinen yksityiskohta. Se on suora marginaali- ja nopeuskysymys: samat agenttitason tehtävät, joita aiemmin oli kustannussyistä järkevää ajaa vain Opuksella, voi nyt ajaa Sonnet-hinnalla ilman että laadusta tingitään merkittävästi.
+Taustaksi: Fable 5 ja Mythos 5 jakavat saman pohjamallin. Fable julkaistiin laajaan käyttöön vahvoilla turvarajoilla, Mythos taas kevyemmillä rajoilla vain pienelle joukolle luotettuja Project Glasswing -kumppaneita puolustukselliseen kyberkäyttöön. 12. kesäkuuta, kolme päivää Fablen julkaisun jälkeen, hallitus sovelsi vientirajoituksia molempiin. Taustalla oli Amazonin tutkijoiden raportti: he olivat löytäneet tavan kiertää Fablen turvarajat niin, että malli tunnisti ohjelmistohaavoittuvuuksia, ja yhdessä tapauksessa tuotti koodin, joka näytti miten haavoittuvuutta voisi käyttää. Määräys astui voimaan heti, eikä Anthropicilla ollut tapaa varmistaa käyttäjän kansalaisuutta reaaliajassa. Niinpä pääsy suljettiin kaikilta.
 
-### Mitä tästä jää käteen
+Kiinnostavin osa ei ole itse blokkaus vaan se, mitä Anthropicin oma jälkiselvitys paljasti. Kyse ei ollutkaan ainutlaatuisen vaarallisesta kyvystä. Samat haavoittuvuudet, jotka Fable raportissa tunnisti, löysivät myös selvästi heikommat mallit: Opus 4.8, GPT-5.5, Kimi K2.7. Ja se yksittäinen exploit-demo, joka koko kohun aiheutti, onnistui käytännössä jokaisella testatulla mallilla, mukaan lukien Haiku 4.5, Sonnet 4.6 sekä Opus 4.6 ja 4.7. Kyseessä oli siis melko rutiininomainen, pääosin puolustuksellinen kyberturvatehtävä. Fablen tarkoituksella laaja turvamarginaali vain sattui blokkaamaan sen "varmuuden vuoksi".
 
-Sonnet 5:n julkaisu on hyvä esimerkki siitä, miten AI-mallien hinta-suorituskykykäyrä liikkuu jatkuvasti alaspäin. Kyky joka oli kallista pari kuukautta sitten on nyt halpaa. Tämä on hyvä uutinen kaikille jotka rakentavat AI-riippuvaista tuotetta — mutta se ei ole koko kuva. Seuraavana päivänä Anthropic julkaisi toisen uutisen, joka muistuttaa siitä mitä hinta-suorituskykykäyrä ei kerro: käytettävyyden ennustettavuudesta.
+Se turvamarginaali on tässä olennainen käsite. Anthropicin turvaluokittelija on viritetty laukeamaan myös osaan täysin vaarattomia pyyntöjä, jotta yksikään aidosti haitallinen ei livahda läpi. Fablelle marginaali asetettiin isommaksi kuin koskaan aiemmin — tietoinen vaihtokauppa, jossa hyväksyttiin enemmän vääriä hälytyksiä, jotta muut kyvyt voitiin julkaista laajasti. Ja silti se ei riittänyt hallitukselle.
 
-## Osa 2: Fable 5:n paluu — kun malli katoaa yön yli
+Korjaus oli uusi turvaluokittelija, joka kohdistuu juuri raportoituun tekniikkaan ja blokkaa sen yli 99-prosenttisesti; blokattu pyyntö ohjautuu automaattisesti Opus 4.8:lle. Kauppaministeriön CAISI-tutkijat testasivat toimet ja pitivät niitä poikkeuksellisen vahvoina. Malli palautettiin porrastetusti:
 
-1. heinäkuuta Anthropic julkaisi toisen, huomattavasti vakavamman uutisen: Claude Fable 5, joka julkaistiin 9. kesäkuuta, oli ollut poissa käytöstä kaikilta käyttäjiltä kaikkialla yli kaksi viikkoa — Yhdysvaltain hallituksen määräämien vientirajoitusten takia.
+- **1.7.**: Fable palaa globaalisti, mutta vain Anthropicin omille pinnoille — API, Claude.ai, Claude Code, Cowork.
+- **Ei vielä**: AWS, Google Cloud ja Microsoft Foundry. Pääsy luvataan "niin pian kuin mahdollista", ilman päivämäärää.
+- **1.–7.7.**: Pro-, Max-, Team- ja valituilla Enterprise-tileillä Fable sisältyy tilaukseen, mutta katettuna puoleen viikoittaisesta käyttörajasta.
+- **7.7. jälkeen**: käyttö siirtyy usage-crediteille. Standardi-Enterprisessä ei ole sisältyvää kiintiötä lainkaan.
 
-### Mitä tapahtui
+Sivuvaikutus, jonka Anthropic myöntää itse suoraan: uusi luokittelija blokkaa nyt aiempaa useammin myös ihan tavallisia koodaus- ja debuggaustehtäviä. Vääriä hälytyksiä tulee lisää, ei vähemmän. Samassa yhteydessä Anthropic rakentaa Amazonin, Microsoftin, Googlen ja muiden Glasswing-kumppanien kanssa yhteistä tapaa arvioida jailbreakien vakavuutta — neljä kriteeriä: kuinka paljon pidemmälle ohitus vie kuin olemassa olevat työkalut, moneenko eri hyökkäystehtävään sama temppu toimii, kuinka helppo se on aseistaa, ja kuinka laajasti se on jo tiedossa. Vakavimman luokan tapauksille luvataan välittömät väliaikaissuojat ja 24/7-päivystys. Hyödyllistä alalle, mutta minun kannaltani sivujuonne.
 
-Fable 5 ja Mythos 5 jakavat saman pohjamallin. Fable 5 julkaistiin vahvoilla turvarajoilla laajaan yleiskäyttöön; Mythos 5, jolla on kevyemmät turvarajat, jaettiin vain pienelle joukolle luotettuja Project Glasswing -kumppaneita puolustukselliseen kyberkäyttöön.
+## Mitä nämä kaksi päivää minulle opettivat
 
-12. kesäkuuta — kolme päivää julkaisun jälkeen — Yhdysvaltain hallitus sovelsi vientirajoituksia molempiin malleihin. Taustalla oli Amazonin tutkijoiden raportti: he olivat löytäneet tavan kiertää Fable 5:n turvarajat niin, että malli tunnisti ohjelmistohaavoittuvuuksia, ja yhdessä tapauksessa tuotti koodin joka demonstroi kuinka haavoittuvuutta voisi hyväksikäyttää. Koska määräys tuli voimaan välittömästi eikä Anthropicilla ollut luotettavaa tapaa varmistaa käyttäjän kansalaisuutta reaaliajassa, pääsy molempiin malleihin suljettiin kaikilta.
+Erikseen luettuna toinen on lanseeraus ja toinen kriisiviestintää. Yhdessä ne piirtävät saman kuvan: mallidependenssi ei ole pelkkä hinta- ja laatukysymys. Se on myös geopolitiikkaa, ja se on "turvarajat voivat kiristyä yön yli ilman että kysytään sinulta".
 
-### Se yllättävä yksityiskohta
+Fablen tapaus ei lopulta ollut mallin oma vika sillä tavalla kuin ensimmäinen otsikko antoi ymmärtää. Se oli sääntelypäätös, joka tuli kolme päivää julkaisusta ja osui koko markkinaan yhtä lailla. Jos tuote nojaa yhteen malliin ilman varasuunnitelmaa, se on riippuvainen päätöksistä, joihin sen tekijällä ei ole mitään sananvaltaa. Ja koska turvarajat ovat liikkuva kohde, sama putki, joka toimii tänään, saattaa huomenna blokata täysin harmittoman koodianalyysin, jos se vain sivuaa sanaa "kyberturva".
 
-Tässä on kohta joka jää helposti pintaraapaisun alle mutta on koko tarinan olennaisin osa: Anthropicin oma testaus paljasti, että kyseessä oli rajatapaus turvarajoissa — ei ainutlaatuinen, poikkeuksellisen vaarallinen kyky.
-
-Samat haavoittuvuudet jotka Fable 5 tunnisti raportissa löysivät myös huomattavasti heikommat mallit: Opus 4.8, GPT-5.5, Kimi K2.7. Ja se yksittäinen exploit-demonstraatio joka aiheutti koko kohun onnistui käytännössä jokaisella testatulla mallilla — mukaan lukien Claude Haiku 4.5, Sonnet 4.6, Opus 4.6 ja 4.7. Kyse oli siis rutiininomaisesta, pääosin puolustuksellisesta kyberturva-tehtävästä, jonka Fable 5:n tarkoituksella laaja turvamarginaali blokkasi "varmuuden vuoksi" — ei kyvystä joka olisi ollut vain Fable 5:llä.
-
-Anthropic kutsuu tätä turvamarginaaliksi (*safety margin*): heidän turvaluokittelijansa on tarkoituksella viritetty laukeamaan myös osaan todennäköisesti vaarattomia pyyntöjä, jotta mikään aidosti haitallinen pyyntö ei pääse läpi. Fable 5:lle tämä marginaali asetettiin isommaksi kuin koskaan aiemmin — tietoinen vaihtokauppa, jossa hyväksyttiin enemmän vääriä positiivisia, jotta muut kyvyt voitiin julkaista laajasti turvallisemmin.
-
-### Korjaus ja paluu
-
-Anthropic koulutti uuden turvaluokittelijan joka kohdistuu juuri raportoituun tekniikkaan ja blokkaa sen yli 99 prosentissa tapauksista. Blokattu pyyntö ohjataan automaattisesti Opus 4.8:lle. Yhdysvaltain kauppaministeriön CAISI-tutkijat (Center for AI Standards and Innovation) testasivat uudet ja vanhat turvatoimet ja pitivät niitä poikkeuksellisen vahvoina.
-
-Malli palaa käyttöön porrastetusti:
-
-- **1. heinäkuuta**: Fable 5 palautuu globaalisti — mutta vain Anthropicin omille pinnoille: Claude Platform (API), Claude.ai, Claude Code ja Claude Cowork.
-- **Toistaiseksi ei**: AWS, Google Cloud ja Microsoft Foundry. Näille luvataan pääsy "niin pian kuin mahdollista" — ei tarkkaa päivämäärää.
-- **1.–7. heinäkuuta**: Pro-, Max-, Team- ja valituilla Enterprise-tileillä Fable 5 sisältyy tilaukseen, mutta katettuna 50 prosenttiin viikoittaisesta käyttörajasta.
-- **7. heinäkuuta jälkeen**: käyttö siirtyy usage crediteille. Standardi-Enterprise-tileillä ei ole sisältyvää kiintiötä lainkaan — kaikki kulkee crediteillä, ja jos niitä ei ole otettu käyttöön, malli ei toimi ollenkaan.
-
-Uusi turvaluokittelija tarkoittaa myös sitä, että tavallisia koodaus- ja debuggaustehtäviä blokataan aiempaa useammin virheellisesti. Anthropic myöntää tämän suoraan: väärät positiiviset lisääntyvät, ja he lupaavat hioa rajaa jatkossa.
-
-### Alan yhteinen jailbreak-kehys
-
-Yksi uutisen vähemmän huomiota saanut osa on merkittävä policy-avaus: Anthropic rakentaa yhdessä Amazonin, Microsoftin, Googlen ja muiden Glasswing-kumppanien kanssa yhteistä standardia sille, miten AI-mallin turvarajojen ohituksen ("jailbreak") vakavuutta arvioidaan. Neljä kriteeriä:
-
-1. **Capability gain** — kuinka paljon pidemmälle jailbreak vie kuin olemassa olevat työkalut (mukaan lukien muut, heikommat mallit)?
-2. **Breadth of capability gain** — moneenko eri hyökkäystehtävään sama tekniikka toimii?
-3. **Ease of weaponization** — vaatiiko aseistaminen paljon taitavaa promptausta ja monta yritystä, vai riittääkö yksi tai kaksi kokeilua?
-4. **Discoverability** — vaatiiko tekniikka erikoisosaamista, vai onko se jo laajasti tiedossa?
-
-Vakavimman luokan jailbreakeille (esimerkiksi sellaiset joita aktiivisesti käytetään sähköverkkojen tai pankkijärjestelmien vahingoittamiseen) luvataan välittömät väliaikaiset suojatoimet heti vakavuuden vahvistamisen jälkeen, ja Anthropic perustaa 24/7-valvontatiimin keskeisille jailbreak-ilmoituskanaville. Samalla avattiin uusi HackerOne-ohjelma, jonne tietoturvatutkijat voivat ilmoittaa löytämiään Fable 5:n kyberjailbreakeja.
-
-## Mitä näistä kahdesta uutisesta oppii
-
-Luettuna erikseen Sonnet 5 on hyvä uutinen ja Fable 5 on kriisiviestintää. Luettuna yhdessä ne kertovat, että mallidependenssi ei ole vain hinta- ja laatukysymys — se on myös geopoliittinen riski ja "turvarajat voivat kiristyä yön yli" -riski.
-
-Kolme johtopäätöstä, jos rakennat mitä tahansa AI-mallien varaan:
-
-**1. Yksi malli on yksi piste jossa koko putki voi pysähtyä.** Fable 5:n tapaus ei ollut mallin oma vika sillä mitalla kuin uutinen aluksi antoi ymmärtää — se oli sääntelypäätös, joka tuli kolme päivää julkaisun jälkeen ja koski käytännössä koko markkinaa yhtä lailla. Jos tuote nojaa yhteen malliin ilman fallbackia, se on altis päätöksille joihin sen rakentajalla ei ole minkäänlaista vaikutusvaltaa.
-
-**2. Turvarajat ovat liikkuva kohde, ei kertaluontoinen tarkistus.** Fable 5:n turvamarginaali kasvatettiin tarkoituksella isommaksi kuin koskaan — ja silti se ei riittänyt hallitukselle. Uusi luokittelija blokkaa nyt myös enemmän aidosti vaarattomia pyyntöjä. Jos automaatioputki lähettää mallille rajatapauksia — tietoturva-aiheista sisältöä, koodianalyysiä, tai mitä tahansa mikä sivuaa "kyberturvaa" edes kaukaisesti — odotettavissa on enemmän false positiveja, ei vähemmän.
-
-**3. Redundanssi ei ole ylimääräistä kompleksisuutta, vaan vakuutus.** Useamman mallin ajaminen rinnakkain tuntuu ylisuunnittelulta niin kauan kuin kaikki toimii. Tämän viikon uutiset ovat juuri se syy miksi se kannattaa: kun yksi malli katoaa, kieltäytyy aiempaa herkemmin, tai muuttaa käytösehtojaan yön yli, työ voi reitittyä toiselle mallille sen sijaan että koko putki pysähtyy. Itse olen päätynyt ajamaan tuotannossa useaa eri mallia eri tehtäviin juuri tästä syystä.
-
-Sonnet 5 osoittaa, että agenttitason AI-kyky on nyt halvempaa ja luotettavampaa kuin koskaan. Fable 5 osoittaa, että "luotettava" ei tarkoita "aina saatavilla ehdoilla joita voi ennustaa". Molemmat ovat totta samaan aikaan, ja se on hyvä pitää mielessä kun suunnittelee mihin oma tuote nojaa.
+Tästä syystä ajan tuotannossa useaa mallia rinnakkain. Se tuntuu turhalta niin kauan kuin kaikki toimii, ja juuri siksi sen huomaa vasta kun ei toimi. Kun yksi malli katoaa, alkaa kieltäytyä herkemmin tai muuttaa ehtojaan kesken viikon, työ reitittyy toiselle sen sijaan että koko putki pysähtyy. Sonnet 5 osoittaa, että agenttitason teho on nyt halvempaa ja luotettavampaa kuin koskaan. Fable 5 osoittaa, ettei "luotettava" tarkoita "aina saatavilla ehdoilla, jotka voit ennakoida". Molemmat pitävät paikkansa yhtä aikaa, ja sen kannattaa antaa vaikuttaa siihen, minkä varaan oman tuotteensa rakentaa.
