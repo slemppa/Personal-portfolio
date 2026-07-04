@@ -135,7 +135,7 @@ export default function BuildInPublic() {
   const [data, setData] = useState<Activity | null>(null)
   const [failed, setFailed] = useState(false)
   const contributions = useCountUp(data?.github.totalContributions ?? null)
-  const latestPost = getAllPosts()[0]
+  const latestPost = getAllPosts('fi')[0]
 
   useEffect(() => {
     const ctrl = new AbortController()

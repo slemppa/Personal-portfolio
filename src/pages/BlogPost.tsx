@@ -1,30 +1,49 @@
+import { useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import Markdown from '../components/Markdown'
-import { getPost } from '../lib/posts'
+import { getPost, getTranslation } from '../lib/posts'
 import { formatDate } from '../lib/format'
+import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
+import type { Lang } from '../lib/parsePost'
 
-export default function BlogPost() {
+export default function BlogPost({ lang }: { lang: Lang }) {
   const { slug } = useParams()
-  const post = slug ? getPost(slug) : undefined
+  const post = slug ? getPost(slug, lang) : undefined
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+    document.title = post ? `${post.title} · Sami Kiias` : `${t(lang, 'notFoundTitle')} · Sami Kiias`
+  }, [lang, post])
+
+  // Switch to the same post in the other language if it's translated;
+  // otherwise fall back to that language's blog index.
+  const target = otherLang(lang)
+  const translation = slug ? getTranslation(slug, target) : undefined
+  const switchTo = translation ? blogPostPath(target, slug!) : blogListPath(target)
 
   return (
     <>
       <Nav />
       <main className="max-w-3xl mx-auto px-8 pt-32 pb-24 min-h-screen">
-        <Link to="/blog" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
-          ← Takaisin blogiin
-        </Link>
+        <div className="flex items-center justify-between gap-4">
+          <Link to={blogListPath(lang)} className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+            {t(lang, 'back')}
+          </Link>
+          <Link to={switchTo} className="shrink-0 text-sm text-text-secondary hover:text-text-primary transition-colors">
+            {t(lang, 'switchLabel')}
+          </Link>
+        </div>
         {!post ? (
           <div className="mt-12">
-            <h1 className="text-3xl font-bold text-text-primary">Postausta ei löytynyt</h1>
-            <p className="mt-2 text-text-secondary">Tarkista osoite tai palaa blogiin.</p>
+            <h1 className="text-3xl font-bold text-text-primary">{t(lang, 'notFoundTitle')}</h1>
+            <p className="mt-2 text-text-secondary">{t(lang, 'notFoundBody')}</p>
           </div>
         ) : (
           <article className="mt-8">
             <header className="mb-10">
-              <time className="text-xs uppercase tracking-wide text-text-muted">{formatDate(post.date)}</time>
+              <time className="text-xs uppercase tracking-wide text-text-muted">{formatDate(post.date, lang)}</time>
               <h1 className="mt-2 text-4xl font-bold text-text-primary">{post.title}</h1>
               {post.tags.length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-2">

@@ -24,8 +24,10 @@ createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/projektit/:slug" element={<CaseStudy />} />
-            <Route path="/blog" element={<BlogList />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/blog" element={<BlogList lang="fi" />} />
+            <Route path="/blog/:slug" element={<BlogPost lang="fi" />} />
+            <Route path="/en/blog" element={<BlogList lang="en" />} />
+            <Route path="/en/blog/:slug" element={<BlogPost lang="en" />} />
           </Routes>
         </BrowserRouter>
       </PostHogErrorBoundary>

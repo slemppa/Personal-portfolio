@@ -1,7 +1,13 @@
 import yaml from 'js-yaml'
 
+export type Lang = 'fi' | 'en'
+
+export const LANGS: Lang[] = ['fi', 'en']
+export const DEFAULT_LANG: Lang = 'fi'
+
 export type Post = {
   slug: string
+  lang: Lang
   title: string
   date: string
   description?: string
@@ -20,7 +26,11 @@ function normalizeDate(value: unknown): string {
 }
 
 export function parsePost(raw: string, filename: string): Post | null {
-  const slug = filename.replace(/\.md$/, '')
+  // A trailing `.fi`/`.en` before `.md` selects the language; both variants of
+  // a post share the same slug (e.g. `foo.fi.md` and `foo.en.md` → slug `foo`).
+  const langMatch = filename.match(/\.(fi|en)\.md$/)
+  const lang: Lang = (langMatch?.[1] as Lang | undefined) ?? DEFAULT_LANG
+  const slug = filename.replace(/(\.(fi|en))?\.md$/, '')
   const match = raw.match(FRONTMATTER_RE)
   if (!match) {
     console.warn(`[blog] ${filename}: ei frontmatteria, skipataan`)
@@ -44,6 +54,7 @@ export function parsePost(raw: string, filename: string): Post | null {
 
   return {
     slug,
+    lang,
     title,
     date,
     description: typeof data.description === 'string' ? data.description : undefined,

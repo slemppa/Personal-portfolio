@@ -3,7 +3,7 @@ import { parsePost } from './parsePost'
 import { selectPosts } from './parsePost'
 
 const make = (slug: string, date: string, draft = false): import('./parsePost').Post => ({
-  slug, title: slug, date, tags: [], draft, content: '',
+  slug, lang: 'fi', title: slug, date, tags: [], draft, content: '',
 })
 
 const RAW = `---
@@ -30,6 +30,22 @@ describe('parsePost', () => {
     expect(post!.cover).toBe('/blog/x.png')
     expect(post!.draft).toBe(false)
     expect(post!.content).toBe('Sisältö **tähän**.')
+  })
+
+  it('defaults language to fi for an unsuffixed filename', () => {
+    const post = parsePost(RAW, 'tervetuloa.md')
+    expect(post!.lang).toBe('fi')
+    expect(post!.slug).toBe('tervetuloa')
+  })
+
+  it('reads the language suffix and strips it from the slug', () => {
+    const fi = parsePost(RAW, 'foo.fi.md')
+    expect(fi!.lang).toBe('fi')
+    expect(fi!.slug).toBe('foo')
+
+    const en = parsePost(RAW, 'foo.en.md')
+    expect(en!.lang).toBe('en')
+    expect(en!.slug).toBe('foo')
   })
 
   it('defaults tags to [] and draft to false when omitted', () => {
