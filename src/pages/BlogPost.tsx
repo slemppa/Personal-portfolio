@@ -6,22 +6,37 @@ import Markdown from '../components/Markdown'
 import { getPost, getTranslation } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
+import { applyHead, type Alternate } from '../lib/head'
 import type { Lang } from '../lib/parsePost'
 
 export default function BlogPost({ lang }: { lang: Lang }) {
   const { slug } = useParams()
   const post = slug ? getPost(slug, lang) : undefined
 
-  useEffect(() => {
-    document.documentElement.lang = lang
-    document.title = post ? `${post.title} · Sami Kiias` : `${t(lang, 'notFoundTitle')} · Sami Kiias`
-  }, [lang, post])
-
   // Switch to the same post in the other language if it's translated;
   // otherwise fall back to that language's blog index.
   const target = otherLang(lang)
   const translation = slug ? getTranslation(slug, target) : undefined
   const switchTo = translation ? blogPostPath(target, slug!) : blogListPath(target)
+
+  useEffect(() => {
+    if (!slug) return
+    const fiPost = getPost(slug, 'fi')
+    const enPost = getPost(slug, 'en')
+    const alternates: Alternate[] = []
+    if (fiPost) alternates.push({ hreflang: 'fi', path: blogPostPath('fi', slug) })
+    if (enPost) alternates.push({ hreflang: 'en', path: blogPostPath('en', slug) })
+    // x-default points at the Finnish version when it exists, else this one.
+    alternates.push({ hreflang: 'x-default', path: blogPostPath(fiPost ? 'fi' : lang, slug) })
+
+    applyHead({
+      lang,
+      title: post ? `${post.title} · Sami Kiias` : `${t(lang, 'notFoundTitle')} · Sami Kiias`,
+      description: post?.description,
+      canonical: blogPostPath(lang, slug),
+      alternates,
+    })
+  }, [lang, slug, post])
 
   return (
     <>
