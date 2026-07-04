@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 import { getAllPosts } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
+import { applyHead } from '../lib/head'
 import type { Lang } from '../lib/parsePost'
 import { usePostHog } from '@posthog/react'
 
@@ -13,8 +14,17 @@ export default function BlogList({ lang }: { lang: Lang }) {
   const posts = getAllPosts(lang)
 
   useEffect(() => {
-    document.documentElement.lang = lang
-    document.title = `${t(lang, 'blogTitle')} · Sami Kiias`
+    applyHead({
+      lang,
+      title: `${t(lang, 'blogTitle')} · Sami Kiias`,
+      description: t(lang, 'blogSubtitle'),
+      canonical: blogListPath(lang),
+      alternates: [
+        { hreflang: 'fi', path: blogListPath('fi') },
+        { hreflang: 'en', path: blogListPath('en') },
+        { hreflang: 'x-default', path: blogListPath('fi') },
+      ],
+    })
   }, [lang])
 
   return (
