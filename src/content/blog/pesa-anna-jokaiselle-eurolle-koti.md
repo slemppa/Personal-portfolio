@@ -28,7 +28,7 @@ Sovelluksen slogan tiivistää kaiken: **“Joka eurolle koti.”**
 
 ## YNAB:n neljä sääntöä — ja miten ne näkyvät Pesässä
 
-Pesä mallintaa YNAB-metodologian neljä sääntöä suoraan tuotteen ytimeen:
+Pesä mallintaa [YNAB-metodologian](/blog/markkinoinnin-automaatio-30-paivan-paatospuu) neljä sääntöä suoraan tuotteen ytimeen:
 
 **1. Anna jokaiselle eurolle tehtävä.**  
 Kaiken keskiössä on **Jaettavissa**-luku (Ready to Assign). Se kertoo, paljonko rahaa odottaa kotia. Tavoite on saada se nollaan — ei siksi että raha loppuu, vaan siksi että jokainen euro on osoitettu johonkin.
