@@ -3,7 +3,7 @@
   date: 2026-07-13
   description: "Sisältömarkkinointi pk-yrityksessä + tekoäly: 7 käytännön käyttötapausta input→output-mallilla, ajansäästöarviot ja laadunvarmistus. Lue malli."
   tags: [sisältömarkkinointi]
-  draft: true
+  draft: false
 ---
 # Sisältömarkkinointi: AI-käyttötapaukset pk-yritykselle
 
