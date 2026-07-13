@@ -7,7 +7,7 @@ tags:
   - integraatiot
 draft: false
 ---
-Markkinoinnin automaatio ei vaadi raskasta “otetaan HubSpot ja katsotaan” -projektia. Tässä artikkelissa saat 30 päivän päätöspuun pk-tiimille: mitä kannattaa automatisoida ensin, missä järjestyksessä ja millä minimi-stackilla, jotta ROI näkyy nopeasti (ja riskit pysyy pieninä).
+Markkinoinnin automaatio ei vaadi raskasta “otetaan [HubSpot](https://aivie.ch/fi/hubspotin-hinnat-ja-parhaat-markkinoinnin-automaation-vaihtoehdot/) ja katsotaan” -projektia. Tässä artikkelissa saat 30 päivän päätöspuun pk-tiimille: mitä kannattaa automatisoida ensin, missä järjestyksessä ja millä minimi-stackilla, jotta ROI näkyy nopeasti (ja riskit pysyy pieninä).
 
 ## 30 päivän päätöspuu: mitä automatisoida ensin (nopea ROI, pienin riski)
 
@@ -32,7 +32,7 @@ Yleisin moka tässä prosessissa on automatisoida sisältö ennen kuin data ja o
 
 ## Kevyt stack: aloita ilman raskasta MAP-alustaa
 
-Useimmat pk-yritykset tekevät saman virheen: he ostavat kalliin markkinoinnin automaatioalustan ennen kuin heillä on edes perusasiat kunnossa. Totuus on, että et tarvitse HubSpottia, Marketoa tai Pardotia aloittaaksesi. Riittää, että sinulla on neljä peruskomponenttia: CRM, sähköpostityökalu, lomakkeet ja analytiikka. Tämä on niin sanottu "minimum viable automation" -stack, joka riittää 80 prosentille pk-yrityksistä ensimmäiset 6–12 kuukautta.
+Useimmat pk-yritykset tekevät saman virheen: he ostavat kalliin [markkinoinnin automaatioalustan](/blog/sisaltomarkkinointi-pk-yrityksen-tyokalut-2026) ennen kuin heillä on edes perusasiat kunnossa. Totuus on, että et tarvitse HubSpottia, Marketoa tai Pardotia aloittaaksesi. Riittää, että sinulla on neljä peruskomponenttia: CRM, sähköpostityökalu, lomakkeet ja analytiikka. Tämä on niin sanottu "minimum viable automation" -stack, joka riittää 80 prosentille pk-yrityksistä ensimmäiset 6–12 kuukautta.
 
 CRM on automaation sydän. Sen pitää sisältää kontaktit, dealit ja lähdetiedot. Käytä esimerkiksi Pipedrivea, HubSpottia tai jopa ilmaista Airtablea, jos budjetti on tiukka. Tärkeintä on, että CRM:ään tallentuu jokainen liidi ja sen lähde, kuten UTM-parametrit tai kampanjatiedot. Ilman tätä tietoa et voi mitata, mikä toimii ja mikä ei.
 
