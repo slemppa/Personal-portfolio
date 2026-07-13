@@ -7,7 +7,7 @@ tags:
   - integrations
 draft: false
 ---
-Marketing automation doesn't require a heavy "let's buy HubSpot and see what happens" project. In this article you get a 30-day decision tree for SMB teams: what to automate first, in what order, and with what minimum stack, so that ROI shows up fast (and the risks stay small).
+Marketing automation doesn't require a heavy "let's buy [HubSpot](https://www.hubspot.com/pricing/marketing) and see what happens" project. In this article you get a 30-day decision tree for SMB teams: what to automate first, in what order, and with what minimum stack, so that ROI shows up fast (and the risks stay small).
 
 ## The 30-day decision tree: what to automate first (fast ROI, lowest risk)
 
@@ -32,7 +32,7 @@ The most common mistake in this process is automating content before the data an
 
 ## A lightweight stack: get started without a heavy MAP platform
 
-Most SMBs make the same mistake: they buy an expensive marketing automation platform before they even have the basics in order. The truth is, you don't need HubSpot, Marketo, or Pardot to get started. It's enough to have four basic components: a CRM, an email tool, forms, and analytics. This is what's called a "minimum viable automation" stack, and it's enough for 80 percent of SMBs for the first 6–12 months.
+Most SMBs make the same mistake: they buy an expensive [marketing automation platform](/blog/sisaltomarkkinointi-pk-yrityksen-tyokalut-2026.en) before they even have the basics in order. The truth is, you don't need HubSpot, Marketo, or Pardot to get started. It's enough to have four basic components: a CRM, an email tool, forms, and analytics. This is what's called a "minimum viable automation" stack, and it's enough for 80 percent of SMBs for the first 6–12 months.
 
 The CRM is the heart of automation. It needs to hold contacts, deals, and source data. Use Pipedrive, HubSpot, or even free Airtable if the budget is tight. The most important thing is that every lead and its source — such as UTM parameters or campaign data — gets saved into the CRM. Without this data you can't measure what works and what doesn't.
 
