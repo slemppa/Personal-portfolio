@@ -3,7 +3,7 @@ title: "Content Marketing: AI Use Cases for an SME"
 description: "Seven practical AI use cases for everyday content marketing in an SME—complete with input→output examples, time-saving estimates, and honest limitations without the hype."
 date: 2026-07-13
 tags: ["content marketing", "AI", "SME marketing", "B2B marketing", "content process", "SEO"]
-draft: true
+draft: false
 ---
 
 # Content Marketing: AI Use Cases for an SME
