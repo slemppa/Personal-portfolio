@@ -28,7 +28,7 @@ The app's slogan sums it all up: **"A home for every euro."**
 
 ## YNAB's four rules — and how they show up in Pesä
 
-Pesä maps the four rules of the YNAB methodology straight into the core of the product:
+Pesä maps the four rules of the [YNAB methodology](/blog/markkinoinnin-automaatio-30-paivan-paatospuu.en) straight into the core of the product:
 
 **1. Give every euro a job.**  
 Everything revolves around the **Ready to Assign** figure. It tells you how much money is waiting for a home. The goal is to get it to zero — not because you're out of money, but because every euro is assigned to something.
