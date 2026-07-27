@@ -83,14 +83,17 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss(), devActivityApi(env), devOffersApi(env)],
     build: {
+      // Modern baseline — avoids shipping legacy transforms/polyfills to the
+      // evergreen browsers this site targets.
+      target: 'es2022',
       rollupOptions: {
         output: {
-          // Split rarely-changing vendor code into its own cacheable chunks so
-          // a content deploy doesn't invalidate them, and they download in
-          // parallel with the app chunk.
+          // Split rarely-changing react vendor into its own cacheable chunk so a
+          // content deploy doesn't invalidate it. posthog-js is loaded via a
+          // dynamic import (see main.tsx), so Rollup already gives it its own
+          // async chunk off the critical path.
           manualChunks: {
             react: ['react', 'react-dom', 'react-router'],
-            posthog: ['posthog-js', '@posthog/react'],
           },
         },
       },

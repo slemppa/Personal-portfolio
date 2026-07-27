@@ -4,8 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 import './index.css'
 import Home from './pages/Home.tsx'
 import ScrollToTop from './components/ScrollToTop.tsx'
-import posthog from 'posthog-js'
-import { PostHogErrorBoundary, PostHogProvider } from '@posthog/react'
+import { initAnalytics } from './lib/analytics'
 
 // Home is the landing/LCP route, so it ships in the initial bundle. Every other
 // route is code-split: the blog and offer pages pull heavy deps (react-markdown,
@@ -16,31 +15,31 @@ const BlogPost = lazy(() => import('./pages/BlogPost.tsx'))
 const CaseStudy = lazy(() => import('./pages/CaseStudy.tsx'))
 const OfferPage = lazy(() => import('./pages/Offer.tsx'))
 
-posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN, {
-  api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
-  defaults: '2026-01-30',
-})
+// posthog-js is ~200 kB of pure analytics — load it (dynamically) once the
+// browser is idle so it never blocks first render or interactivity.
+type IdleWindow = Window & {
+  requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+}
+const idleWindow = window as IdleWindow
+if (idleWindow.requestIdleCallback) idleWindow.requestIdleCallback(initAnalytics, { timeout: 4000 })
+else window.setTimeout(initAnalytics, 2000)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <PostHogProvider client={posthog}>
-      <PostHogErrorBoundary>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Suspense fallback={null}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/projektit/:slug" element={<CaseStudy />} />
-              <Route path="/blog" element={<BlogList lang="fi" />} />
-              <Route path="/blog/:slug" element={<BlogPost lang="fi" />} />
-              <Route path="/en/blog" element={<BlogList lang="en" />} />
-              <Route path="/en/blog/:slug" element={<BlogPost lang="en" />} />
-              <Route path="/tarjous" element={<OfferPage />} />
-              <Route path="/offer" element={<OfferPage />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </PostHogErrorBoundary>
-    </PostHogProvider>
+    <BrowserRouter>
+      <ScrollToTop />
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projektit/:slug" element={<CaseStudy />} />
+          <Route path="/blog" element={<BlogList lang="fi" />} />
+          <Route path="/blog/:slug" element={<BlogPost lang="fi" />} />
+          <Route path="/en/blog" element={<BlogList lang="en" />} />
+          <Route path="/en/blog/:slug" element={<BlogPost lang="en" />} />
+          <Route path="/tarjous" element={<OfferPage />} />
+          <Route path="/offer" element={<OfferPage />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   </StrictMode>,
 )
