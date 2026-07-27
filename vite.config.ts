@@ -82,6 +82,19 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
     plugins: [react(), tailwindcss(), devActivityApi(env), devOffersApi(env)],
+    build: {
+      rollupOptions: {
+        output: {
+          // Split rarely-changing vendor code into its own cacheable chunks so
+          // a content deploy doesn't invalidate them, and they download in
+          // parallel with the app chunk.
+          manualChunks: {
+            react: ['react', 'react-dom', 'react-router'],
+            posthog: ['posthog-js', '@posthog/react'],
+          },
+        },
+      },
+    },
     test: {
       environment: 'node',
     },
