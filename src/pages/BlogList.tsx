@@ -7,10 +7,9 @@ import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
 import { applyHead } from '../lib/head'
 import type { Lang } from '../lib/parsePost'
-import { usePostHog } from '@posthog/react'
+import { capture } from '../lib/analytics'
 
 export default function BlogList({ lang }: { lang: Lang }) {
-  const posthog = usePostHog()
   const posts = getAllPosts(lang)
 
   useEffect(() => {
@@ -49,7 +48,7 @@ export default function BlogList({ lang }: { lang: Lang }) {
               <li key={post.slug}>
                 <Link
                   to={blogPostPath(lang, post.slug)}
-                  onClick={() => posthog?.capture('blog_post_clicked', { post_slug: post.slug, post_title: post.title, lang })}
+                  onClick={() => capture('blog_post_clicked', { post_slug: post.slug, post_title: post.title, lang })}
                   className="group block rounded-2xl border border-border hover:border-border-hover bg-bg-secondary p-6 transition-colors"
                 >
                   {post.cover && (

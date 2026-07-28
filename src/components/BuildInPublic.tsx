@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { fetchActivity, type Activity } from '../lib/activity'
-import { getAllPosts } from '../lib/posts'
+import type { Post } from '../lib/posts'
 import ContributionHeatmap from './ContributionHeatmap'
 
 const mono = "'JetBrains Mono', monospace"
@@ -134,8 +134,8 @@ function SkeletonBox({ h }: { h: number }) {
 export default function BuildInPublic() {
   const [data, setData] = useState<Activity | null>(null)
   const [failed, setFailed] = useState(false)
+  const [latestPost, setLatestPost] = useState<Post | null>(null)
   const contributions = useCountUp(data?.github.totalContributions ?? null)
-  const latestPost = getAllPosts('fi')[0]
 
   useEffect(() => {
     const ctrl = new AbortController()
@@ -144,7 +144,16 @@ export default function BuildInPublic() {
       .catch((e) => {
         if (e?.name !== 'AbortError') setFailed(true)
       })
-    return () => ctrl.abort()
+    // Load blog metadata lazily: posts.ts eagerly bundles every markdown file
+    // plus js-yaml, which we don't want on the home page's critical path.
+    let active = true
+    import('../lib/posts').then(({ getAllPosts }) => {
+      if (active) setLatestPost(getAllPosts('fi')[0] ?? null)
+    })
+    return () => {
+      active = false
+      ctrl.abort()
+    }
   }, [])
 
   // Loading skeleton.
