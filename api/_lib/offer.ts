@@ -1,11 +1,15 @@
 // Core of the "share an offer" feature: turn a loose CRM payload into a
-// polished, shareable proposal. Framework-agnostic and dependency-free so it
-// runs in the Vercel function, the Vite dev middleware, and the tests alike.
+// polished, phased proposal. Framework-agnostic and dependency-free so it runs
+// in the Vercel function, the Vite dev middleware, and the tests alike.
+//
+// Offers are phased (Vaihe 0/1/2…), each phase carrying its own scope, duration
+// and price, plus optional honest "how it's built" trade-offs and clear scope /
+// ownership terms — the shape of a real consulting proposal, kept lean.
 //
 // Two generation paths share one output shape (Offer):
 //   - buildOffer()    deterministic template — always works, no secrets, tested
-//   - generateOffer() calls Claude when ANTHROPIC_API_KEY is set, else falls
-//                     back to buildOffer()
+//   - generateOffer() (see offerAI.ts) calls Claude when a key is set, else
+//                     falls back to buildOffer()
 //
 // Offers are shared without a database: encodeOfferToken() packs the whole
 // Offer into a base64url string that lives in a URL fragment, and the /tarjous
@@ -13,12 +17,30 @@
 
 export type OfferLang = 'fi' | 'en'
 
-/** A single scope/deliverable or pricing line. */
-export type OfferItem = {
-  title: string
-  description: string
-  /** Preformatted price string (e.g. "1 200 €"), optional. */
+/** A named problem in the prospect's current situation. */
+export type SituationPoint = { title: string; body: string }
+
+/** One phase of the proposed path (e.g. "Vaihe 1 — Julkinen sivusto"). */
+export type OfferPhase = {
+  name: string
+  /** One-line statement of what this phase delivers. */
+  goal?: string
+  /** Concrete deliverables in this phase. */
+  includes: string[]
+  /** What changes (or explicitly doesn't) for the client after this phase. */
+  outcome?: string
+  /** Duration, e.g. "2–3 viikkoa". */
+  duration?: string
+  /** Price for this phase, e.g. "alkaen 3 500 €". */
   price?: string
+}
+
+/** An honest build decision: why this choice, and the cheaper alternative. */
+export type OfferTradeoff = {
+  choice: string
+  why: string
+  /** The lighter option and its later cost, optional. */
+  alternative?: string
 }
 
 /** The sender — defaults to the site owner when the CRM doesn't send one. */
@@ -35,44 +57,44 @@ export type OfferInput = {
   contactName?: string
   contactEmail?: string
   industry?: string
-  /** Services the prospect asked about. */
   services: string[]
-  /** Problems / pain points to address. */
   painPoints: string[]
-  /** Goals the prospect wants to reach. */
   goals: string[]
   budget?: string
   timeline?: string
-  /** Free-form context from the CRM. */
   notes?: string
   language: OfferLang
   currency: string
   sender: OfferSender
 }
 
-/** The finished, renderable offer. */
+/** The finished, renderable proposal. */
 export type Offer = {
   id: string
   language: OfferLang
   title: string
   recipient: { company?: string; name?: string; email?: string }
   greeting: string
-  /** One-paragraph executive summary. */
+  /** Short opening paragraph framing the situation. */
   summary: string
-  /** Our reading of their situation. */
-  understanding: string
-  /** The proposed approach, in prose. */
+  /** The current situation, broken into named problems. */
+  situation: SituationPoint[]
+  /** The framing of the proposed approach, in prose. */
   approach: string
-  deliverables: OfferItem[]
-  timeline: string
+  /** The phased path — the core of the offer. */
+  phases: OfferPhase[]
+  /** Optional "how it's built" trade-offs. Empty hides the section. */
+  tradeoffs: OfferTradeoff[]
   investment: {
     summary: string
-    items: OfferItem[]
-    /** Preformatted total, optional. */
+    /** Preformatted grand total, optional. */
     total?: string
+    /** Payment schedule, e.g. "40 % aloitus, 40 % demo, 20 % hyväksyntä". */
+    paymentTerms?: string
     note?: string
   }
-  whyMe: string[]
+  /** Scope boundaries and ownership. */
+  scope: { excludes: string[]; ownership?: string }
   nextSteps: string[]
   cta: string
   /** ISO date the offer is valid until. */
@@ -187,87 +209,122 @@ export function normalizeInput(raw: unknown): OfferInput {
 // Deterministic builder — the always-available fallback.
 // ---------------------------------------------------------------------------
 
-// Short bilingual copy table so buildOffer reads cleanly.
+// Short bilingual copy so buildOffer reads cleanly. The fallback is a lean,
+// three-phase proposal; the AI path (offerAI.ts) produces the richer version.
 const COPY = {
   fi: {
-    title: (c?: string) => `Tarjous${c ? ` – ${c}` : ''}`,
+    title: (c?: string) => `Ehdotus etenemisestä${c ? ` – ${c}` : ''}`,
     greeting: (n?: string) => (n ? `Hei ${n},` : 'Hei,'),
-    defaultService: 'AI- ja automaatioratkaisut',
+    defaultService: 'AI- ja automaatioratkaisu',
     summary: (svc: string, c?: string) =>
-      `Kiitos mielenkiinnostasi. Kokosin ${c ? `${c}:lle ` : ''}ehdotuksen siitä, miten ${svc.toLowerCase()} veisi arkeanne eteenpäin – selkeästi, mitattavasti ja ilman turhaa teknistä säätöä.`,
-    understanding: (pains: string[]) =>
-      pains.length
-        ? `Ymmärrän, että keskeisiä haasteita ovat: ${listFi(pains)}. Näihin tartutaan heti ensimmäisistä viikoista lähtien.`
-        : 'Lähdemme liikkeelle kartoittamalla nykytilan ja suurimmat ajansäästön paikat, jotta jokainen euro kohdistuu oikein.',
-    approach: (svc: string, goals: string[]) =>
-      `Rakennan ${svc.toLowerCase()} teidän prosessienne ympärille – en valmiiseen muottiin. ${
-        goals.length ? `Tavoitteena on ${listFi(goals)}.` : 'Tavoitteena on nopea, näkyvä hyöty jo ensimmäisessä vaiheessa.'
-      } Työ etenee pienin, todennettavin askelin, jotta suunta voidaan tarkistaa matkan varrella.`,
-    timelineDefault: 'Ensimmäinen versio tuotannossa 2–3 viikossa aloituksesta.',
-    investmentSummary: 'Investointi räätälöidään lopullisen laajuuden mukaan – alla suuntaa-antava rakenne.',
-    investmentNote: 'Hinnat ilman alv. Tarkka tarjous vahvistetaan aloituspalaverin jälkeen.',
-    whyMe: [
-      'Rakennan ratkaisut itse – ei välikäsiä, nopea sykli.',
-      'Automaatio ja AI kytketään suoraan liiketoiminnan mittareihin.',
-      'Selkeä hinnoittelu ja avoin build-in-public-työtapa.',
+      `Kiitos hyvästä keskustelusta. Kokosin ${c ? `${c}:lle ` : ''}ehdotuksen siitä, miten ${svc.toLowerCase()} viedään käytäntöön – vaiheittain, niin että jokainen vaihe tuottaa hyötyä itsessään eikä seuraava pura edellistä.`,
+    approach:
+      'Ehdotan yhtä polkua, joka etenee pienin, todennettavin askelin. Aloitamme määrittelystä, jotta hinta perustuu tarpeeseen eikä arvaukseen. Jokainen vaihe rakennetaan niin, että ensimmäisen vaiheen investointi säilyy arvossaan riippumatta siitä, jatketaanko seuraavaan.',
+    phase0: (svc: string): OfferPhase => ({
+      name: 'Vaihe 0 — Määrittely',
+      goal: 'Ymmärretään mitä oikeasti tarvitaan ennen kiinteää hintaa.',
+      includes: [
+        'Nykytilan ja tavoitteiden läpikäynti',
+        `Laajuuden ja mittareiden määrittely (${svc.toLowerCase()})`,
+        'Toteutussuunnitelma ja sitova kiinteä hinta seuraaville vaiheille',
+      ],
+      outcome: 'Suunnitelma on teidän, myös jos ette jatka.',
+      duration: '1–2 viikkoa',
+      price: 'hyvitetään jatkossa',
+    }),
+    phase1: (svc: string): OfferPhase => ({
+      name: 'Vaihe 1 — Toteutus',
+      goal: `${svc} rakennettuna ja kytkettynä nykyisiin työkaluihinne.`,
+      includes: [
+        'Ydintoiminnallisuus tuotantoon',
+        'Integraatio nykyisiin järjestelmiinne',
+        'Testaus ja mitatut tulokset',
+      ],
+      outcome: 'Näkyvä hyöty jo ensimmäisistä viikoista.',
+      duration: '2–4 viikkoa',
+      price: 'kiinteä hinta',
+    }),
+    phase2: {
+      name: 'Vaihe 2 — Käyttöönotto & jatko',
+      goal: 'Ratkaisu tiimin arkeen ja jatkokehityksen pohja.',
+      includes: ['Käyttöönotto ja perehdytys', 'Dokumentaatio', 'Tuki ensimmäisten viikkojen ajan'],
+      duration: '1–2 viikkoa',
+      price: 'laajuuden mukaan',
+    } as OfferPhase,
+    investmentSummary: 'Investointi räätälöidään lopullisen laajuuden mukaan; tarkka, sitova hinta vahvistetaan määrittelyn jälkeen.',
+    paymentTerms: 'Maksuerät esim. 40 % aloitus, 40 % demo, 20 % hyväksyntä. Maksuehto 14 pv.',
+    investmentNote: 'Kaikki hinnat + alv.',
+    excludes: [
+      'Sisällöntuotanto ja jatkuva hakukoneoptimointi',
+      'Logo- ja brändityö, valokuvaus, mainonta',
+      'Integraatiot muihin järjestelmiin ellei erikseen sovita',
     ],
+    ownership: 'Kaikki tilit avataan teidän nimiinne alusta asti; lähdekoodi siirtyy teille viimeisen maksuerän jälkeen. Ette ole missään vaiheessa riippuvaisia minusta.',
     nextSteps: [
-      '30 min aloituspuhelu tavoitteiden tarkennukseen',
-      'Vahvistettu tarjous ja aikataulu',
-      'Ensimmäinen tuotantoversio 2–3 viikossa',
+      'Lyhyt puhelu, jossa käydään läpi rajaus ja aikataulu — ei sido mihinkään',
+      'Määrittelyvaiheen aloitus kirjallisella hyväksynnällä',
+      'Määrittelyn päätteeksi suunnitelma ja sitova hinta — päätös jatkosta vasta silloin',
     ],
-    cta: 'Vastaa tähän viestiin tai varaa aika, niin viedään tämä käytäntöön.',
-    scope: 'Työn sisältö',
-    discovery: { title: 'Kartoitus & suunnittelu', description: 'Nykytilan läpikäynti, tavoitteet ja mittarit sekä toteutussuunnitelma.' },
-    build: (svc: string) => ({ title: 'Toteutus', description: `${svc} rakennettuna ja integroituna teidän työkaluihinne.` }),
-    handover: { title: 'Käyttöönotto & tuki', description: 'Käyttöönotto, dokumentaatio ja tuki ensimmäisten viikkojen ajan.' },
+    cta: 'Vastaa tähän viestiin tai varaa aika, niin käydään rajaus läpi.',
+    situationDefault: [
+      { title: 'Nykytila kartoittamatta', body: 'Suurimmat ajansäästön ja hyödyn paikat kannattaa tunnistaa ennen toteutusta, jotta jokainen euro kohdistuu oikein.' },
+    ] as SituationPoint[],
   },
   en: {
     title: (c?: string) => `Proposal${c ? ` – ${c}` : ''}`,
     greeting: (n?: string) => (n ? `Hi ${n},` : 'Hi,'),
-    defaultService: 'AI & automation solutions',
+    defaultService: 'AI & automation solution',
     summary: (svc: string, c?: string) =>
-      `Thanks for your interest. Here's a proposal for how ${svc.toLowerCase()} can move ${c ? `${c}` : 'your team'} forward — clearly, measurably, and without the technical noise.`,
-    understanding: (pains: string[]) =>
-      pains.length
-        ? `As I understand it, the key challenges are: ${listEn(pains)}. We tackle these from week one.`
-        : "We start by mapping the current state and the biggest time sinks, so every euro is spent where it counts.",
-    approach: (svc: string, goals: string[]) =>
-      `I build ${svc.toLowerCase()} around your processes — not into a fixed template. ${
-        goals.length ? `The goal is to ${listEn(goals)}.` : 'The goal is fast, visible value in the very first phase.'
-      } Work moves in small, verifiable steps so we can adjust course along the way.`,
-    timelineDefault: 'First version in production within 2–3 weeks of kickoff.',
-    investmentSummary: 'The investment is tailored to the final scope — an indicative structure is below.',
-    investmentNote: 'Prices exclude VAT. A firm quote is confirmed after the kickoff call.',
-    whyMe: [
-      'I build the solutions myself — no middlemen, fast iteration.',
-      'Automation and AI wired straight to your business metrics.',
-      'Transparent pricing and an open build-in-public way of working.',
+      `Thanks for the good conversation. Here's a proposal for how ${svc.toLowerCase()} gets put into practice for ${c ? c : 'your team'} — in phases, so each phase delivers value on its own and none undoes the last.`,
+    approach:
+      'I propose a single path that moves in small, verifiable steps. We start with a scoping phase so the price is based on need, not a guess. Each phase is built so the first phase\'s investment keeps its value whether or not you continue.',
+    phase0: (svc: string): OfferPhase => ({
+      name: 'Phase 0 — Scoping',
+      goal: 'Understand what is actually needed before a fixed price.',
+      includes: [
+        'Review of current state and goals',
+        `Scope and metrics definition (${svc.toLowerCase()})`,
+        'Delivery plan and a firm fixed price for the next phases',
+      ],
+      outcome: 'The plan is yours, even if you don\'t continue.',
+      duration: '1–2 weeks',
+      price: 'credited later',
+    }),
+    phase1: (svc: string): OfferPhase => ({
+      name: 'Phase 1 — Build',
+      goal: `${svc} built and wired into your existing tools.`,
+      includes: ['Core functionality in production', 'Integration with your systems', 'Testing and measured results'],
+      outcome: 'Visible value from the first weeks.',
+      duration: '2–4 weeks',
+      price: 'fixed price',
+    }),
+    phase2: {
+      name: 'Phase 2 — Rollout & next',
+      goal: 'The solution in the team\'s hands, and a base for what\'s next.',
+      includes: ['Rollout and onboarding', 'Documentation', 'Support through the first weeks'],
+      duration: '1–2 weeks',
+      price: 'by scope',
+    } as OfferPhase,
+    investmentSummary: 'The investment is tailored to the final scope; a firm, binding price is confirmed after scoping.',
+    paymentTerms: 'Payments e.g. 40% at start, 40% at demo, 20% on acceptance. Net 14.',
+    investmentNote: 'All prices excl. VAT.',
+    excludes: [
+      'Content production and ongoing SEO',
+      'Logo/brand work, photography, advertising',
+      'Integrations to other systems unless separately agreed',
     ],
+    ownership: 'All accounts are opened in your name from the start; source code transfers to you after the final payment. You are never dependent on me to reach your own data.',
     nextSteps: [
-      '30-min kickoff call to sharpen the goals',
-      'Confirmed proposal and timeline',
-      'First production version in 2–3 weeks',
+      'A short call to walk through scope and timeline — no commitment',
+      'Scoping phase starts on written approval',
+      'Scoping ends with a plan and a binding price — the decision to continue is made only then',
     ],
-    cta: "Reply to this message or book a slot, and we'll put this into practice.",
-    scope: 'Scope of work',
-    discovery: { title: 'Discovery & planning', description: 'Current-state review, goals and metrics, and a delivery plan.' },
-    build: (svc: string) => ({ title: 'Build', description: `${svc} built and integrated into your tools.` }),
-    handover: { title: 'Rollout & support', description: 'Deployment, documentation, and support through the first weeks.' },
+    cta: 'Reply to this message or book a slot and we\'ll walk through the scope.',
+    situationDefault: [
+      { title: 'Current state not mapped', body: 'The biggest time-savings and wins are worth identifying before building, so every euro is spent where it counts.' },
+    ] as SituationPoint[],
   },
 } as const
-
-function listFi(items: string[]): string {
-  const low = items.map((s) => s.charAt(0).toLowerCase() + s.slice(1))
-  if (low.length === 1) return low[0]
-  return `${low.slice(0, -1).join(', ')} ja ${low[low.length - 1]}`
-}
-
-function listEn(items: string[]): string {
-  const low = items.map((s) => s.charAt(0).toLowerCase() + s.slice(1))
-  if (low.length === 1) return low[0]
-  return `${low.slice(0, -1).join(', ')} and ${low[low.length - 1]}`
-}
 
 /** Stable-ish id without external deps; unique enough for share links. */
 function offerId(seed: string): string {
@@ -277,7 +334,7 @@ function offerId(seed: string): string {
 }
 
 /**
- * Build a polished offer from the input using deterministic templates.
+ * Build a lean, phased offer from the input using deterministic templates.
  * `now` is injectable so tests stay stable.
  */
 export function buildOffer(input: OfferInput, now: Date = new Date()): Offer {
@@ -285,23 +342,18 @@ export function buildOffer(input: OfferInput, now: Date = new Date()): Offer {
   const service = input.services[0] ?? c.defaultService
   const validUntil = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
 
-  const deliverables: OfferItem[] = [
-    c.discovery,
-    c.build(service),
-    c.handover,
-  ]
+  const situation: SituationPoint[] =
+    input.painPoints.length > 0
+      ? input.painPoints.slice(0, 4).map((p) => ({
+          title: p.charAt(0).toUpperCase() + p.slice(1),
+          body:
+            input.language === 'fi'
+              ? 'Tähän tartutaan heti ensimmäisistä vaiheista lähtien.'
+              : 'This is addressed from the first phases onward.',
+        }))
+      : c.situationDefault
 
-  const investment: Offer['investment'] = {
-    summary: input.budget
-      ? `${c.investmentSummary} (${input.budget})`
-      : c.investmentSummary,
-    items: [
-      { ...c.discovery, price: input.language === 'fi' ? 'alkaen 500 €' : 'from 500 €' },
-      { ...c.build(service), price: input.language === 'fi' ? 'alkaen 2 000 €' : 'from 2 000 €' },
-      { ...c.handover, price: input.language === 'fi' ? 'alkaen 500 €' : 'from 500 €' },
-    ],
-    note: c.investmentNote,
-  }
+  const phases: OfferPhase[] = [c.phase0(service), c.phase1(service), c.phase2]
 
   const seed = [input.company, input.contactEmail, service, input.notes, now.toISOString().slice(0, 10)]
     .filter(Boolean)
@@ -314,14 +366,16 @@ export function buildOffer(input: OfferInput, now: Date = new Date()): Offer {
     recipient: { company: input.company, name: input.contactName, email: input.contactEmail },
     greeting: c.greeting(input.contactName),
     summary: c.summary(service, input.company),
-    understanding: c.understanding(input.painPoints),
-    approach: c.approach(service, input.goals),
-    deliverables,
-    timeline: input.timeline
-      ? `${input.timeline}${input.language === 'fi' ? '.' : '.'}`
-      : c.timelineDefault,
-    investment,
-    whyMe: [...c.whyMe],
+    situation,
+    approach: c.approach,
+    phases,
+    tradeoffs: [],
+    investment: {
+      summary: input.budget ? `${c.investmentSummary} (${input.budget})` : c.investmentSummary,
+      paymentTerms: c.paymentTerms,
+      note: c.investmentNote,
+    },
+    scope: { excludes: [...c.excludes], ownership: c.ownership },
     nextSteps: [...c.nextSteps],
     cta: c.cta,
     validUntil: validUntil.toISOString().slice(0, 10),
@@ -339,33 +393,51 @@ export function buildOffer(input: OfferInput, now: Date = new Date()): Offer {
 export function offerToMarkdown(offer: Offer): string {
   const fi = offer.language === 'fi'
   const L = fi
-    ? { deliverables: 'Työn sisältö', timeline: 'Aikataulu', investment: 'Investointi', why: 'Miksi minä', next: 'Seuraavat askeleet', valid: 'Voimassa', total: 'Yhteensä' }
-    : { deliverables: 'Scope of work', timeline: 'Timeline', investment: 'Investment', why: 'Why me', next: 'Next steps', valid: 'Valid until', total: 'Total' }
+    ? { situation: 'Tilanne', approach: 'Ehdotus', build: 'Miten se rakennetaan', choice: 'Valinta', why: 'Miksi', alt: 'Kevyempi vaihtoehto', investment: 'Investointi', payment: 'Maksuerät', scope: 'Rajaukset', ownership: 'Omistajuus', next: 'Seuraavat askeleet', valid: 'Voimassa', total: 'Yhteensä', duration: 'Kesto', price: 'Investointi' }
+    : { situation: 'Situation', approach: 'Proposal', build: 'How it\'s built', choice: 'Choice', why: 'Why', alt: 'Lighter option', investment: 'Investment', payment: 'Payment', scope: 'Scope', ownership: 'Ownership', next: 'Next steps', valid: 'Valid until', total: 'Total', duration: 'Duration', price: 'Investment' }
 
   const lines: string[] = []
   lines.push(`# ${offer.title}`, '')
   lines.push(offer.greeting, '')
   lines.push(offer.summary, '')
-  lines.push(offer.understanding, '')
-  lines.push(offer.approach, '')
 
-  lines.push(`## ${L.deliverables}`, '')
-  for (const d of offer.deliverables) lines.push(`- **${d.title}** — ${d.description}`)
-  lines.push('')
+  if (offer.situation.length) {
+    lines.push(`## ${L.situation}`, '')
+    for (const s of offer.situation) lines.push(`**${s.title}.** ${s.body}`, '')
+  }
 
-  lines.push(`## ${L.timeline}`, '', offer.timeline, '')
+  lines.push(`## ${L.approach}`, '', offer.approach, '')
+
+  for (const p of offer.phases) {
+    lines.push(`### ${p.name}`, '')
+    if (p.goal) lines.push(p.goal, '')
+    for (const it of p.includes) lines.push(`- ${it}`)
+    if (p.outcome) lines.push('', p.outcome)
+    const meta = [p.duration && `${L.duration}: ${p.duration}`, p.price && `${L.price}: ${p.price}`].filter(Boolean).join('  ·  ')
+    if (meta) lines.push('', `_${meta}_`)
+    lines.push('')
+  }
+
+  if (offer.tradeoffs.length) {
+    lines.push(`## ${L.build}`, '')
+    lines.push(`| ${L.choice} | ${L.why} | ${L.alt} |`, '| --- | --- | --- |')
+    for (const t of offer.tradeoffs) {
+      lines.push(`| ${t.choice} | ${t.why} | ${t.alternative ?? '—'} |`)
+    }
+    lines.push('')
+  }
 
   lines.push(`## ${L.investment}`, '', offer.investment.summary, '')
-  for (const it of offer.investment.items) {
-    lines.push(`- **${it.title}** — ${it.description}${it.price ? ` _(${it.price})_` : ''}`)
-  }
-  if (offer.investment.total) lines.push('', `**${L.total}: ${offer.investment.total}**`)
-  if (offer.investment.note) lines.push('', `_${offer.investment.note}_`)
-  lines.push('')
+  if (offer.investment.total) lines.push(`**${L.total}: ${offer.investment.total}**`, '')
+  if (offer.investment.paymentTerms) lines.push(`${L.payment}: ${offer.investment.paymentTerms}`, '')
+  if (offer.investment.note) lines.push(`_${offer.investment.note}_`, '')
 
-  lines.push(`## ${L.why}`, '')
-  for (const w of offer.whyMe) lines.push(`- ${w}`)
-  lines.push('')
+  if (offer.scope.excludes.length || offer.scope.ownership) {
+    lines.push(`## ${L.scope}`, '')
+    for (const e of offer.scope.excludes) lines.push(`- ${e}`)
+    if (offer.scope.ownership) lines.push('', `**${L.ownership}.** ${offer.scope.ownership}`)
+    lines.push('')
+  }
 
   lines.push(`## ${L.next}`, '')
   offer.nextSteps.forEach((s, i) => lines.push(`${i + 1}. ${s}`))

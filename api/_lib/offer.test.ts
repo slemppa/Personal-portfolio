@@ -75,18 +75,24 @@ describe('normalizeInput', () => {
 describe('buildOffer', () => {
   const now = new Date('2026-07-27T00:00:00.000Z')
 
-  it('produces a complete Finnish offer with a 30-day validity', () => {
+  it('produces a complete, phased Finnish offer with a 30-day validity', () => {
     const offer = buildOffer(
       normalizeInput({ company: 'Acme Oy', contact: 'Liisa', services: ['chatbot'], challenges: ['hidas tuki'] }),
       now,
     )
     expect(offer.language).toBe('fi')
-    expect(offer.title).toBe('Tarjous – Acme Oy')
+    expect(offer.title).toBe('Ehdotus etenemisestä – Acme Oy')
     expect(offer.greeting).toBe('Hei Liisa,')
     expect(offer.recipient.company).toBe('Acme Oy')
-    expect(offer.understanding).toContain('hidas tuki')
-    expect(offer.deliverables.length).toBeGreaterThanOrEqual(3)
-    expect(offer.investment.items.every((i) => i.price)).toBe(true)
+    // Pain points become named situation problems.
+    expect(offer.situation[0].title).toBe('Hidas tuki')
+    // Phased structure with per-phase duration + price.
+    expect(offer.phases.length).toBeGreaterThanOrEqual(2)
+    expect(offer.phases[0].name).toMatch(/Vaihe 0/)
+    expect(offer.phases.every((p) => p.includes.length > 0 && p.duration)).toBe(true)
+    expect(offer.investment.paymentTerms).toBeTruthy()
+    expect(offer.scope.excludes.length).toBeGreaterThan(0)
+    expect(offer.scope.ownership).toBeTruthy()
     expect(offer.validUntil).toBe('2026-08-26')
     expect(offer.aiGenerated).toBe(false)
     expect(offer.id).toMatch(/^of_/)
@@ -96,23 +102,31 @@ describe('buildOffer', () => {
     const offer = buildOffer(normalizeInput({ company: 'Acme', language: 'en' }), now)
     expect(offer.title).toBe('Proposal – Acme')
     expect(offer.greeting).toBe('Hi,')
-    expect(offer.timeline).toMatch(/production/)
+    expect(offer.phases[0].name).toMatch(/Phase 0/)
   })
 
-  it('uses the given timeline when provided', () => {
-    const offer = buildOffer(normalizeInput({ timeline: 'Aloitus elokuussa' }), now)
-    expect(offer.timeline).toBe('Aloitus elokuussa.')
+  it('falls back to a default situation when no pain points are given', () => {
+    const offer = buildOffer(normalizeInput({ company: 'Acme' }), now)
+    expect(offer.situation.length).toBeGreaterThan(0)
   })
 })
 
 describe('offerToMarkdown', () => {
-  it('renders headings, deliverables and the sender signature', () => {
-    const offer = buildOffer(normalizeInput({ company: 'Acme Oy', services: ['chatbot'] }))
+  it('renders situation, phases and scope', () => {
+    const offer = buildOffer(normalizeInput({ company: 'Acme Oy', services: ['chatbot'], challenges: ['hidas tuki'] }))
     const md = offerToMarkdown(offer)
-    expect(md).toContain('# Tarjous – Acme Oy')
-    expect(md).toContain('## Työn sisältö')
-    expect(md).toContain('## Investointi')
+    expect(md).toContain('# Ehdotus etenemisestä – Acme Oy')
+    expect(md).toContain('## Tilanne')
+    expect(md).toContain('### Vaihe 0 — Määrittely')
+    expect(md).toContain('## Rajaukset')
     expect(md).toContain('— Sami Kiias')
+  })
+
+  it('renders the trade-offs table only when present', () => {
+    const base = buildOffer(normalizeInput({ company: 'Acme' }))
+    expect(offerToMarkdown(base)).not.toContain('Miten se rakennetaan')
+    const withTradeoffs = { ...base, tradeoffs: [{ choice: 'A', why: 'B', alternative: 'C' }] }
+    expect(offerToMarkdown(withTradeoffs)).toContain('Miten se rakennetaan')
   })
 })
 

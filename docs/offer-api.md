@@ -71,6 +71,17 @@ pilkuin/rivinvaihdoin erotellun merkkijonon. Lähettäjän voi ohittaa `from`- t
 
 Jaa `shareUrl` asiakkaalle — se avaa tarjouksen sivuston tyylillä.
 
+### Tarjouksen rakenne
+
+`offer` on **vaiheistettu ehdotus** (kuten oikea konsulttitarjous), kentät:
+`summary` (tilanteen tiivistys), `situation[]` (nimetyt ongelmat), `approach`
+(lähestymistavan kehystys), `phases[]` (Vaihe 0 määrittely → toteutusvaiheet,
+kukin oma `goal`/`includes[]`/`outcome`/`duration`/`price`), valinnainen
+`tradeoffs[]` ("miten se rakennetaan" -taulukko: `choice`/`why`/`alternative`),
+`investment` (`summary`/`total`/`paymentTerms`/`note`), `scope`
+(`excludes[]` + `ownership`), `nextSteps[]`, `cta`, `validUntil`, `sender`.
+Vaiheiden määrä skaalautuu kaupan kokoon — pieni toimeksianto voi olla yksi vaihe.
+
 ## Muut reitit
 
 - **`GET /api/offers?token=<token>`** — purkaa jakotokenin takaisin JSONiksi
