@@ -5,10 +5,21 @@
 
 export type OfferLang = 'fi' | 'en'
 
-export type OfferItem = {
-  title: string
-  description: string
+export type SituationPoint = { title: string; body: string }
+
+export type OfferPhase = {
+  name: string
+  goal?: string
+  includes: string[]
+  outcome?: string
+  duration?: string
   price?: string
+}
+
+export type OfferTradeoff = {
+  choice: string
+  why: string
+  alternative?: string
 }
 
 export type OfferSender = {
@@ -25,17 +36,17 @@ export type Offer = {
   recipient: { company?: string; name?: string; email?: string }
   greeting: string
   summary: string
-  understanding: string
+  situation: SituationPoint[]
   approach: string
-  deliverables: OfferItem[]
-  timeline: string
+  phases: OfferPhase[]
+  tradeoffs: OfferTradeoff[]
   investment: {
     summary: string
-    items: OfferItem[]
     total?: string
+    paymentTerms?: string
     note?: string
   }
-  whyMe: string[]
+  scope: { excludes: string[]; ownership?: string }
   nextSteps: string[]
   cta: string
   validUntil: string

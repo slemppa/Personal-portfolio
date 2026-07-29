@@ -1,39 +1,55 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
-import { Check, Copy, FileText, Printer, Sparkles } from 'lucide-react'
+import { Check, Copy, Printer, Sparkles } from 'lucide-react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { formatDate } from '../lib/format'
 import { applyHead } from '../lib/head'
 import { decodeOfferToken, offerTokenFromLocation, type Offer } from '../lib/offer'
 
-// Bilingual UI labels for the offer page. Content comes from the offer itself;
-// only the chrome (section headings, buttons) is localised here.
+// Bilingual UI labels. Content comes from the offer itself; only the chrome
+// (section headings, buttons) is localised here.
 const UI = {
   fi: {
-    deliverables: 'Työn sisältö',
-    timeline: 'Aikataulu',
+    situation: 'Tilanne',
+    approach: 'Ehdotus',
+    build: 'Miten se rakennetaan',
+    choice: 'Valinta',
+    why: 'Miksi',
+    alt: 'Kevyempi vaihtoehto',
     investment: 'Investointi',
-    why: 'Miksi minä',
+    payment: 'Maksuerät',
+    total: 'Yhteensä',
+    scope: 'Rajaukset',
+    ownership: 'Omistajuus',
     next: 'Seuraavat askeleet',
     valid: 'Voimassa',
-    total: 'Yhteensä',
+    duration: 'Kesto',
+    price: 'Investointi',
     copy: 'Kopioi linkki',
     copied: 'Kopioitu!',
     print: 'Tallenna PDF',
-    aiBadge: 'Räätälöity tarjous',
+    aiBadge: 'Räätälöity ehdotus',
     notFoundTitle: 'Tarjousta ei löytynyt',
     notFoundBody: 'Linkki on virheellinen tai vanhentunut. Pyydä lähettäjältä uusi linkki.',
     home: '← Etusivulle',
   },
   en: {
-    deliverables: 'Scope of work',
-    timeline: 'Timeline',
+    situation: 'Situation',
+    approach: 'Proposal',
+    build: "How it's built",
+    choice: 'Choice',
+    why: 'Why',
+    alt: 'Lighter option',
     investment: 'Investment',
-    why: 'Why me',
+    payment: 'Payment',
+    total: 'Total',
+    scope: 'Scope',
+    ownership: 'Ownership',
     next: 'Next steps',
     valid: 'Valid until',
-    total: 'Total',
+    duration: 'Duration',
+    price: 'Investment',
     copy: 'Copy link',
     copied: 'Copied!',
     print: 'Save as PDF',
@@ -146,56 +162,118 @@ export default function OfferPage() {
           <div className="mt-8 space-y-5 text-lg leading-relaxed text-text-secondary">
             <p className="text-text-primary">{offer.greeting}</p>
             <p>{offer.summary}</p>
-            <p>{offer.understanding}</p>
-            <p>{offer.approach}</p>
           </div>
 
-          <Section title={t.deliverables}>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {offer.deliverables.map((d, i) => (
-                <div key={i} className="rounded-xl border border-border bg-bg-secondary p-4">
-                  <h3 className="font-semibold text-text-primary">{d.title}</h3>
-                  <p className="mt-1 text-sm text-text-secondary">{d.description}</p>
+          {offer.situation.length > 0 && (
+            <Section title={t.situation}>
+              <div className="space-y-4">
+                {offer.situation.map((s, i) => (
+                  <div key={i}>
+                    <h3 className="font-semibold text-text-primary">{s.title}</h3>
+                    <p className="mt-1 text-text-secondary">{s.body}</p>
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          <Section title={t.approach}>
+            <p className="leading-relaxed text-text-secondary">{offer.approach}</p>
+            <div className="mt-6 space-y-4">
+              {offer.phases.map((p, i) => (
+                <div key={i} className="rounded-2xl border border-border bg-bg-secondary p-5">
+                  <h3 className="text-lg font-semibold text-text-primary">{p.name}</h3>
+                  {p.goal && <p className="mt-1 text-sm text-text-secondary">{p.goal}</p>}
+                  {p.includes.length > 0 && (
+                    <ul className="mt-4 space-y-1.5">
+                      {p.includes.map((it, j) => (
+                        <li key={j} className="flex gap-2.5 text-sm text-text-secondary">
+                          <Check size={16} className="mt-0.5 shrink-0 text-accent" />
+                          <span>{it}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {p.outcome && <p className="mt-4 text-sm italic text-text-muted">{p.outcome}</p>}
+                  {(p.duration || p.price) && (
+                    <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1 border-t border-border pt-3 text-xs text-text-muted">
+                      {p.duration && (
+                        <span>
+                          <span className="uppercase tracking-wide">{t.duration}:</span> {p.duration}
+                        </span>
+                      )}
+                      {p.price && (
+                        <span>
+                          <span className="uppercase tracking-wide">{t.price}:</span> {p.price}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </Section>
 
-          <Section title={t.timeline}>
-            <p className="text-text-secondary">{offer.timeline}</p>
-          </Section>
+          {offer.tradeoffs.length > 0 && (
+            <Section title={t.build}>
+              <div className="overflow-x-auto rounded-xl border border-border">
+                <table className="w-full min-w-[36rem] border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-bg-tertiary text-left text-xs uppercase tracking-wide text-text-muted">
+                      <th className="px-4 py-3 font-semibold">{t.choice}</th>
+                      <th className="px-4 py-3 font-semibold">{t.why}</th>
+                      <th className="px-4 py-3 font-semibold">{t.alt}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {offer.tradeoffs.map((tr, i) => (
+                      <tr key={i} className="border-t border-border align-top">
+                        <td className="px-4 py-3 font-medium text-text-primary">{tr.choice}</td>
+                        <td className="px-4 py-3 text-text-secondary">{tr.why}</td>
+                        <td className="px-4 py-3 text-text-muted">{tr.alternative ?? '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Section>
+          )}
 
           <Section title={t.investment}>
             <p className="text-text-secondary">{offer.investment.summary}</p>
-            <ul className="mt-4 divide-y divide-border overflow-hidden rounded-xl border border-border">
-              {offer.investment.items.map((it, i) => (
-                <li key={i} className="flex items-start justify-between gap-4 bg-bg-secondary px-4 py-3">
-                  <div>
-                    <p className="font-medium text-text-primary">{it.title}</p>
-                    <p className="text-sm text-text-muted">{it.description}</p>
-                  </div>
-                  {it.price && <span className="shrink-0 text-sm font-medium text-text-secondary">{it.price}</span>}
-                </li>
-              ))}
-            </ul>
             {offer.investment.total && (
-              <p className="mt-3 text-right font-semibold text-text-primary">
+              <p className="mt-3 text-lg font-semibold text-text-primary">
                 {t.total}: {offer.investment.total}
+              </p>
+            )}
+            {offer.investment.paymentTerms && (
+              <p className="mt-2 text-sm text-text-secondary">
+                <span className="text-text-muted">{t.payment}:</span> {offer.investment.paymentTerms}
               </p>
             )}
             {offer.investment.note && <p className="mt-3 text-xs text-text-muted">{offer.investment.note}</p>}
           </Section>
 
-          <Section title={t.why}>
-            <ul className="space-y-2">
-              {offer.whyMe.map((w, i) => (
-                <li key={i} className="flex gap-2.5 text-text-secondary">
-                  <Check size={18} className="mt-0.5 shrink-0 text-accent" />
-                  <span>{w}</span>
-                </li>
-              ))}
-            </ul>
-          </Section>
+          {(offer.scope.excludes.length > 0 || offer.scope.ownership) && (
+            <Section title={t.scope}>
+              {offer.scope.excludes.length > 0 && (
+                <ul className="space-y-1.5">
+                  {offer.scope.excludes.map((e, i) => (
+                    <li key={i} className="flex gap-2.5 text-sm text-text-secondary">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-text-muted" />
+                      <span>{e}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {offer.scope.ownership && (
+                <p className="mt-4 text-sm text-text-secondary">
+                  <span className="font-medium text-text-primary">{t.ownership}. </span>
+                  {offer.scope.ownership}
+                </p>
+              )}
+            </Section>
+          )}
 
           <Section title={t.next}>
             <ol className="space-y-2">
@@ -211,10 +289,7 @@ export default function OfferPage() {
           </Section>
 
           <div className="mt-12 rounded-2xl border border-border bg-bg-secondary p-6">
-            <p className="flex items-start gap-2.5 text-lg text-text-primary">
-              <FileText size={20} className="mt-1 shrink-0 text-accent" />
-              <span>{offer.cta}</span>
-            </p>
+            <p className="text-lg text-text-primary">{offer.cta}</p>
             <div className="mt-5 border-t border-border pt-5 text-sm text-text-secondary">
               <p className="font-medium text-text-primary">{offer.sender.name}</p>
               {offer.sender.title && <p>{offer.sender.title}</p>}

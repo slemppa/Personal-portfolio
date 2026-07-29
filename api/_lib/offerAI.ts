@@ -1,7 +1,7 @@
 // The AI path for offer generation. When ANTHROPIC_API_KEY is set, Claude
-// writes the creative parts of the offer; otherwise (or on any error) we fall
-// back to the deterministic buildOffer(). The SDK is imported dynamically so
-// the deterministic path — and the tests — never need the dependency loaded.
+// writes a phased proposal; otherwise (or on any error) we fall back to the
+// deterministic buildOffer(). The SDK is imported dynamically so the
+// deterministic path — and the tests — never need the dependency loaded.
 
 import { buildOffer, type Offer, type OfferInput } from './offer.js'
 
@@ -12,69 +12,102 @@ const AI_SCHEMA = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    title: { type: 'string', description: 'Short offer title, e.g. "Proposal – Acme".' },
+    title: { type: 'string', description: 'Short offer title, e.g. "Ehdotus etenemisestä – Acme".' },
     greeting: { type: 'string', description: 'One-line greeting to the recipient.' },
-    summary: { type: 'string', description: 'One-paragraph executive summary.' },
-    understanding: { type: 'string', description: 'Your reading of their situation and needs.' },
-    approach: { type: 'string', description: 'The proposed approach, in prose.' },
-    deliverables: {
+    summary: { type: 'string', description: 'One short opening paragraph framing the situation.' },
+    situation: {
       type: 'array',
-      description: '3–5 concrete deliverables.',
+      description: '2–4 named problems in the prospect\'s current situation.',
       items: {
         type: 'object',
         additionalProperties: false,
         properties: {
-          title: { type: 'string' },
-          description: { type: 'string' },
+          title: { type: 'string', description: 'The problem, a few words.' },
+          body: { type: 'string', description: '1–2 sentences explaining it plainly.' },
         },
-        required: ['title', 'description'],
+        required: ['title', 'body'],
       },
     },
-    timeline: { type: 'string', description: 'Delivery timeline in one or two sentences.' },
+    approach: { type: 'string', description: 'One paragraph framing the phased path.' },
+    phases: {
+      type: 'array',
+      description: '1–4 phases. Small deals: one phase. Each phase must deliver value on its own.',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          name: { type: 'string', description: 'e.g. "Vaihe 1 — Julkinen sivusto".' },
+          goal: { type: 'string', description: 'One line: what this phase delivers.' },
+          includes: { type: 'array', items: { type: 'string' }, description: '2–6 concrete deliverables.' },
+          outcome: { type: 'string', description: 'What changes (or explicitly does not) for the client.' },
+          duration: { type: 'string', description: 'e.g. "2–3 viikkoa".' },
+          price: { type: 'string', description: 'Indicative price, e.g. "alkaen 3 500 €".' },
+        },
+        required: ['name', 'goal', 'includes', 'outcome', 'duration', 'price'],
+      },
+    },
+    tradeoffs: {
+      type: 'array',
+      description: 'Optional honest build decisions (0–5). Empty array if not relevant.',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          choice: { type: 'string', description: 'The decision made.' },
+          why: { type: 'string', description: 'Why it pays off.' },
+          alternative: { type: 'string', description: 'The lighter option and its later cost.' },
+        },
+        required: ['choice', 'why', 'alternative'],
+      },
+    },
     investment: {
       type: 'object',
       additionalProperties: false,
       properties: {
         summary: { type: 'string' },
+        total: { type: 'string', description: 'Grand total or range, or "" if per-phase only.' },
+        paymentTerms: { type: 'string', description: 'e.g. "40 % aloitus, 40 % demo, 20 % hyväksyntä".' },
         note: { type: 'string', description: 'Fine print, e.g. VAT note.' },
-        items: {
-          type: 'array',
-          items: {
-            type: 'object',
-            additionalProperties: false,
-            properties: {
-              title: { type: 'string' },
-              description: { type: 'string' },
-              price: { type: 'string', description: 'Indicative price string, e.g. "from 2 000 €".' },
-            },
-            required: ['title', 'description', 'price'],
-          },
-        },
       },
-      required: ['summary', 'note', 'items'],
+      required: ['summary', 'total', 'paymentTerms', 'note'],
     },
-    whyMe: { type: 'array', items: { type: 'string' }, description: '3 reasons to choose Sami.' },
-    nextSteps: { type: 'array', items: { type: 'string' }, description: '3 concrete next steps.' },
+    scope: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        excludes: { type: 'array', items: { type: 'string' }, description: 'What is not included.' },
+        ownership: { type: 'string', description: 'Accounts, source code, and independence terms.' },
+      },
+      required: ['excludes', 'ownership'],
+    },
+    nextSteps: { type: 'array', items: { type: 'string' }, description: '2–3 concrete next steps.' },
     cta: { type: 'string', description: 'A warm, direct call to action.' },
   },
   required: [
-    'title', 'greeting', 'summary', 'understanding', 'approach',
-    'deliverables', 'timeline', 'investment', 'whyMe', 'nextSteps', 'cta',
+    'title', 'greeting', 'summary', 'situation', 'approach',
+    'phases', 'tradeoffs', 'investment', 'scope', 'nextSteps', 'cta',
   ],
 } as const
 
 function systemPrompt(input: OfferInput): string {
   const lang = input.language === 'fi' ? 'Finnish' : 'English'
   return [
-    `You are a world-class B2B proposal writer working for ${input.sender.name}`,
-    `(${input.sender.title ?? 'AI & automation consultant'}), who builds AI and automation`,
-    `solutions for SMEs. Write the finest possible sales offer based on the CRM data provided.`,
+    `You are a world-class independent consultant writing a proposal for ${input.sender.name}`,
+    `(${input.sender.title ?? 'AI & automation consultant'}), who builds AI, automation and web`,
+    `systems for SMEs. Write a phased proposal based on the CRM data provided.`,
     ``,
     `Write entirely in ${lang}. Currency is "${input.currency}".`,
-    `Be specific to this prospect — reference their company, industry, and pain points.`,
-    `Be concise and confident: no filler, no hedging, no generic "we are pleased to" boilerplate.`,
-    `Ground pricing in the prospect's stated budget when given; otherwise give indicative "from X" ranges.`,
-    `Sound like a sharp independent consultant, not a corporate template.`,
+    `Structure: a short situation broken into named problems, a framing of the approach,`,
+    `then a phased path (Vaihe 0 määrittely / scoping first, then delivery phases). Each phase`,
+    `carries its own goal, concrete deliverables, what changes for the client, duration and price.`,
+    `Where useful, include a few honest "how it's built" trade-offs (choice / why / lighter alternative).`,
+    `End with clear scope boundaries and ownership terms.`,
+    ``,
+    `Be sharp and concise — a sharp independent consultant, not a corporate template.`,
+    `Cut filler: no "we are pleased to", no restating the obvious, no padding. Every sentence earns its place.`,
+    `Be honest about what each phase does NOT solve. Scale the number of phases to the deal size —`,
+    `a small, simple engagement is a single phase, not three.`,
+    `Ground pricing in the prospect's stated budget when given; otherwise give indicative "alkaen X" ranges.`,
   ].join('\n')
 }
 
@@ -91,12 +124,12 @@ function userPrompt(input: OfferInput): string {
   add('Budget', input.budget)
   add('Timeline', input.timeline)
   add('Notes from CRM', input.notes)
-  return parts.length ? parts.join('\n') : 'No structured details were provided; write a strong general offer.'
+  return parts.length ? parts.join('\n') : 'No structured details were provided; write a strong general proposal.'
 }
 
 type AIOffer = Pick<
   Offer,
-  'title' | 'greeting' | 'summary' | 'understanding' | 'approach' | 'deliverables' | 'timeline' | 'investment' | 'whyMe' | 'nextSteps' | 'cta'
+  'title' | 'greeting' | 'summary' | 'situation' | 'approach' | 'phases' | 'tradeoffs' | 'investment' | 'scope' | 'nextSteps' | 'cta'
 >
 
 /**
@@ -114,7 +147,7 @@ export async function generateOffer(input: OfferInput, env: OfferEnv): Promise<O
 
     const message = await client.messages.create({
       model: env.OFFER_MODEL || 'claude-opus-5',
-      max_tokens: 6000,
+      max_tokens: 8000,
       thinking: { type: 'adaptive' },
       output_config: { effort: 'medium', format: { type: 'json_schema', schema: AI_SCHEMA } },
       system: systemPrompt(input),
@@ -142,19 +175,39 @@ export async function generateOffer(input: OfferInput, env: OfferEnv): Promise<O
 // partial model response can't produce a broken offer.
 function mergeOffer(base: Offer, ai: AIOffer): Offer {
   const str = (v: unknown, fb: string) => (typeof v === 'string' && v.trim() ? v : fb)
-  const items = (v: unknown, fb: Offer['deliverables']) =>
-    Array.isArray(v) && v.length
-      ? v
-          .filter((x): x is { title: string; description: string; price?: string } => !!x && typeof x === 'object')
-          .map((x) => ({
-            title: str(x.title, ''),
-            description: str(x.description, ''),
-            ...(typeof x.price === 'string' && x.price.trim() ? { price: x.price } : {}),
-          }))
-          .filter((x) => x.title || x.description)
-      : fb
+  const optStr = (v: unknown) => (typeof v === 'string' && v.trim() ? v : undefined)
   const strList = (v: unknown, fb: string[]) =>
-    Array.isArray(v) && v.length ? v.filter((x) => typeof x === 'string' && x.trim()) : fb
+    Array.isArray(v) && v.length ? v.filter((x): x is string => typeof x === 'string' && !!x.trim()) : fb
+
+  const situation =
+    Array.isArray(ai.situation) && ai.situation.length
+      ? ai.situation
+          .filter((s): s is { title: string; body: string } => !!s && typeof s === 'object')
+          .map((s) => ({ title: str(s.title, ''), body: str(s.body, '') }))
+          .filter((s) => s.title || s.body)
+      : base.situation
+
+  const phases =
+    Array.isArray(ai.phases) && ai.phases.length
+      ? ai.phases
+          .filter((p): p is AIOffer['phases'][number] => !!p && typeof p === 'object')
+          .map((p) => ({
+            name: str(p.name, ''),
+            goal: optStr(p.goal),
+            includes: strList(p.includes, []),
+            outcome: optStr(p.outcome),
+            duration: optStr(p.duration),
+            price: optStr(p.price),
+          }))
+          .filter((p) => p.name && p.includes.length)
+      : base.phases
+
+  const tradeoffs = Array.isArray(ai.tradeoffs)
+    ? ai.tradeoffs
+        .filter((t): t is { choice: string; why: string; alternative?: string } => !!t && typeof t === 'object')
+        .map((t) => ({ choice: str(t.choice, ''), why: str(t.why, ''), alternative: optStr(t.alternative) }))
+        .filter((t) => t.choice && t.why)
+    : base.tradeoffs
 
   return {
     ...base,
@@ -162,16 +215,20 @@ function mergeOffer(base: Offer, ai: AIOffer): Offer {
     title: str(ai.title, base.title),
     greeting: str(ai.greeting, base.greeting),
     summary: str(ai.summary, base.summary),
-    understanding: str(ai.understanding, base.understanding),
+    situation: situation.length ? situation : base.situation,
     approach: str(ai.approach, base.approach),
-    deliverables: items(ai.deliverables, base.deliverables),
-    timeline: str(ai.timeline, base.timeline),
+    phases: phases.length ? phases : base.phases,
+    tradeoffs,
     investment: {
       summary: str(ai.investment?.summary, base.investment.summary),
-      items: items(ai.investment?.items, base.investment.items),
-      note: str(ai.investment?.note, base.investment.note ?? ''),
+      total: optStr(ai.investment?.total),
+      paymentTerms: optStr(ai.investment?.paymentTerms) ?? base.investment.paymentTerms,
+      note: optStr(ai.investment?.note) ?? base.investment.note,
     },
-    whyMe: strList(ai.whyMe, base.whyMe),
+    scope: {
+      excludes: strList(ai.scope?.excludes, base.scope.excludes),
+      ownership: optStr(ai.scope?.ownership) ?? base.scope.ownership,
+    },
     nextSteps: strList(ai.nextSteps, base.nextSteps),
     cta: str(ai.cta, base.cta),
   }
