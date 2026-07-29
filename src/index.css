@@ -154,6 +154,15 @@ body {
    inline style strings and collapse them on tablet/phone widths.
    ========================================================================== */
 
+/* Manifesto card grid: 3 columns → 2 on tablets, ahead of the general
+   3-col collapse below (scoped by class so it doesn't affect the tech
+   section's identical repeat(3,1fr) grid). */
+@media (max-width: 1100px) {
+  .man-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
 /* Build in Public live section + the homepage's two-column inline grids:
    stack into a single column on narrow screens. */
 @media (max-width: 860px) {
@@ -204,11 +213,6 @@ body {
   [style*="clamp(70px,9vh,110px)"] {
     padding-top: 60px !important;
     padding-bottom: 60px !important;
-  }
-
-  /* Drop the manifesto's sticky intro so it doesn't hover over the list. */
-  [style*="position:sticky;top:120px"] {
-    position: static !important;
   }
 }
 

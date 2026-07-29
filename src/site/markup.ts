@@ -194,36 +194,62 @@ export function sectionsHtml(lang: Lang): string {
   <!-- MANIFESTI -->
   <section id="manifesti" style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(90px,12vh,150px) clamp(20px,5vw,56px);">
     <div data-reveal style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:26px;">${c.manEyebrow}</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start;">
-      <div data-reveal style="position:sticky;top:120px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:end;margin-bottom:44px;">
+      <div data-reveal>
         <h2 style="margin:0;font-weight:600;font-size:clamp(2.2rem,4.4vw,3.8rem);line-height:1.02;letter-spacing:-.025em;">${c.manTitleA}<br><span style="color:rgba(255,255,255,.42);">${c.manTitleB}</span></h2>
-        <p style="margin:24px 0 0;max-width:420px;font-size:16.5px;line-height:1.62;color:rgba(255,255,255,.56);">${c.manIntro}</p>
       </div>
-      <div style="display:flex;flex-direction:column;">
-        <div data-reveal data-delay="0" style="display:flex;gap:22px;padding:26px 0;border-top:1px solid rgba(255,255,255,.09);">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,.32);padding-top:3px;">01</span>
-          <p style="margin:0;font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.72);">${c.man1}</p>
+      <div data-reveal data-delay="60">
+        <p style="margin:0;font-size:16.5px;line-height:1.62;color:rgba(255,255,255,.56);">${c.manIntro}</p>
+      </div>
+    </div>
+    <div class="man-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+      <div data-reveal data-delay="0" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.35);">01 —</span>
+          <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man1t}</h3>
         </div>
-        <div data-reveal data-delay="60" style="display:flex;gap:22px;padding:26px 0;border-top:1px solid rgba(255,255,255,.09);">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,.32);padding-top:3px;">02</span>
-          <p style="margin:0;font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.72);">${c.man2}</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man1}</p>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man1r}</div>
+      </div>
+      <div data-reveal data-delay="60" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.35);">02 —</span>
+          <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man2t}</h3>
         </div>
-        <div data-reveal data-delay="120" style="display:flex;gap:22px;padding:26px 0;border-top:1px solid rgba(255,255,255,.09);">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,.32);padding-top:3px;">03</span>
-          <p style="margin:0;font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.72);">${c.man3}</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man2}</p>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man2r}</div>
+      </div>
+      <div data-reveal data-delay="120" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.35);">03 —</span>
+          <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man3t}</h3>
         </div>
-        <div data-reveal data-delay="0" style="display:flex;gap:22px;padding:26px 0;border-top:1px solid rgba(255,255,255,.09);">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,.32);padding-top:3px;">04</span>
-          <p style="margin:0;font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.72);">${c.man4}</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man3}</p>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man3r}</div>
+      </div>
+      <div data-reveal data-delay="0" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.35);">04 —</span>
+          <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man4t}</h3>
         </div>
-        <div data-reveal data-delay="60" style="display:flex;gap:22px;padding:26px 0;border-top:1px solid rgba(255,255,255,.09);">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,.32);padding-top:3px;">05</span>
-          <p style="margin:0;font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.72);">${c.man5}</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man4}</p>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man4r}</div>
+      </div>
+      <div data-reveal data-delay="60" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.35);">05 —</span>
+          <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man5t}</h3>
         </div>
-        <div data-reveal data-delay="120" style="display:flex;gap:22px;padding:26px 0;border-top:1px solid rgba(255,255,255,.09);border-bottom:1px solid rgba(255,255,255,.09);">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,.32);padding-top:3px;">06</span>
-          <p style="margin:0;font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.72);">${c.man6}</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man5}</p>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man5r}</div>
+      </div>
+      <div data-reveal data-delay="120" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.35);">06 —</span>
+          <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man6t}</h3>
         </div>
+        <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man6}</p>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man6r}</div>
       </div>
     </div>
   </section>
