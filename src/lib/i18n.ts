@@ -109,19 +109,19 @@ const strings: Record<Lang, Dict> = {
     formCompany: 'Company',
     formEmail: 'Email',
     formMessage: 'Message',
-    formMessagePh: 'Briefly: what you're building and where I could help.',
+    formMessagePh: "Briefly: what you’re building and where I could help.",
     formConsent: 'You may email me about projects and writing',
     formSend: 'Send',
     formSending: 'Sending…',
     formOkTitle: 'Thanks — message sent!',
-    formOkBody: 'I'll get back to you by email soon.',
+    formOkBody: "I’ll get back to you by email soon.",
     formError: 'Sending failed — please try again shortly.',
     // Newsletter
     nlTitle: 'Get new posts by email',
     nlBody: 'No spam — only when I publish.',
     nlPlaceholder: 'you@example.com',
     nlCta: 'Subscribe',
-    nlOk: 'Thanks — you're on the list.',
+    nlOk: "Thanks — you’re on the list.",
   },
 }
 
