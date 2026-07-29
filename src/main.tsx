@@ -14,6 +14,8 @@ const BlogList = lazy(() => import('./pages/BlogList.tsx'))
 const BlogPost = lazy(() => import('./pages/BlogPost.tsx'))
 const CaseStudy = lazy(() => import('./pages/CaseStudy.tsx'))
 const OfferPage = lazy(() => import('./pages/Offer.tsx'))
+const Contact = lazy(() => import('./pages/Contact.tsx'))
+const Admin = lazy(() => import('./pages/Admin.tsx'))
 
 // posthog-js is ~200 kB of pure analytics — load it (dynamically) once the
 // browser is idle so it never blocks first render or interactivity.
@@ -37,7 +39,11 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/en/blog" element={<BlogList lang="en" />} />
           <Route path="/en/blog/:slug" element={<BlogPost lang="en" />} />
           <Route path="/tarjous" element={<OfferPage />} />
+          <Route path="/tarjous/:id" element={<OfferPage />} />
           <Route path="/offer" element={<OfferPage />} />
+          <Route path="/offer/:id" element={<OfferPage />} />
+          <Route path="/yhteys" element={<Contact />} />
+          <Route path="/hallinta" element={<Admin />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

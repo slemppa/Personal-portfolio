@@ -108,7 +108,7 @@ export type Offer = {
 const DEFAULT_SENDER: OfferSender = {
   name: 'Sami Kiias',
   title: 'AI & automaatiokonsultti',
-  email: 'sami.kiias@gmail.com',
+  email: 'sami@mak8r.fi',
   company: 'Sami Kiias',
 }
 

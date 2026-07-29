@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useParams } from 'react-router'
 import { Check, Copy, Printer, Sparkles } from 'lucide-react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { formatDate } from '../lib/format'
 import { applyHead } from '../lib/head'
-import { decodeOfferToken, offerTokenFromLocation, type Offer } from '../lib/offer'
+import { decodeOfferToken, fetchStoredOffer, offerTokenFromLocation, type Offer } from '../lib/offer'
 
 // Bilingual UI labels. Content comes from the offer itself; only the chrome
 // (section headings, buttons) is localised here.
@@ -70,12 +70,29 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function OfferPage() {
-  const offer = useMemo<Offer | null>(() => {
-    if (typeof window === 'undefined') return null
+  // Two link shapes: /tarjous/<id> fetches a stored offer; /tarjous#<token>
+  // decodes a stateless offer straight from the URL.
+  const { id } = useParams()
+  const tokenOffer = useMemo<Offer | null>(() => {
+    if (id || typeof window === 'undefined') return null
     const token = offerTokenFromLocation(window.location)
     return token ? decodeOfferToken(token) : null
-  }, [])
+  }, [id])
 
+  // Keyed by id so navigating between /tarjous/<id> links resets cleanly and we
+  // can distinguish "not fetched yet" from "fetched, not found" — all derived,
+  // so the effect only issues one (async) state update.
+  const [fetched, setFetched] = useState<{ id: string; offer: Offer | null } | null>(null)
+
+  useEffect(() => {
+    if (!id) return
+    const ctrl = new AbortController()
+    fetchStoredOffer(id, ctrl.signal).then((o) => setFetched({ id, offer: o }))
+    return () => ctrl.abort()
+  }, [id])
+
+  const loading = !!id && fetched?.id !== id
+  const offer = id ? (fetched?.id === id ? fetched.offer : null) : tokenOffer
   const lang = offer?.language ?? 'fi'
   const t = UI[lang]
   const [copied, setCopied] = useState(false)
@@ -98,6 +115,20 @@ export default function OfferPage() {
     } catch {
       // Clipboard blocked (e.g. insecure context) — silently ignore.
     }
+  }
+
+  if (loading) {
+    return (
+      <>
+        <Nav />
+        <main className="mx-auto min-h-screen max-w-3xl px-8 pb-24 pt-32">
+          <div className="h-8 w-2/3 animate-pulse rounded bg-bg-tertiary" />
+          <div className="mt-6 h-4 w-full animate-pulse rounded bg-bg-tertiary" />
+          <div className="mt-2 h-4 w-5/6 animate-pulse rounded bg-bg-tertiary" />
+        </main>
+        <Footer />
+      </>
+    )
   }
 
   if (!offer) {
