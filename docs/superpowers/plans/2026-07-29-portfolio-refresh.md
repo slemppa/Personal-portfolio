@@ -1534,6 +1534,12 @@ Title stays 'Automaatio on / uusi lukutaito.' / 'Automation is / the new literac
 - [ ] **Step 3:** Verify lint/vitest/build + both langs render, screenshot check.
 - [ ] **Step 4:** Commit `feat: manifesto rewritten with receipts, card grid layout`
 
+### Task 18: Build in Public — three latest posts (user feedback 2026-07-29)
+
+**Files:** Modify `src/components/BuildInPublic.tsx` only.
+
+The right column's single "Uusin kirjoitus" card becomes a "Uusimmat kirjoitukset" (en: "Latest posts") card listing the **3** newest posts from `getAllPosts(lang)`: each row = date (mono, muted) + title (semibold, link to `blogPostPath(lang, slug)`) + one-line summary (`line-clamp`/truncated to ~2 lines), separated by hairline dividers. Keeps the card's existing border/background/hover language. If fewer than 3 posts exist for the lang, render what exists; if zero, render nothing (current graceful behavior). Update the SECTION_COPY dict label (fi 'Uusimmat kirjoitukset' / en 'Latest posts'). Verify lint/vitest/build.
+
 ## Task execution order
 
 Strict order: 1 → 2+3+4 (one sitting) → 5 → 6 → 7 → 8 → 10 → 11 → 9 → 12 → 13 → 14 → 15. (10+11 before 9 because CaseStudy's CTA consumes the consent-aware ContactForm.)
