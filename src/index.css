@@ -171,6 +171,11 @@ body {
     grid-template-columns: 1fr 1fr !important;
   }
 
+  /* Tech section principles row: 3 columns → 1 on tablets/phones. */
+  [style*="grid-template-columns:repeat(3,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
   /* Vertical column dividers turn into horizontal ones once stacked. */
   [style*="border-left:1px solid rgba(255,255,255,.09)"] {
     border-left: none !important;

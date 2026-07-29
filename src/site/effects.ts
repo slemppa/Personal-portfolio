@@ -483,3 +483,121 @@ export function runKoneisto(): Disposer {
     disposers.forEach((d) => d())
   }
 }
+
+/** Living stack strip: five nodes (01–05) on a hairline, with small packets
+ * travelling node-to-node and a soft pulse ring on arrival. Static under
+ * prefers-reduced-motion. */
+export function runStackFlow(): Disposer {
+  const cv = document.getElementById('stack-canvas') as HTMLCanvasElement | null
+  if (!cv) return () => {}
+  const ctx = cv.getContext('2d')
+  if (!ctx) return () => {}
+  const reduce = prefersReduced()
+
+  const NODE_COUNT = 5
+  let W = 0
+  let H = 0
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const nodeX = (i: number) => W * 0.07 + (W * 0.86 * i) / (NODE_COUNT - 1)
+  const nodeY = () => H / 2
+
+  const drawNodes = () => {
+    ctx.strokeStyle = 'rgba(255,255,255,.14)'
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(nodeX(0), nodeY())
+    ctx.lineTo(nodeX(NODE_COUNT - 1), nodeY())
+    ctx.stroke()
+    ctx.textAlign = 'center'
+    ctx.font = "11px 'JetBrains Mono', monospace"
+    for (let i = 0; i < NODE_COUNT; i++) {
+      const x = nodeX(i)
+      const y = nodeY()
+      ctx.beginPath()
+      ctx.fillStyle = 'rgba(255,255,255,.5)'
+      ctx.arc(x, y, 3, 0, 6.2832)
+      ctx.fill()
+      ctx.beginPath()
+      ctx.strokeStyle = 'rgba(255,255,255,.22)'
+      ctx.arc(x, y, 7, 0, 6.2832)
+      ctx.stroke()
+      ctx.fillStyle = 'rgba(255,255,255,.45)'
+      ctx.fillText(String(i + 1).padStart(2, '0'), x, y - 18)
+    }
+  }
+
+  const resize = () => {
+    const r = cv.getBoundingClientRect()
+    W = r.width
+    H = r.height
+    cv.width = Math.floor(W * dpr)
+    cv.height = Math.floor(H * dpr)
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    ctx.clearRect(0, 0, W, H)
+    drawNodes()
+  }
+
+  if (reduce) {
+    resize()
+    window.addEventListener('resize', resize)
+    return () => window.removeEventListener('resize', resize)
+  }
+
+  type Packet = { from: number; to: number; t0: number; dur: number }
+  type Ring = { x: number; y: number; t0: number }
+  let packets: Packet[] = []
+  let rings: Ring[] = []
+  let raf = 0
+  let lastSpawn = 0
+
+  const ease = (p: number) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2)
+
+  const frame = (now: number) => {
+    ctx.clearRect(0, 0, W, H)
+    drawNodes()
+
+    if (packets.length < 3 && now - lastSpawn > 650 + Math.random() * 700) {
+      const from = Math.floor(Math.random() * (NODE_COUNT - 1))
+      packets.push({ from, to: from + 1, t0: now, dur: 850 + Math.random() * 500 })
+      lastSpawn = now
+    }
+
+    packets = packets.filter((pk) => {
+      const p = Math.min(1, (now - pk.t0) / pk.dur)
+      const e = ease(p)
+      const x = nodeX(pk.from) + (nodeX(pk.to) - nodeX(pk.from)) * e
+      const y = nodeY()
+      ctx.beginPath()
+      ctx.fillStyle = 'rgba(255,255,255,.9)'
+      ctx.arc(x, y, 2.5, 0, 6.2832)
+      ctx.fill()
+      if (p >= 1) {
+        rings.push({ x: nodeX(pk.to), y, t0: now })
+        return false
+      }
+      return true
+    })
+
+    rings = rings.filter((rg) => {
+      const p = Math.min(1, (now - rg.t0) / 600)
+      if (p >= 1) return false
+      ctx.beginPath()
+      ctx.strokeStyle = 'rgba(255,255,255,' + 0.32 * (1 - p) + ')'
+      ctx.lineWidth = 1.2
+      ctx.arc(rg.x, rg.y, 7 + p * 15, 0, 6.2832)
+      ctx.stroke()
+      return true
+    })
+
+    raf = requestAnimationFrame(frame)
+  }
+
+  resize()
+  window.addEventListener('resize', resize)
+  raf = requestAnimationFrame(frame)
+
+  return () => {
+    cancelAnimationFrame(raf)
+    window.removeEventListener('resize', resize)
+  }
+}

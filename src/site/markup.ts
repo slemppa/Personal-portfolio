@@ -298,19 +298,24 @@ export function sectionsHtml(lang: Lang): string {
           <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);padding:3px 8px;border-radius:6px;">Hedra</span>
         </div>
       </div>
-      <div data-reveal data-delay="120" style="background:#0e0f12;padding:30px 26px;display:flex;flex-direction:column;justify-content:center;gap:18px;">
-        <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:6px;">${c.techP1t}</div>
-          <p style="margin:0;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.6);">${c.techP1b}</p>
-        </div>
-        <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:6px;">${c.techP2t}</div>
-          <p style="margin:0;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.6);">${c.techP2b}</p>
-        </div>
-        <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:6px;">${c.techP3t}</div>
-          <p style="margin:0;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.6);">${c.techP3b}</p>
-        </div>
+    </div>
+
+    <div data-reveal style="margin-top:16px;border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px clamp(16px,3vw,26px);background:rgba(255,255,255,.015);">
+      <canvas id="stack-canvas" style="width:100%;height:190px;display:block;"></canvas>
+    </div>
+
+    <div data-reveal style="margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+      <div style="border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:22px;background:rgba(255,255,255,.015);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:8px;">${c.techP1t}</div>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.6);">${c.techP1b}</p>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:22px;background:rgba(255,255,255,.015);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:8px;">${c.techP2t}</div>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.6);">${c.techP2b}</p>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:22px;background:rgba(255,255,255,.015);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:8px;">${c.techP3t}</div>
+        <p style="margin:0;font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.6);">${c.techP3b}</p>
       </div>
     </div>
   </section>

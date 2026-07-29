@@ -5,7 +5,7 @@ import BuildInPublic from '../components/BuildInPublic'
 import CasesSection from '../components/CasesSection'
 import YhteysSection from '../components/YhteysSection'
 import { sectionsHtml } from '../site/markup'
-import { wireHover, runKoneisto } from '../site/effects'
+import { wireHover, runKoneisto, runStackFlow } from '../site/effects'
 import { applyHead } from '../lib/head'
 import { homeCopy } from '../site/copy'
 import { homePath } from '../lib/i18n'
@@ -31,7 +31,7 @@ export default function Home({ lang = 'fi' }: { lang?: Lang }) {
   useEffect(() => {
     const root = ref.current
     if (!root) return
-    const disposers = [wireHover(root), runKoneisto()]
+    const disposers = [wireHover(root), runKoneisto(), runStackFlow()]
 
     return () => disposers.forEach((d) => d())
   }, [])
