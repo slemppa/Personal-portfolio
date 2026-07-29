@@ -34,9 +34,13 @@ const containerStyle: React.CSSProperties = {
   margin: '0 auto',
   padding: 'clamp(90px,12vh,150px) clamp(20px,5vw,56px)',
 }
+// grid-template-columns lives in Tailwind classes (not inline) because React
+// serializes inline styles with a space after the colon
+// (`grid-template-columns: 1.1fr .9fr`), which the site's attribute-selector
+// mobile breakpoints in index.css can't match — an inline style here would
+// also always beat a Tailwind class on specificity, so it can collapse.
 const gridStyle: React.CSSProperties = {
   display: 'grid',
-  gridTemplateColumns: '1.1fr .9fr',
   gap: 'clamp(32px,5vw,72px)',
   alignItems: 'start',
 }
@@ -94,7 +98,7 @@ export default function YhteysSection({ lang }: { lang: Lang }) {
     <section id="yhteys" style={sectionStyle}>
       <div style={glowStyle} />
       <div style={containerStyle}>
-        <div style={gridStyle}>
+        <div style={gridStyle} className="grid-cols-1 min-[861px]:grid-cols-[1.1fr_0.9fr]">
           <div data-reveal>
             <div style={eyebrowStyle}>{c.contactEyebrow}</div>
             <h2 style={{ margin: '0 0 22px', fontWeight: 600, fontSize: 'clamp(2.2rem,4.6vw,3.8rem)', letterSpacing: '-.03em', lineHeight: 1.02 }}>
