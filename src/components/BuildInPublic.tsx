@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { fetchActivity, type Activity } from '../lib/activity'
 import type { Post } from '../lib/posts'
 import type { Lang } from '../lib/parsePost'
+import { blogPostPath } from '../lib/i18n'
 import ContributionHeatmap from './ContributionHeatmap'
 
 const mono = "'JetBrains Mono', monospace"
@@ -21,7 +22,7 @@ const SECTION_COPY = {
     ytFallbackSub: 'AI & automaatio · tilaa kanava →',
     contribsPerYear: 'contributionia / vuosi',
     github: 'github →',
-    latestPost: 'Uusin kirjoitus',
+    latestPosts: 'Uusimmat kirjoitukset',
     dateLocale: 'fi-FI',
     numberLocale: 'fi-FI',
     timeLocale: 'fi-FI',
@@ -44,7 +45,7 @@ const SECTION_COPY = {
     ytFallbackSub: 'AI & automation · subscribe →',
     contribsPerYear: 'contributions / year',
     github: 'github →',
-    latestPost: 'Latest post',
+    latestPosts: 'Latest posts',
     dateLocale: 'en-US',
     numberLocale: 'en-US',
     timeLocale: 'en-US',
@@ -185,7 +186,7 @@ export default function BuildInPublic({ lang = 'fi' }: { lang?: Lang }) {
   const t = SECTION_COPY[lang]
   const [data, setData] = useState<Activity | null>(null)
   const [failed, setFailed] = useState(false)
-  const [latestPost, setLatestPost] = useState<Post | null>(null)
+  const [latestPosts, setLatestPosts] = useState<Post[]>([])
   const contributions = useCountUp(data?.github.totalContributions ?? null)
 
   useEffect(() => {
@@ -199,7 +200,7 @@ export default function BuildInPublic({ lang = 'fi' }: { lang?: Lang }) {
     // plus js-yaml, which we don't want on the home page's critical path.
     let active = true
     import('../lib/posts').then(({ getAllPosts }) => {
-      if (active) setLatestPost(getAllPosts(lang)[0] ?? null)
+      if (active) setLatestPosts(getAllPosts(lang).slice(0, 3))
     })
     return () => {
       active = false
@@ -286,16 +287,48 @@ export default function BuildInPublic({ lang = 'fi' }: { lang?: Lang }) {
           ) : null}
         </a>
 
-        {latestPost ? (
-          <Link to={`/blog/${latestPost.slug}`} style={{ ...tileStyle, display: 'block', textDecoration: 'none', color: '#e9eaec' }}>
-            <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.36)', marginBottom: 10 }}>
-              {t.latestPost} · {fmtDate(latestPost.date, t)}
+        {latestPosts.length > 0 ? (
+          <div style={{ ...tileStyle, display: 'block' }}>
+            <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.36)', marginBottom: 14 }}>
+              {t.latestPosts}
             </div>
-            <div style={{ fontWeight: 600, fontSize: 16, lineHeight: 1.35, marginBottom: latestPost.description ? 8 : 0 }}>{latestPost.title}</div>
-            {latestPost.description ? (
-              <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: 'rgba(255,255,255,.52)' }}>{latestPost.description}</p>
-            ) : null}
-          </Link>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {latestPosts.map((post, i) => (
+                <Link
+                  key={post.slug}
+                  to={blogPostPath(lang, post.slug)}
+                  style={{
+                    display: 'block',
+                    textDecoration: 'none',
+                    color: '#e9eaec',
+                    padding: i === 0 ? '0 0 14px' : '14px 0',
+                    borderTop: i > 0 ? '1px solid rgba(255,255,255,.07)' : undefined,
+                  }}
+                >
+                  <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.36)', marginBottom: 6 }}>
+                    {fmtDate(post.date, t)}
+                  </div>
+                  <div style={{ fontWeight: 600, fontSize: 15, lineHeight: 1.35, marginBottom: post.description ? 6 : 0 }}>{post.title}</div>
+                  {post.description ? (
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: 13.5,
+                        lineHeight: 1.5,
+                        color: 'rgba(255,255,255,.52)',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {post.description}
+                    </p>
+                  ) : null}
+                </Link>
+              ))}
+            </div>
+          </div>
         ) : null}
       </>
     </Shell>
