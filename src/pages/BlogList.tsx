@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import NewsletterForm from '../components/NewsletterForm'
 import { getAllPosts } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
@@ -75,6 +76,9 @@ export default function BlogList({ lang }: { lang: Lang }) {
             ))}
           </ul>
         )}
+        <div className="mt-12">
+          <NewsletterForm lang={lang} source="newsletter:blog" />
+        </div>
       </main>
       <Footer />
     </>
