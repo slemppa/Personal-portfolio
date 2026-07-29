@@ -119,15 +119,15 @@ export default function YhteysSection({ lang }: { lang: Lang }) {
           <div data-reveal data-delay="80">
             <div style={labelStyle}>{c.contactFollow}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 30 }}>
-              <a href="#" style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
+              <a href="#" data-todo="linkedin-url" style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
                 <span style={{ color: '#e9eaec', fontWeight: 500, fontSize: 14.5 }}>{c.contactLi}</span>
                 <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>{c.contactLiCta}</span>
               </a>
-              <a href="#" style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
+              <a href="https://www.youtube.com/@samikiias" target="_blank" rel="noreferrer" style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
                 <span style={{ color: '#e9eaec', fontWeight: 500, fontSize: 14.5 }}>{c.contactYt}</span>
                 <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>{c.contactYtCta}</span>
               </a>
-              <a href="#" style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
+              <a href="https://github.com/slemppa" target="_blank" rel="noreferrer" style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
                 <span style={{ color: '#e9eaec', fontWeight: 500, fontSize: 14.5 }}>{c.contactGh}</span>
                 <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>{c.contactGhCta}</span>
               </a>

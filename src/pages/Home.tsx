@@ -79,7 +79,7 @@ export default function Home({ lang = 'fi' }: { lang?: Lang }) {
       <div dangerouslySetInnerHTML={{ __html: beforeProjects }} />
       <CasesSection lang={lang} />
       <div dangerouslySetInnerHTML={{ __html: betweenProjectsAndBuild }} />
-      <BuildInPublic />
+      <BuildInPublic lang={lang} />
       <div dangerouslySetInnerHTML={{ __html: betweenBuildAndYhteys }} />
       <YhteysSection lang={lang} />
       <Footer />

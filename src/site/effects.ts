@@ -171,13 +171,11 @@ export function runKoneisto(): Disposer {
   const termOut = document.getElementById('term-output')
   if (termOut) {
     const script = [
-      { p: '$', t: 'deploy rascal-ai --prod' },
-      { p: '→', t: 'booting multi-tenant runtime' },
-      { p: '✓', t: 'n8n workflows · 50 active' },
-      { p: '✓', t: 'supabase RLS · enforced' },
-      { p: '→', t: 'voice-ai · dialing 128 leads' },
-      { p: '✓', t: 'aikasäästö · 8–10h / asiakas / vko' },
-      { p: '$', t: 'status: tuotannossa ✓' },
+      { p: '$', t: './status' },
+      { p: '✓', t: 'products: 6 built · 3 in production' },
+      { p: '✓', t: 'code: 400k+ lines · tests: 3 000+' },
+      { p: '✓', t: 'releases: 423 shipped' },
+      { p: '$', t: 'status: production ✓' },
     ]
     const newRow = (p: string) => {
       const row = document.createElement('div')
