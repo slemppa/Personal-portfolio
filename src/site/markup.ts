@@ -209,7 +209,6 @@ export function sectionsHtml(lang: Lang): string {
           <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man1t}</h3>
         </div>
         <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man1}</p>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man1r}</div>
       </div>
       <div data-reveal data-delay="60" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
@@ -217,7 +216,6 @@ export function sectionsHtml(lang: Lang): string {
           <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man2t}</h3>
         </div>
         <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man2}</p>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man2r}</div>
       </div>
       <div data-reveal data-delay="120" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
@@ -225,7 +223,6 @@ export function sectionsHtml(lang: Lang): string {
           <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man3t}</h3>
         </div>
         <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man3}</p>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man3r}</div>
       </div>
       <div data-reveal data-delay="0" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
@@ -233,7 +230,6 @@ export function sectionsHtml(lang: Lang): string {
           <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man4t}</h3>
         </div>
         <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man4}</p>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man4r}</div>
       </div>
       <div data-reveal data-delay="60" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
@@ -241,7 +237,6 @@ export function sectionsHtml(lang: Lang): string {
           <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man5t}</h3>
         </div>
         <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man5}</p>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man5r}</div>
       </div>
       <div data-reveal data-delay="120" style="border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.015);padding:24px;">
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px;">
@@ -249,7 +244,6 @@ export function sectionsHtml(lang: Lang): string {
           <h3 style="margin:0;font-weight:600;font-size:17px;line-height:1.3;color:#f2f3f4;">${c.man6t}</h3>
         </div>
         <p style="margin:0;font-size:14.5px;line-height:1.56;color:#b7b9bd;">${c.man6}</p>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.09);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d8085;">${c.man6r}</div>
       </div>
     </div>
   </section>
@@ -461,4 +455,4 @@ export function sectionsHtml(lang: Lang): string {
        React-rendered <ContactForm>, which dangerouslySetInnerHTML fragments can't do. -->`
 }
 
-export const FOOTER_HTML = "<footer style=\"border-top:1px solid rgba(255,255,255,.08);background:#0a0b0d;\">\n    <div style=\"max-width:1280px;margin:0 auto;padding:54px clamp(20px,5vw,56px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:28px;\">\n      <div>\n        <div style=\"display:flex;align-items:center;gap:12px;margin-bottom:10px;\">\n          <span style=\"display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid rgba(255,255,255,.2);border-radius:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;\">SK</span>\n          <span style=\"font-weight:600;font-size:15px;\">Sami Kiias</span>\n        </div>\n        <p style=\"margin:0;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.42);\">Automaatio on uusi lukutaito.</p>\n      </div>\n      <div style=\"display:flex;gap:24px;\">\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">Blog</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">LinkedIn</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">GitHub</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">YouTube</a>\n      </div>\n    </div>\n    <div style=\"border-top:1px solid rgba(255,255,255,.06);padding:20px clamp(20px,5vw,56px);max-width:1280px;margin:0 auto;\">\n      <p style=\"margin:0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.32);\">© 2026 Sami Kiias. Kaikki oikeudet pidätetään.</p>\n    </div>\n  </footer>";
+export const FOOTER_HTML = "<footer style=\"border-top:1px solid rgba(255,255,255,.08);background:#0a0b0d;\">\n    <div style=\"max-width:1280px;margin:0 auto;padding:54px clamp(20px,5vw,56px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:28px;\">\n      <div>\n        <div style=\"display:flex;align-items:center;gap:12px;margin-bottom:10px;\">\n          <span style=\"display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid rgba(255,255,255,.2);border-radius:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;\">SK</span>\n          <span style=\"font-weight:600;font-size:15px;\">Sami Kiias</span>\n        </div>\n        <p style=\"margin:0;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.42);\">Tuotantojärjestelmiä, ei demoja.</p>\n      </div>\n      <div style=\"display:flex;gap:24px;\">\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">Blog</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">LinkedIn</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">GitHub</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">YouTube</a>\n      </div>\n    </div>\n    <div style=\"border-top:1px solid rgba(255,255,255,.06);padding:20px clamp(20px,5vw,56px);max-width:1280px;margin:0 auto;\">\n      <p style=\"margin:0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.32);\">© 2026 Sami Kiias. Kaikki oikeudet pidätetään.</p>\n    </div>\n  </footer>";
