@@ -2,29 +2,82 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { fetchActivity, type Activity } from '../lib/activity'
 import type { Post } from '../lib/posts'
+import type { Lang } from '../lib/parsePost'
+import { blogPostPath } from '../lib/i18n'
 import ContributionHeatmap from './ContributionHeatmap'
 
 const mono = "'JetBrains Mono', monospace"
 
-function fmtDate(iso: string): string {
+const SECTION_COPY = {
+  fi: {
+    eyebrow: '03 — Build in Public',
+    live: 'Live',
+    updated: (t: string) => `päivitetty ${t}`,
+    title: 'Build in Public',
+    intro:
+      'Dokumentoin matkaa AI-järjestelmien rakentajana — oikeaa dataa, ei kuvituskuvaa. Videot, koodi ja kirjoitukset päivittyvät tähän automaattisesti kun julkaisen.',
+    latestVideo: 'Uusin video',
+    watch: 'katso →',
+    ytFallbackTitle: '@samikiias YouTubessa',
+    ytFallbackSub: 'AI & automaatio · tilaa kanava →',
+    contribsPerYear: 'contributionia / vuosi',
+    github: 'github →',
+    latestPosts: 'Uusimmat kirjoitukset',
+    dateLocale: 'fi-FI',
+    numberLocale: 'fi-FI',
+    timeLocale: 'fi-FI',
+    justNow: 'juuri nyt',
+    minAgo: (n: number) => `${n} min sitten`,
+    hAgo: (n: number) => `${n} h sitten`,
+    daysAgo: (n: number) => `${n} pv sitten`,
+    moAgo: (n: number) => `${n} kk sitten`,
+  },
+  en: {
+    eyebrow: '03 — Build in Public',
+    live: 'Live',
+    updated: (t: string) => `updated ${t}`,
+    title: 'Build in Public',
+    intro:
+      'Documenting the journey of building AI systems — real data, not stock photos. Videos, code, and posts update here automatically as I publish.',
+    latestVideo: 'Latest video',
+    watch: 'watch →',
+    ytFallbackTitle: '@samikiias on YouTube',
+    ytFallbackSub: 'AI & automation · subscribe →',
+    contribsPerYear: 'contributions / year',
+    github: 'github →',
+    latestPosts: 'Latest posts',
+    dateLocale: 'en-US',
+    numberLocale: 'en-US',
+    timeLocale: 'en-US',
+    justNow: 'just now',
+    minAgo: (n: number) => `${n} min ago`,
+    hAgo: (n: number) => `${n} h ago`,
+    daysAgo: (n: number) => `${n} d ago`,
+    moAgo: (n: number) => `${n} mo ago`,
+  },
+} as const
+
+type Copy = (typeof SECTION_COPY)[Lang]
+
+function fmtDate(iso: string, t: Copy): string {
   const d = new Date(iso)
   if (isNaN(d.getTime())) return ''
-  return d.toLocaleDateString('fi-FI', { day: 'numeric', month: 'short', year: 'numeric' })
+  return d.toLocaleDateString(t.dateLocale, { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-function relTime(iso: string): string {
+function relTime(iso: string, t: Copy): string {
   const d = new Date(iso).getTime()
   if (isNaN(d)) return ''
   const s = Math.round((Date.now() - d) / 1000)
-  if (s < 60) return 'juuri nyt'
+  if (s < 60) return t.justNow
   const m = Math.round(s / 60)
-  if (m < 60) return `${m} min sitten`
+  if (m < 60) return t.minAgo(m)
   const h = Math.round(m / 60)
-  if (h < 24) return `${h} h sitten`
+  if (h < 24) return t.hAgo(h)
   const days = Math.round(h / 24)
-  if (days < 30) return `${days} pv sitten`
+  if (days < 30) return t.daysAgo(days)
   const mo = Math.round(days / 30)
-  return `${mo} kk sitten`
+  return t.moAgo(mo)
 }
 
 /** Count up to a target once when it first becomes available. */
@@ -82,7 +135,7 @@ const tileStyle: React.CSSProperties = {
   background: 'rgba(255,255,255,.015)',
 }
 
-function Shell({ children, updated }: { children: React.ReactNode; updated?: string }) {
+function Shell({ children, updated, t }: { children: React.ReactNode; updated?: string; t: Copy }) {
   return (
     <section id="build" style={sectionStyle}>
       <div style={containerStyle}>
@@ -97,24 +150,22 @@ function Shell({ children, updated }: { children: React.ReactNode; updated?: str
         >
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18, flexWrap: 'wrap' }}>
-              <span style={labelStyle}>03 — Build in Public</span>
+              <span style={labelStyle}>{t.eyebrow}</span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ position: 'relative', display: 'inline-flex', width: 8, height: 8 }}>
                   <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: '#f2f3f4', animation: 'ping 2.2s cubic-bezier(0,0,.2,1) infinite' }} />
                   <span style={{ position: 'relative', width: 8, height: 8, borderRadius: '50%', background: '#f2f3f4' }} />
                 </span>
                 <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)' }}>
-                  Live{updated ? ` · päivitetty ${updated}` : ''}
+                  {t.live}{updated ? ` · ${t.updated(updated)}` : ''}
                 </span>
               </span>
             </div>
             <h2 style={{ margin: '0 0 22px', fontWeight: 600, fontSize: 'clamp(2rem,4vw,3.4rem)', letterSpacing: '-.025em' }}>
-              Build in Public
+              {t.title}
             </h2>
             <p style={{ margin: '0 0 28px', fontSize: 16.5, lineHeight: 1.62, color: 'rgba(255,255,255,.56)', maxWidth: 460 }}>
-              Dokumentoin matkaa AI-järjestelmien rakentajana — oikeaa dataa,
-              ei kuvituskuvaa. Videot, koodi ja kirjoitukset päivittyvät tähän
-              automaattisesti kun julkaisen.
+              {t.intro}
             </p>
             {children && Array.isArray(children) ? children[0] : null}
           </div>
@@ -131,10 +182,11 @@ function SkeletonBox({ h }: { h: number }) {
   return <div style={{ ...tileStyle, height: h, animation: 'glowPulse 1.6s ease-in-out infinite' }} />
 }
 
-export default function BuildInPublic() {
+export default function BuildInPublic({ lang = 'fi' }: { lang?: Lang }) {
+  const t = SECTION_COPY[lang]
   const [data, setData] = useState<Activity | null>(null)
   const [failed, setFailed] = useState(false)
-  const [latestPost, setLatestPost] = useState<Post | null>(null)
+  const [latestPosts, setLatestPosts] = useState<Post[]>([])
   const contributions = useCountUp(data?.github.totalContributions ?? null)
 
   useEffect(() => {
@@ -148,18 +200,18 @@ export default function BuildInPublic() {
     // plus js-yaml, which we don't want on the home page's critical path.
     let active = true
     import('../lib/posts').then(({ getAllPosts }) => {
-      if (active) setLatestPost(getAllPosts('fi')[0] ?? null)
+      if (active) setLatestPosts(getAllPosts(lang).slice(0, 3))
     })
     return () => {
       active = false
       ctrl.abort()
     }
-  }, [])
+  }, [lang])
 
   // Loading skeleton.
   if (!data && !failed) {
     return (
-      <Shell>
+      <Shell t={t}>
         <div style={{ ...cardStyle, padding: 24, maxWidth: 420, marginTop: 4 }}>
           <SkeletonBox h={180} />
         </div>
@@ -174,10 +226,10 @@ export default function BuildInPublic() {
   const yt = data?.youtube
   const gh = data?.github
   const video = yt?.videos[0]
-  const updated = data ? new Date(data.generatedAt).toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' }) : undefined
+  const updated = data ? new Date(data.generatedAt).toLocaleTimeString(t.timeLocale, { hour: '2-digit', minute: '2-digit' }) : undefined
 
   return (
-    <Shell updated={updated}>
+    <Shell updated={updated} t={t}>
       {/* LEFT: latest YouTube video */}
       <a
         href={video?.url || yt?.channelUrl || 'https://www.youtube.com/@samikiias'}
@@ -190,20 +242,20 @@ export default function BuildInPublic() {
             <div style={{ position: 'relative', aspectRatio: '16 / 9', background: '#0a0b0d' }}>
               <img src={video.thumbnail} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', opacity: 0.92 }} />
               <span style={{ position: 'absolute', left: 12, top: 12, fontFamily: mono, fontSize: 10.5, letterSpacing: '.12em', textTransform: 'uppercase', color: '#0a0b0d', background: '#f2f3f4', padding: '4px 8px', borderRadius: 5, fontWeight: 600 }}>
-                Uusin video
+                {t.latestVideo}
               </span>
             </div>
             <div style={{ padding: 18 }}>
               <div style={{ fontWeight: 600, fontSize: 16, lineHeight: 1.35, marginBottom: 8 }}>{video.title}</div>
               <div style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.45)' }}>
-                @samikiias{video.durationText ? ` · ${video.durationText}` : ''} · katso →
+                @samikiias{video.durationText ? ` · ${video.durationText}` : ''} · {t.watch}
               </div>
             </div>
           </>
         ) : (
           <div style={{ padding: 24 }}>
-            <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 8 }}>@samikiias YouTubessa</div>
-            <div style={{ fontFamily: mono, fontSize: 13, color: 'rgba(255,255,255,.5)' }}>AI &amp; automaatio · tilaa kanava →</div>
+            <div style={{ fontWeight: 600, fontSize: 16, marginBottom: 8 }}>{t.ytFallbackTitle}</div>
+            <div style={{ fontFamily: mono, fontSize: 13, color: 'rgba(255,255,255,.5)' }}>{t.ytFallbackSub}</div>
           </div>
         )}
       </a>
@@ -214,13 +266,13 @@ export default function BuildInPublic() {
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, marginBottom: 14 }}>
             <div>
               <span style={{ fontFamily: mono, fontWeight: 700, fontSize: 'clamp(1.6rem,2.6vw,2.3rem)', color: '#f7f8f9' }}>
-                {gh?.totalContributions != null ? contributions.toLocaleString('fi-FI') : '—'}
+                {gh?.totalContributions != null ? contributions.toLocaleString(t.numberLocale) : '—'}
               </span>
               <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.42)', marginLeft: 10 }}>
-                contributionia / vuosi
+                {t.contribsPerYear}
               </span>
             </div>
-            <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>github →</span>
+            <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>{t.github}</span>
           </div>
           {gh?.weeks ? <ContributionHeatmap weeks={gh.weeks} /> : null}
           {gh?.recent?.length ? (
@@ -228,23 +280,55 @@ export default function BuildInPublic() {
               {gh.recent.slice(0, 3).map((c, i) => (
                 <div key={i} style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.55)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   <span style={{ color: 'rgba(255,255,255,.35)' }}>{c.repo.split('/')[1] || c.repo}</span> · {c.message}
-                  {c.at ? <span style={{ color: 'rgba(255,255,255,.3)' }}> · {relTime(c.at)}</span> : null}
+                  {c.at ? <span style={{ color: 'rgba(255,255,255,.3)' }}> · {relTime(c.at, t)}</span> : null}
                 </div>
               ))}
             </div>
           ) : null}
         </a>
 
-        {latestPost ? (
-          <Link to={`/blog/${latestPost.slug}`} style={{ ...tileStyle, display: 'block', textDecoration: 'none', color: '#e9eaec' }}>
-            <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.36)', marginBottom: 10 }}>
-              Uusin kirjoitus · {fmtDate(latestPost.date)}
+        {latestPosts.length > 0 ? (
+          <div style={{ ...tileStyle, display: 'block' }}>
+            <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.36)', marginBottom: 14 }}>
+              {t.latestPosts}
             </div>
-            <div style={{ fontWeight: 600, fontSize: 16, lineHeight: 1.35, marginBottom: latestPost.description ? 8 : 0 }}>{latestPost.title}</div>
-            {latestPost.description ? (
-              <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: 'rgba(255,255,255,.52)' }}>{latestPost.description}</p>
-            ) : null}
-          </Link>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {latestPosts.map((post, i) => (
+                <Link
+                  key={post.slug}
+                  to={blogPostPath(lang, post.slug)}
+                  style={{
+                    display: 'block',
+                    textDecoration: 'none',
+                    color: '#e9eaec',
+                    padding: i === 0 ? '0 0 14px' : '14px 0',
+                    borderTop: i > 0 ? '1px solid rgba(255,255,255,.07)' : undefined,
+                  }}
+                >
+                  <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.36)', marginBottom: 6 }}>
+                    {fmtDate(post.date, t)}
+                  </div>
+                  <div style={{ fontWeight: 600, fontSize: 15, lineHeight: 1.35, marginBottom: post.description ? 6 : 0 }}>{post.title}</div>
+                  {post.description ? (
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: 13.5,
+                        lineHeight: 1.5,
+                        color: 'rgba(255,255,255,.52)',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {post.description}
+                    </p>
+                  ) : null}
+                </Link>
+              ))}
+            </div>
+          </div>
         ) : null}
       </>
     </Shell>

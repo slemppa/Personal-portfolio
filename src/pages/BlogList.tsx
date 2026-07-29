@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import NewsletterForm from '../components/NewsletterForm'
 import { getAllPosts } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
@@ -28,7 +29,7 @@ export default function BlogList({ lang }: { lang: Lang }) {
 
   return (
     <>
-      <Nav />
+      <Nav lang={lang} />
       <main className="max-w-3xl mx-auto px-8 pt-32 pb-24 min-h-screen">
         <div className="mb-2 flex items-start justify-between gap-4">
           <h1 className="text-4xl font-bold text-text-primary">{t(lang, 'blogTitle')}</h1>
@@ -75,6 +76,9 @@ export default function BlogList({ lang }: { lang: Lang }) {
             ))}
           </ul>
         )}
+        <div className="mt-12">
+          <NewsletterForm lang={lang} source="newsletter:blog" />
+        </div>
       </main>
       <Footer />
     </>

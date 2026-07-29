@@ -9,7 +9,15 @@ import { applyHead } from '../lib/head'
 // x-api-key to the protected list endpoints. Not linked from anywhere public.
 
 type OfferRow = { id: string; title: string; company: string | null; language: string; createdAt: string }
-type LeadRow = { id: number; name: string; email: string; company?: string; message: string; createdAt: string }
+type LeadRow = {
+  id: number
+  name: string
+  email: string
+  company?: string
+  message: string
+  marketingConsent?: boolean
+  createdAt: string
+}
 
 const STORAGE_KEY = 'offer_admin_key'
 
@@ -102,7 +110,7 @@ export default function Admin() {
               className="w-full rounded-lg border border-border bg-bg-secondary px-3.5 py-2.5 text-sm text-text-primary focus:border-accent focus:outline-none"
             />
             {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
-            <button type="submit" className="mt-3 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover">
+            <button type="submit" className="mt-3 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-[#0a0b0d] hover:bg-accent-hover">
               Avaa
             </button>
           </form>
@@ -161,6 +169,11 @@ export default function Admin() {
                       <p className="font-medium text-text-primary">
                         {l.name}
                         {l.company ? ` · ${l.company}` : ''}
+                        {l.marketingConsent && (
+                          <span className="ml-2 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-normal text-accent">
+                            ✓ lupa
+                          </span>
+                        )}
                       </p>
                       <span className="text-xs text-text-muted">{fmt(l.createdAt)}</span>
                     </div>

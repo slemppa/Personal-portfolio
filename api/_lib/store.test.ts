@@ -22,7 +22,14 @@ describe('parseLead', () => {
     const r = parseLead({ name: '  Matti ', email: 'matti@yritys.fi', message: ' Moi ', company: ' Yritys ' })
     expect(r.ok).toBe(true)
     if (r.ok) {
-      expect(r.lead).toEqual({ name: 'Matti', email: 'matti@yritys.fi', message: 'Moi', company: 'Yritys', source: undefined })
+      expect(r.lead).toEqual({
+        name: 'Matti',
+        email: 'matti@yritys.fi',
+        message: 'Moi',
+        company: 'Yritys',
+        source: undefined,
+        marketingConsent: false,
+      })
     }
   })
 

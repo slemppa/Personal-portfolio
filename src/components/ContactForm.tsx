@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { Send, Check } from 'lucide-react'
+import type { Lang } from '../lib/parsePost'
+import { capture } from '../lib/analytics'
+import { t } from '../lib/i18n'
 
 // Lead-capture form. Posts to /api/contact, which stores the lead in Neon and
 // (when configured) emails a notification. Includes a hidden honeypot field to
@@ -10,7 +13,7 @@ type State = 'idle' | 'sending' | 'ok' | 'error'
 const input =
   'w-full rounded-lg border border-border bg-bg-secondary px-3.5 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none transition-colors'
 
-export default function ContactForm({ source = 'yhteys' }: { source?: string }) {
+export default function ContactForm({ source = 'yhteys', lang = 'fi', onSuccess }: { source?: string; lang?: Lang; onSuccess?: () => void }) {
   const [state, setState] = useState<State>('idle')
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,6 +29,8 @@ export default function ContactForm({ source = 'yhteys' }: { source?: string }) 
       })
       if (!res.ok) throw new Error(String(res.status))
       setState('ok')
+      capture('lead_form_submitted', { source })
+      onSuccess?.()
       form.reset()
     } catch {
       setState('error')
@@ -37,8 +42,8 @@ export default function ContactForm({ source = 'yhteys' }: { source?: string }) 
       <div className="flex items-start gap-3 rounded-xl border border-border bg-bg-secondary p-5">
         <Check className="mt-0.5 shrink-0 text-accent" size={20} />
         <div>
-          <p className="font-medium text-text-primary">Kiitos, viesti on lähetetty!</p>
-          <p className="mt-1 text-sm text-text-secondary">Palaan sinulle pian sähköpostitse.</p>
+          <p className="font-medium text-text-primary">{t(lang, 'formOkTitle')}</p>
+          <p className="mt-1 text-sm text-text-secondary">{t(lang, 'formOkBody')}</p>
         </div>
       </div>
     )
@@ -52,13 +57,13 @@ export default function ContactForm({ source = 'yhteys' }: { source?: string }) 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="cf-name" className="mb-1.5 block text-sm text-text-secondary">
-            Nimi *
+            {t(lang, 'formName')} *
           </label>
           <input id="cf-name" name="name" required maxLength={200} className={input} placeholder="Matti Meikäläinen" />
         </div>
         <div>
           <label htmlFor="cf-company" className="mb-1.5 block text-sm text-text-secondary">
-            Yritys
+            {t(lang, 'formCompany')}
           </label>
           <input id="cf-company" name="company" maxLength={200} className={input} placeholder="Yritys Oy" />
         </div>
@@ -66,29 +71,34 @@ export default function ContactForm({ source = 'yhteys' }: { source?: string }) 
 
       <div>
         <label htmlFor="cf-email" className="mb-1.5 block text-sm text-text-secondary">
-          Sähköposti *
+          {t(lang, 'formEmail')} *
         </label>
         <input id="cf-email" name="email" type="email" required maxLength={320} className={input} placeholder="matti@yritys.fi" />
       </div>
 
       <div>
         <label htmlFor="cf-message" className="mb-1.5 block text-sm text-text-secondary">
-          Viesti *
+          {t(lang, 'formMessage')} *
         </label>
-        <textarea id="cf-message" name="message" required rows={5} maxLength={5000} className={input} placeholder="Kerro lyhyesti mitä olette tekemässä ja missä voisin auttaa." />
+        <textarea id="cf-message" name="message" required rows={5} maxLength={5000} className={input} placeholder={t(lang, 'formMessagePh')} />
       </div>
 
       {state === 'error' && (
-        <p className="text-sm text-red-400">Lähetys ei onnistunut. Yritä uudelleen tai laita sähköpostia osoitteeseen sami@mak8r.fi.</p>
+        <p className="text-sm text-red-400">{t(lang, 'formError')}</p>
       )}
+
+      <label className="flex items-start gap-2.5 text-sm text-text-secondary cursor-pointer">
+        <input type="checkbox" name="marketingConsent" className="mt-0.5 accent-white" />
+        {t(lang, 'formConsent')}
+      </label>
 
       <button
         type="submit"
         disabled={state === 'sending'}
-        className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-[#0a0b0d] transition-colors hover:bg-accent-hover disabled:opacity-60"
       >
         <Send size={16} />
-        {state === 'sending' ? 'Lähetetään…' : 'Lähetä viesti'}
+        {state === 'sending' ? t(lang, 'formSending') : t(lang, 'formSend')}
       </button>
     </form>
   )

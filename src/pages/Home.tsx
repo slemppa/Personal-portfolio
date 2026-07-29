@@ -1,44 +1,53 @@
-import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router'
+import { useEffect, useMemo, useRef } from 'react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import BuildInPublic from '../components/BuildInPublic'
-import { SECTIONS_HTML } from '../site/markup'
-import { wireHover, runKoneisto } from '../site/effects'
+import CasesSection from '../components/CasesSection'
+import YhteysSection from '../components/YhteysSection'
+import { sectionsHtml } from '../site/markup'
+import { wireHover, runKoneisto, runStackFlow } from '../site/effects'
+import { applyHead } from '../lib/head'
+import { homeCopy } from '../site/copy'
+import { homePath } from '../lib/i18n'
+import type { Lang } from '../lib/parsePost'
 
-// Project cards in source order map to existing /projektit/:slug case studies.
-const PROJECT_SLUGS = ['rascal-ai', 'rascal-crm', 'superhuman', 'pesa']
-const sectionsHtml = PROJECT_SLUGS.reduce(
-  (html, slug) => html.replace('class="proj"', `class="proj" data-slug="${slug}"`),
-  SECTIONS_HTML,
-)
-
-// The static "Build in Public" section is replaced by the live <BuildInPublic/>
-// React component; render the markup before and after it around the component.
-const buildStart = sectionsHtml.indexOf('<!-- BUILD IN PUBLIC -->')
-const beforeBuild = sectionsHtml.slice(0, buildStart)
-const afterBuild = sectionsHtml.slice(sectionsHtml.indexOf('<!-- TARINA -->'))
-
-export default function Home() {
+export default function Home({ lang = 'fi' }: { lang?: Lang }) {
   const ref = useRef<HTMLDivElement>(null)
-  const navigate = useNavigate()
+
+  // The static "Projektit", "Build in Public" and "Yhteys" sections are
+  // replaced by live React components; render the markup before/between them.
+  const { beforeProjects, betweenProjectsAndBuild, betweenBuildAndYhteys } = useMemo(() => {
+    const html = sectionsHtml(lang)
+    const projectsStart = html.indexOf('<!-- PROJEKTIT -->')
+    const buildStart = html.indexOf('<!-- BUILD IN PUBLIC -->')
+    const yhteysStart = html.indexOf('<!-- YHTEYS -->')
+    return {
+      beforeProjects: html.slice(0, projectsStart),
+      betweenProjectsAndBuild: html.slice(projectsStart, buildStart),
+      betweenBuildAndYhteys: html.slice(html.indexOf('<!-- TARINA -->'), yhteysStart),
+    }
+  }, [lang])
 
   useEffect(() => {
     const root = ref.current
     if (!root) return
-    const disposers = [wireHover(root), runKoneisto()]
-
-    // Make project cards navigate to their case study.
-    const cards = Array.from(root.querySelectorAll<HTMLElement>('.proj[data-slug]'))
-    cards.forEach((card) => {
-      card.style.cursor = 'pointer'
-      const onClick = () => navigate(`/projektit/${card.dataset.slug}`)
-      card.addEventListener('click', onClick)
-      disposers.push(() => card.removeEventListener('click', onClick))
-    })
+    const disposers = [wireHover(root), runKoneisto(), runStackFlow()]
 
     return () => disposers.forEach((d) => d())
-  }, [navigate])
+  }, [])
+
+  useEffect(() => {
+    applyHead({
+      lang,
+      title: lang === 'fi' ? 'Sami Kiias — Fullstack-tuoterakentaja' : 'Sami Kiias — Fullstack product builder',
+      description: homeCopy[lang].heroBody,
+      canonical: homePath(lang),
+      alternates: [
+        { hreflang: 'fi', path: '/' },
+        { hreflang: 'en', path: '/en' },
+      ],
+    })
+  }, [lang])
 
   return (
     <div
@@ -66,10 +75,13 @@ export default function Home() {
           transition: 'width .1s linear',
         }}
       />
-      <Nav />
-      <div dangerouslySetInnerHTML={{ __html: beforeBuild }} />
-      <BuildInPublic />
-      <div dangerouslySetInnerHTML={{ __html: afterBuild }} />
+      <Nav lang={lang} />
+      <div dangerouslySetInnerHTML={{ __html: beforeProjects }} />
+      <CasesSection lang={lang} />
+      <div dangerouslySetInnerHTML={{ __html: betweenProjectsAndBuild }} />
+      <BuildInPublic lang={lang} />
+      <div dangerouslySetInnerHTML={{ __html: betweenBuildAndYhteys }} />
+      <YhteysSection lang={lang} />
       <Footer />
     </div>
   )
