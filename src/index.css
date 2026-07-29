@@ -214,6 +214,40 @@ body {
     padding-top: 60px !important;
     padding-bottom: 60px !important;
   }
+
+  /* Koneisto pipeline ("Näin yhteydenottosi kulkee tällä sivulla"): the six
+     step nodes are a single flex row with a hard min-width, so on narrow
+     screens it just overflows sideways inside its own scroll container
+     instead of showing all six. Wrap it into a 2-col grid instead. The
+     connecting rail and travelling packet dot are positioned/animated in
+     percentages along that single row (see effects.ts movePacket), which
+     doesn't map onto a wrapped grid, so both are hidden here; each step's
+     own active/done pulse (border + dot color) still communicates progress. */
+  #live-pipe {
+    overflow-x: visible !important;
+  }
+  #live-pipe [style*="min-width:560px"] {
+    min-width: 0 !important;
+    flex-wrap: wrap !important;
+    row-gap: 14px !important;
+  }
+  #live-pipe [style*="min-width:560px"] > [data-node] {
+    flex: 0 1 calc(50% - 7px) !important;
+  }
+  #live-pipe [style*="height:1px;background:rgba(255,255,255,.1)"] {
+    display: none !important;
+  }
+  #live-packet {
+    display: none !important;
+  }
+
+  /* Execution log lines (timestamp + step + message) are white-space:nowrap
+     mono text set inline per-row by effects.ts and can run wider than a
+     phone screen; scroll the log horizontally instead of clipping it. */
+  #live-log {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
 }
 
 /* Story timeline collapses fully on phones. */

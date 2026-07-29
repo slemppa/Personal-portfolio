@@ -14,7 +14,8 @@ import { mirrorPath, homePath } from '../lib/i18n'
  */
 export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
   const ref = useRef<HTMLDivElement>(null)
-  const { pathname } = useLocation()
+  const location = useLocation()
+  const { pathname } = location
   const navigate = useNavigate()
   const home = homePath(lang)
   const isHome = pathname === home
@@ -71,7 +72,11 @@ export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
     }
 
     return () => disposers.forEach((d) => d())
-  }, [html, isHome, navigate, pathname, home])
+    // `location` is included (not just `pathname`) because the nav's DOM
+    // subtree can be replaced on any navigation, including hash-only
+    // changes (e.g. tapping an in-page anchor link) that leave `pathname`
+    // unchanged. Without it, listeners get wired to nodes React discards.
+  }, [html, isHome, navigate, pathname, home, location])
 
   return <div ref={ref} dangerouslySetInnerHTML={{ __html: html }} />
 }
