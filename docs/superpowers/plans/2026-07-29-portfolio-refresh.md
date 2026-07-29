@@ -1489,6 +1489,18 @@ gallery: [
 - [ ] **Step 4: Push branch + PR.** `git push -u origin feat/portfolio-refresh`, open a PR titled `Portfolio refresh: 6 cases, unified design, fi/en, lead capture`. Body summarizes the spec. Do NOT merge without the user.
 - [ ] **Step 5: Report** to the user: what shipped, screenshot coverage gaps, env vars needed in Vercel (`BREVO_LIST_ID`, existing `BREVO_API_KEY`/`DATABASE_URL` confirmed), and that the Neon migration was applied.
 
+### Task 16: Tech section — principles re-layout + living stack visualization (user feedback 2026-07-29)
+
+**Files:**
+- Modify: `src/site/markup.ts` (tech section bottom row), `src/site/effects.ts` (new animation), `src/site/copy.ts` (only if labels change), `src/index.css` (keyframes if needed), `src/pages/Home.tsx` (only if an island is needed — prefer pure markup+effects, no island)
+
+**Context:** Screenshot feedback: the tech section's bottom row renders the three principles (01 API-first / 02 Rakennettu, ei ostettu / 03 Sama stack, oikeat asiakkaat) in one narrow left column with a large EMPTY gray box beside them.
+
+- [ ] **Step 1: Principles re-layout.** The three principles become three equal cards in one row spanning the section's full width (grid-template-columns:repeat(3,1fr), collapsing to 1fr on ≤860px via the existing attribute-selector media queries — verify the chosen inline style matches an existing collapse rule or add one to index.css). Keep the mono eyebrow style (`01 · API-FIRST`), body text from existing copy keys. The empty gray container disappears as a separate box.
+- [ ] **Step 2: Living stack visual.** Above or beside the principles (design call: full-width strip between the 5 layer cards and the principles row), add `<canvas id="stack-canvas">` (height ~160-220px) animated in effects.ts (`runStackFlow()` called from Home's effect wiring like `runKoneisto`): five node points labeled 01–05 connected by hairlines; small light packets travel node-to-node with ease-in-out, occasional pulse ring on arrival; monochrome (rgba(255,255,255,...) only); requestAnimationFrame; respect `prefers-reduced-motion: reduce` (static nodes+lines, no packets); dispose properly (return a disposer like other effects).
+- [ ] **Step 3:** Verify: lint, vitest, build, dev server — both langs; animation runs, reduced-motion static.
+- [ ] **Step 4:** Commit `feat: tech section principles row + animated stack flow`
+
 ## Task execution order
 
 Strict order: 1 → 2+3+4 (one sitting) → 5 → 6 → 7 → 8 → 10 → 11 → 9 → 12 → 13 → 14 → 15. (10+11 before 9 because CaseStudy's CTA consumes the consent-aware ContactForm.)
