@@ -191,7 +191,7 @@ export default function CaseStudy() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
-                href="mailto:sami@rascalai.fi"
+                href="mailto:sami@mak8r.fi"
                 onClick={() => capture('case_study_contact_clicked', { case_slug: slug })}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-colors"
               >
