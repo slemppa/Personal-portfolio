@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { NAV_HTML } from '../site/markup'
+import type { Lang } from '../lib/parsePost'
+import { navHtml } from '../site/markup'
 import { wireHover, wireNav } from '../site/effects'
 
 /**
@@ -9,12 +10,13 @@ import { wireHover, wireNav } from '../site/effects'
  * they always resolve back to the one-page layout. The logo links home —
  * smooth-scrolling to top on the homepage, navigating home otherwise.
  */
-export default function Nav() {
+export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
   const ref = useRef<HTMLDivElement>(null)
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const isHome = pathname === '/'
-  const html = isHome ? NAV_HTML : NAV_HTML.replace(/href="#/g, 'href="/#')
+  const base = navHtml(lang)
+  const html = isHome ? base : base.replace(/href="#/g, 'href="/#')
 
   useEffect(() => {
     const root = ref.current

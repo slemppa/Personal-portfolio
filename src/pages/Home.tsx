@@ -1,21 +1,29 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import BuildInPublic from '../components/BuildInPublic'
 import CasesSection from '../components/CasesSection'
-import { SECTIONS_HTML } from '../site/markup'
+import { sectionsHtml } from '../site/markup'
 import { wireHover, runKoneisto } from '../site/effects'
-
-// The static "Projektit" and "Build in Public" sections are replaced by live
-// React components; render the markup before/between/after them.
-const projectsStart = SECTIONS_HTML.indexOf('<!-- PROJEKTIT -->')
-const buildStart = SECTIONS_HTML.indexOf('<!-- BUILD IN PUBLIC -->')
-const beforeProjects = SECTIONS_HTML.slice(0, projectsStart)
-const betweenProjectsAndBuild = SECTIONS_HTML.slice(projectsStart, buildStart)
-const afterBuild = SECTIONS_HTML.slice(SECTIONS_HTML.indexOf('<!-- TARINA -->'))
 
 export default function Home() {
   const ref = useRef<HTMLDivElement>(null)
+
+  // TODO(task8): thread lang prop instead of hardcoding 'fi'
+  const lang = 'fi' as const
+
+  // The static "Projektit" and "Build in Public" sections are replaced by
+  // live React components; render the markup before/between/after them.
+  const { beforeProjects, betweenProjectsAndBuild, afterBuild } = useMemo(() => {
+    const html = sectionsHtml(lang)
+    const projectsStart = html.indexOf('<!-- PROJEKTIT -->')
+    const buildStart = html.indexOf('<!-- BUILD IN PUBLIC -->')
+    return {
+      beforeProjects: html.slice(0, projectsStart),
+      betweenProjectsAndBuild: html.slice(projectsStart, buildStart),
+      afterBuild: html.slice(html.indexOf('<!-- TARINA -->')),
+    }
+  }, [])
 
   useEffect(() => {
     const root = ref.current
@@ -53,8 +61,7 @@ export default function Home() {
       />
       <Nav />
       <div dangerouslySetInnerHTML={{ __html: beforeProjects }} />
-      {/* TODO(task8): thread lang prop instead of hardcoding 'fi' */}
-      <CasesSection lang="fi" />
+      <CasesSection lang={lang} />
       <div dangerouslySetInnerHTML={{ __html: betweenProjectsAndBuild }} />
       <BuildInPublic />
       <div dangerouslySetInnerHTML={{ __html: afterBuild }} />

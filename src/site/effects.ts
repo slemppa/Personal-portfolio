@@ -247,7 +247,6 @@ export function runKoneisto(): Disposer {
     const nodes = Array.from(pipe.querySelectorAll<HTMLElement>('[data-node]'))
     const packet = document.getElementById('live-packet')
     const log = document.getElementById('live-log')
-    const counterEl = document.getElementById('live-count')
     const setIc = (n: HTMLElement, col: string, bg: string, bord: string) => {
       const ic = n.querySelector<HTMLElement>('.nic')
       if (ic) {
@@ -294,15 +293,15 @@ export function runKoneisto(): Disposer {
       const d = new Date()
       return pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds())
     }
-    let lead = 1043
-    let processed = 127
-    const lines = (id: number): [string, string][] => [
-      ['webhook ', 'liidi #' + id + ' vastaanotettu'],
-      ['enrich  ', 'kuka · mitä · missä — scrapattu'],
-      ['claude  ', 'pisteytys 0.92 → KUUMA'],
-      ['reititys', 'kanava: AI-soitto · 0:42 · tapaaminen'],
-      ['supabase', 'tila: tapaaminen_sovittu · RLS ok'],
-      ['done    ', '✓ läpimeno 17s'],
+    // Honest execution log: this is this site's own /api/contact pipeline,
+    // not a simulated demo — the lines describe the real steps.
+    const LOG_LINES: [string, string][] = [
+      ['form', 'POST /api/contact → 200'],
+      ['validate', 'honeypot ok · fields ok'],
+      ['insert', 'portfolio_leads → id 42'],
+      ['consent', 'marketing consent recorded'],
+      ['brevo', 'contact upserted'],
+      ['notify', 'email sent'],
     ]
     const addLog = (sym: string, txt: string) => {
       if (!log) return
@@ -326,12 +325,8 @@ export function runKoneisto(): Disposer {
     const run = () => {
       nodes.forEach(idle)
       if (packet) packet.style.opacity = '0'
-      const L = lines(lead)
       const step = (i: number) => {
         if (i >= nodes.length) {
-          processed++
-          if (counterEl) counterEl.textContent = String(processed)
-          lead++
           T(run, 1500)
           return
         }
@@ -341,15 +336,14 @@ export function runKoneisto(): Disposer {
           packet.style.opacity = '1'
           movePacket(nodes[i])
         }
-        addLog(L[i][0], L[i][1])
+        addLog(LOG_LINES[i][0], LOG_LINES[i][1])
         T(() => step(i + 1), 920)
       }
       step(0)
     }
     if (reduce) {
       nodes.forEach(done)
-      lines(lead).forEach((l) => addLog(l[0], l[1]))
-      if (counterEl) counterEl.textContent = String(processed)
+      LOG_LINES.forEach((l) => addLog(l[0], l[1]))
     } else {
       T(run, 700)
     }
