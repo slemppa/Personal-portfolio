@@ -25,3 +25,6 @@ create table if not exists portfolio_leads (
   created_at timestamptz not null default now()
 );
 create index if not exists portfolio_leads_created_idx on portfolio_leads (created_at desc);
+
+alter table portfolio_leads add column if not exists marketing_consent boolean not null default false;
+alter table portfolio_leads add column if not exists consent_at timestamptz;

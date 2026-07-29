@@ -1,4 +1,4 @@
-import { parseLead, storeLead, notifyLead, listLeads } from './_lib/leads.js'
+import { parseLead, storeLead, notifyLead, listLeads, syncToBrevo } from './_lib/leads.js'
 
 // Vercel serverless function: contact / lead capture.
 //
@@ -94,7 +94,7 @@ export default async function handler(req: Req, res: Res): Promise<void> {
     return
   }
 
-  const [id, emailed] = await Promise.all([storeLead(parsed.lead), notifyLead(parsed.lead)])
+  const [id, emailed] = await Promise.all([storeLead(parsed.lead), notifyLead(parsed.lead), syncToBrevo(parsed.lead)])
 
   res.setHeader('Cache-Control', 'no-store')
   if (id === null && !emailed) {

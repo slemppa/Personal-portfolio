@@ -9,7 +9,15 @@ import { applyHead } from '../lib/head'
 // x-api-key to the protected list endpoints. Not linked from anywhere public.
 
 type OfferRow = { id: string; title: string; company: string | null; language: string; createdAt: string }
-type LeadRow = { id: number; name: string; email: string; company?: string; message: string; createdAt: string }
+type LeadRow = {
+  id: number
+  name: string
+  email: string
+  company?: string
+  message: string
+  marketingConsent?: boolean
+  createdAt: string
+}
 
 const STORAGE_KEY = 'offer_admin_key'
 
@@ -161,6 +169,11 @@ export default function Admin() {
                       <p className="font-medium text-text-primary">
                         {l.name}
                         {l.company ? ` · ${l.company}` : ''}
+                        {l.marketingConsent && (
+                          <span className="ml-2 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-normal text-accent">
+                            ✓ lupa
+                          </span>
+                        )}
                       </p>
                       <span className="text-xs text-text-muted">{fmt(l.createdAt)}</span>
                     </div>
