@@ -85,7 +85,7 @@ export default function ContactForm({ source = 'yhteys' }: { source?: string }) 
       <button
         type="submit"
         disabled={state === 'sending'}
-        className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-[#0a0b0d] transition-colors hover:bg-accent-hover disabled:opacity-60"
       >
         <Send size={16} />
         {state === 'sending' ? 'Lähetetään…' : 'Lähetä viesti'}

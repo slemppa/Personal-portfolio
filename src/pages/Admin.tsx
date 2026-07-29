@@ -102,7 +102,7 @@ export default function Admin() {
               className="w-full rounded-lg border border-border bg-bg-secondary px-3.5 py-2.5 text-sm text-text-primary focus:border-accent focus:outline-none"
             />
             {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
-            <button type="submit" className="mt-3 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover">
+            <button type="submit" className="mt-3 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-[#0a0b0d] hover:bg-accent-hover">
               Avaa
             </button>
           </form>

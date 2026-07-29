@@ -193,7 +193,7 @@ export default function CaseStudy() {
               <a
                 href="mailto:sami@mak8r.fi"
                 onClick={() => capture('case_study_contact_clicked', { case_slug: slug })}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-[#0a0b0d] font-semibold rounded-xl transition-colors"
               >
                 Ota yhteyttä <ArrowRight className="w-4 h-4" />
               </a>
