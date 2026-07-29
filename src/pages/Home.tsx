@@ -3,6 +3,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import BuildInPublic from '../components/BuildInPublic'
 import CasesSection from '../components/CasesSection'
+import YhteysSection from '../components/YhteysSection'
 import { sectionsHtml } from '../site/markup'
 import { wireHover, runKoneisto } from '../site/effects'
 import { applyHead } from '../lib/head'
@@ -13,16 +14,17 @@ import type { Lang } from '../lib/parsePost'
 export default function Home({ lang = 'fi' }: { lang?: Lang }) {
   const ref = useRef<HTMLDivElement>(null)
 
-  // The static "Projektit" and "Build in Public" sections are replaced by
-  // live React components; render the markup before/between/after them.
-  const { beforeProjects, betweenProjectsAndBuild, afterBuild } = useMemo(() => {
+  // The static "Projektit", "Build in Public" and "Yhteys" sections are
+  // replaced by live React components; render the markup before/between them.
+  const { beforeProjects, betweenProjectsAndBuild, betweenBuildAndYhteys } = useMemo(() => {
     const html = sectionsHtml(lang)
     const projectsStart = html.indexOf('<!-- PROJEKTIT -->')
     const buildStart = html.indexOf('<!-- BUILD IN PUBLIC -->')
+    const yhteysStart = html.indexOf('<!-- YHTEYS -->')
     return {
       beforeProjects: html.slice(0, projectsStart),
       betweenProjectsAndBuild: html.slice(projectsStart, buildStart),
-      afterBuild: html.slice(html.indexOf('<!-- TARINA -->')),
+      betweenBuildAndYhteys: html.slice(html.indexOf('<!-- TARINA -->'), yhteysStart),
     }
   }, [lang])
 
@@ -78,7 +80,8 @@ export default function Home({ lang = 'fi' }: { lang?: Lang }) {
       <CasesSection lang={lang} />
       <div dangerouslySetInnerHTML={{ __html: betweenProjectsAndBuild }} />
       <BuildInPublic />
-      <div dangerouslySetInnerHTML={{ __html: afterBuild }} />
+      <div dangerouslySetInnerHTML={{ __html: betweenBuildAndYhteys }} />
+      <YhteysSection lang={lang} />
       <Footer />
     </div>
   )

@@ -425,56 +425,9 @@ export function sectionsHtml(lang: Lang): string {
   </section>
 
   <!-- YHTEYS -->
-  <section id="yhteys" style="position:relative;background:#0c0d10;border-top:1px solid rgba(255,255,255,.06);overflow:hidden;">
-    <div style="position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:80vw;height:70vh;background:radial-gradient(ellipse at center,rgba(255,255,255,.05),transparent 60%);pointer-events:none;"></div>
-    <div style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(90px,12vh,150px) clamp(20px,5vw,56px);">
-      <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,5vw,72px);align-items:start;">
-        <div data-reveal>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px;">${c.contactEyebrow}</div>
-          <h2 style="margin:0 0 22px;font-weight:600;font-size:clamp(2.2rem,4.6vw,3.8rem);letter-spacing:-.03em;line-height:1.02;">${c.contactTitleA}<br>${c.contactTitleB}</h2>
-          <p style="margin:0 0 34px;max-width:480px;font-size:16.5px;line-height:1.62;color:rgba(255,255,255,.56);">${c.contactBody}</p>
-          <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:18px;">
-            <a href="mailto:sami@mak8r.fi" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;background:#f2f3f4;color:#0a0b0d;font-weight:600;font-size:15px;padding:14px 22px;border-radius:10px;transition:transform .2s;" data-hover="transform:translateY(-2px);">sami@mak8r.fi <span style="font-family:'JetBrains Mono',monospace;">→</span></a>
-            <a href="#" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;border:1px solid rgba(255,255,255,.18);color:#e9eaec;font-weight:500;font-size:15px;padding:14px 22px;border-radius:10px;transition:border-color .2s,background .2s;" data-hover="border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.04);">Viesti LinkedInissä</a>
-          </div>
-          <p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:rgba(255,255,255,.4);">${c.contactReply}</p>
-        </div>
-
-        <div data-reveal data-delay="80">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:16px;">${c.contactFollow}</div>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:30px;">
-            <a href="#" style="display:flex;align-items:center;justify-content:space-between;text-decoration:none;border:1px solid rgba(255,255,255,.09);border-radius:11px;padding:16px 18px;background:rgba(255,255,255,.015);transition:border-color .25s,background .25s;" data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
-              <span style="color:#e9eaec;font-weight:500;font-size:14.5px;">${c.contactLi}</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.4);">${c.contactLiCta}</span>
-            </a>
-            <a href="#" style="display:flex;align-items:center;justify-content:space-between;text-decoration:none;border:1px solid rgba(255,255,255,.09);border-radius:11px;padding:16px 18px;background:rgba(255,255,255,.015);transition:border-color .25s,background .25s;" data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
-              <span style="color:#e9eaec;font-weight:500;font-size:14.5px;">${c.contactYt}</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.4);">${c.contactYtCta}</span>
-            </a>
-            <a href="#" style="display:flex;align-items:center;justify-content:space-between;text-decoration:none;border:1px solid rgba(255,255,255,.09);border-radius:11px;padding:16px 18px;background:rgba(255,255,255,.015);transition:border-color .25s,background .25s;" data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
-              <span style="color:#e9eaec;font-weight:500;font-size:14.5px;">${c.contactGh}</span>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.4);">${c.contactGhCta}</span>
-            </a>
-          </div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:16px;">${c.contactCompanies}</div>
-          <div style="display:flex;flex-direction:column;gap:14px;">
-            <div style="display:flex;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);">
-              <div><div style="font-weight:600;font-size:14.5px;">${c.contactC1n}</div><div style="font-size:13px;color:rgba(255,255,255,.48);margin-top:2px;">${c.contactC1d}</div></div>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.4);white-space:nowrap;">${c.contactC1r}</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);">
-              <div><div style="font-weight:600;font-size:14.5px;">${c.contactC2n}</div><div style="font-size:13px;color:rgba(255,255,255,.48);margin-top:2px;">${c.contactC2d}</div></div>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.4);white-space:nowrap;">${c.contactC2r}</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;gap:16px;">
-              <div><div style="font-weight:600;font-size:14.5px;">${c.contactC3n}</div><div style="font-size:13px;color:rgba(255,255,255,.48);margin-top:2px;">${c.contactC3d}</div></div>
-              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.4);white-space:nowrap;">${c.contactC3r}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>`
+  <!-- Rendered as the YhteysSection React island (src/components/YhteysSection.tsx);
+       the lead-capture form needs to sit inside the two-column grid alongside
+       React-rendered <ContactForm>, which dangerouslySetInnerHTML fragments can't do. -->`
 }
 
 export const FOOTER_HTML = "<footer style=\"border-top:1px solid rgba(255,255,255,.08);background:#0a0b0d;\">\n    <div style=\"max-width:1280px;margin:0 auto;padding:54px clamp(20px,5vw,56px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:28px;\">\n      <div>\n        <div style=\"display:flex;align-items:center;gap:12px;margin-bottom:10px;\">\n          <span style=\"display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid rgba(255,255,255,.2);border-radius:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;\">SK</span>\n          <span style=\"font-weight:600;font-size:15px;\">Sami Kiias</span>\n        </div>\n        <p style=\"margin:0;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.42);\">Automaatio on uusi lukutaito.</p>\n      </div>\n      <div style=\"display:flex;gap:24px;\">\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">Blog</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">LinkedIn</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">GitHub</a>\n        <a href=\"#\" style=\"text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:rgba(255,255,255,.5);transition:color .2s;\" data-hover=\"color:#f2f3f4;\">YouTube</a>\n      </div>\n    </div>\n    <div style=\"border-top:1px solid rgba(255,255,255,.06);padding:20px clamp(20px,5vw,56px);max-width:1280px;margin:0 auto;\">\n      <p style=\"margin:0;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:rgba(255,255,255,.32);\">© 2026 Sami Kiias. Kaikki oikeudet pidätetään.</p>\n    </div>\n  </footer>";
