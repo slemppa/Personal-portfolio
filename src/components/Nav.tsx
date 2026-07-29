@@ -3,20 +3,23 @@ import { useLocation, useNavigate } from 'react-router'
 import type { Lang } from '../lib/parsePost'
 import { navHtml } from '../site/markup'
 import { wireHover, wireNav } from '../site/effects'
+import { mirrorPath, homePath } from '../lib/i18n'
 
 /**
  * Fixed site navigation, ported from the design export. Section links are
- * in-page anchors on the homepage and absolute `/#section` links elsewhere so
- * they always resolve back to the one-page layout. The logo links home —
- * smooth-scrolling to top on the homepage, navigating home otherwise.
+ * in-page anchors on the homepage and absolute `/#section` (or `/en#section`)
+ * links elsewhere so they always resolve back to the one-page layout in the
+ * current language. The logo links home — smooth-scrolling to top on the
+ * homepage, navigating home otherwise.
  */
 export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
   const ref = useRef<HTMLDivElement>(null)
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const isHome = pathname === '/'
+  const home = homePath(lang)
+  const isHome = pathname === home
   const base = navHtml(lang)
-  const html = isHome ? base : base.replace(/href="#/g, 'href="/#')
+  const html = isHome ? base : base.replace(/href="#/g, `href="${home}#`)
 
   useEffect(() => {
     const root = ref.current
@@ -30,10 +33,20 @@ export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
       const onLogo = (e: MouseEvent) => {
         e.preventDefault()
         if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
-        else navigate('/')
+        else navigate(home)
       }
       logo.addEventListener('click', onLogo)
       disposers.push(() => logo.removeEventListener('click', onLogo))
+    }
+
+    const langSwitch = root.querySelector<HTMLAnchorElement>('#lang-switch')
+    if (langSwitch) {
+      const onLangSwitch = (e: MouseEvent) => {
+        e.preventDefault()
+        navigate(mirrorPath(pathname))
+      }
+      langSwitch.addEventListener('click', onLangSwitch)
+      disposers.push(() => langSwitch.removeEventListener('click', onLangSwitch))
     }
 
     // Mobile menu: toggle the `open` class on the nav, and close it whenever a
@@ -58,7 +71,7 @@ export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
     }
 
     return () => disposers.forEach((d) => d())
-  }, [html, isHome, navigate])
+  }, [html, isHome, navigate, pathname, home])
 
   return <div ref={ref} dangerouslySetInnerHTML={{ __html: html }} />
 }

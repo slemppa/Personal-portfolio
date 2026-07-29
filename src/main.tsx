@@ -32,8 +32,10 @@ createRoot(document.getElementById('root')!).render(
       <ScrollToTop />
       <Suspense fallback={null}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projektit/:slug" element={<CaseStudy />} />
+          <Route path="/" element={<Home lang="fi" />} />
+          <Route path="/en" element={<Home lang="en" />} />
+          <Route path="/projektit/:slug" element={<CaseStudy lang="fi" />} />
+          <Route path="/en/projektit/:slug" element={<CaseStudy lang="en" />} />
           <Route path="/blog" element={<BlogList lang="fi" />} />
           <Route path="/blog/:slug" element={<BlogPost lang="fi" />} />
           <Route path="/en/blog" element={<BlogList lang="en" />} />

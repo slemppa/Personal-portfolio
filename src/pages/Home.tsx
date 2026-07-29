@@ -5,12 +5,13 @@ import BuildInPublic from '../components/BuildInPublic'
 import CasesSection from '../components/CasesSection'
 import { sectionsHtml } from '../site/markup'
 import { wireHover, runKoneisto } from '../site/effects'
+import { applyHead } from '../lib/head'
+import { homeCopy } from '../site/copy'
+import { homePath } from '../lib/i18n'
+import type { Lang } from '../lib/parsePost'
 
-export default function Home() {
+export default function Home({ lang = 'fi' }: { lang?: Lang }) {
   const ref = useRef<HTMLDivElement>(null)
-
-  // TODO(task8): thread lang prop instead of hardcoding 'fi'
-  const lang = 'fi' as const
 
   // The static "Projektit" and "Build in Public" sections are replaced by
   // live React components; render the markup before/between/after them.
@@ -23,7 +24,7 @@ export default function Home() {
       betweenProjectsAndBuild: html.slice(projectsStart, buildStart),
       afterBuild: html.slice(html.indexOf('<!-- TARINA -->')),
     }
-  }, [])
+  }, [lang])
 
   useEffect(() => {
     const root = ref.current
@@ -32,6 +33,19 @@ export default function Home() {
 
     return () => disposers.forEach((d) => d())
   }, [])
+
+  useEffect(() => {
+    applyHead({
+      lang,
+      title: lang === 'fi' ? 'Sami Kiias — Fullstack-tuoterakentaja' : 'Sami Kiias — Fullstack product builder',
+      description: homeCopy[lang].heroBody,
+      canonical: homePath(lang),
+      alternates: [
+        { hreflang: 'fi', path: '/' },
+        { hreflang: 'en', path: '/en' },
+      ],
+    })
+  }, [lang])
 
   return (
     <div
@@ -59,7 +73,7 @@ export default function Home() {
           transition: 'width .1s linear',
         }}
       />
-      <Nav />
+      <Nav lang={lang} />
       <div dangerouslySetInnerHTML={{ __html: beforeProjects }} />
       <CasesSection lang={lang} />
       <div dangerouslySetInnerHTML={{ __html: betweenProjectsAndBuild }} />

@@ -29,7 +29,7 @@ export default function BlogList({ lang }: { lang: Lang }) {
 
   return (
     <>
-      <Nav />
+      <Nav lang={lang} />
       <main className="max-w-3xl mx-auto px-8 pt-32 pb-24 min-h-screen">
         <div className="mb-2 flex items-start justify-between gap-4">
           <h1 className="text-4xl font-bold text-text-primary">{t(lang, 'blogTitle')}</h1>

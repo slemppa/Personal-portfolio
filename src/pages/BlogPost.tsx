@@ -41,7 +41,7 @@ export default function BlogPost({ lang }: { lang: Lang }) {
 
   return (
     <>
-      <Nav />
+      <Nav lang={lang} />
       <main className="max-w-3xl mx-auto px-8 pt-32 pb-24 min-h-screen">
         <div className="flex items-center justify-between gap-4">
           <Link to={blogListPath(lang)} className="text-sm text-text-secondary hover:text-text-primary transition-colors">

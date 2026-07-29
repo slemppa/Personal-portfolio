@@ -35,7 +35,7 @@ export default function CaseStudy({ lang = 'fi' }: { lang?: Lang }) {
   if (!study) {
     return (
       <>
-        <Nav />
+        <Nav lang={lang} />
         <main className="max-w-3xl mx-auto px-8 pt-32 pb-24 min-h-screen">
           <Link to={homePath(lang) + '#projektit'} className="inline-flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
             <ArrowLeft className="w-4 h-4" /> {t(lang, 'caseBack')}
@@ -54,7 +54,7 @@ export default function CaseStudy({ lang = 'fi' }: { lang?: Lang }) {
 
   return (
     <>
-      <Nav />
+      <Nav lang={lang} />
       <main className="pt-32 pb-24 min-h-screen">
         {/* Hero */}
         <header className="max-w-4xl mx-auto px-8">

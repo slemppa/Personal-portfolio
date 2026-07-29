@@ -138,3 +138,13 @@ export const blogPostPath = (lang: Lang, slug: string): string =>
 export const casePath = (lang: Lang, slug: string): string =>
   lang === 'fi' ? `/projektit/${slug}` : `/en/projektit/${slug}`
 export const homePath = (lang: Lang): string => (lang === 'fi' ? '/' : '/en')
+
+// Maps the current path to its counterpart in the other language, for the
+// nav language switcher. Pages that don't exist in fi (e.g. /yhteys) fall
+// back to the English home rather than a 404.
+export function mirrorPath(pathname: string): string {
+  if (pathname === '/en' || pathname.startsWith('/en/')) return pathname.replace(/^\/en\/?/, '/') || '/'
+  if (pathname === '/') return '/en'
+  if (pathname.startsWith('/projektit/') || pathname.startsWith('/blog')) return `/en${pathname}`
+  return '/en'
+}
