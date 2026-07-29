@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.115.0",
+    "@neondatabase/serverless": "^1.1.0",
     "@posthog/react": "^1.10.2",
     "@tailwindcss/typography": "^0.5.19",
     "js-yaml": "^4.2.0",

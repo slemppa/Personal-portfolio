@@ -5,6 +5,30 @@ import tailwindcss from '@tailwindcss/vite'
 import { buildActivity } from './api/_lib/activity'
 import { normalizeInput, offerToMarkdown, encodeOfferToken, decodeOfferToken } from './api/_lib/offer'
 import { generateOffer } from './api/_lib/offerAI'
+import { storeOffer, getStoredOffer, listOffers } from './api/_lib/offerStore'
+import { parseLead, storeLead, notifyLead, listLeads } from './api/_lib/leads'
+
+type DevRes = { statusCode: number; setHeader: (k: string, v: string) => void; end: (b: string) => void }
+const sendJson = (res: DevRes, code: number, body: unknown) => {
+  res.statusCode = code
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify(body))
+}
+const readBody = (req: { on: (e: string, cb: (c?: Buffer) => void) => void }): Promise<unknown> =>
+  new Promise((resolve) => {
+    const chunks: Buffer[] = []
+    req.on('data', (c) => c && chunks.push(c))
+    req.on('end', () => {
+      const raw = Buffer.concat(chunks).toString('utf8')
+      try {
+        resolve(raw ? JSON.parse(raw) : {})
+      } catch {
+        resolve({})
+      }
+    })
+  })
+// Dev "auth": the middleware trusts the local machine, so list endpoints are
+// open in dev regardless of OFFER_API_KEY (prod enforces it in the function).
 
 // Serves /api/activity during `vite dev`, mirroring the Vercel function so the
 // build-in-public section works locally without `vercel dev`. Both paths call
@@ -34,44 +58,62 @@ function devActivityApi(env: Record<string, string>): Plugin {
 }
 
 // Serves /api/offers during `vite dev`, mirroring the Vercel function so the
-// offer-sharing feature works locally. GET ?token= resolves a share token;
-// POST generates an offer from CRM data (uses Claude when ANTHROPIC_API_KEY is
-// set in .env, else the deterministic template).
+// offer feature works locally. GET ?id= / ?token= resolve an offer, ?list=1
+// lists stored ones; POST generates + stores an offer. Storage activates only
+// when DATABASE_URL is present in .env, else it falls back to token links.
 function devOffersApi(env: Record<string, string>): Plugin {
-  const json = (res: { statusCode: number; setHeader: (k: string, v: string) => void; end: (b: string) => void }, code: number, body: unknown) => {
-    res.statusCode = code
-    res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify(body))
-  }
   return {
     name: 'dev-offers-api',
     apply: 'serve',
     configureServer(server) {
-      server.middlewares.use('/api/offers', (req, res) => {
+      server.middlewares.use('/api/offers', async (req, res) => {
         const url = new URL(req.url ?? '', 'http://localhost')
         if (req.method === 'GET') {
-          const offer = decodeOfferToken(url.searchParams.get('token') ?? '')
-          if (!offer) return json(res, 400, { error: 'invalid_or_missing_token' })
-          return json(res, 200, { offer, markdown: offerToMarkdown(offer) })
+          if (url.searchParams.get('list') !== null) return sendJson(res, 200, { offers: await listOffers() })
+          const id = url.searchParams.get('id')
+          const token = url.searchParams.get('token')
+          const offer = id ? await getStoredOffer(id) : token ? decodeOfferToken(token) : null
+          if (!offer) return sendJson(res, 404, { error: 'not_found' })
+          return sendJson(res, 200, { offer, markdown: offerToMarkdown(offer) })
         }
-        if (req.method !== 'POST') return json(res, 405, { error: 'method_not_allowed' })
+        if (req.method !== 'POST') return sendJson(res, 405, { error: 'method_not_allowed' })
+        try {
+          const offer = await generateOffer(normalizeInput(await readBody(req)), {
+            ANTHROPIC_API_KEY: env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY,
+            OFFER_MODEL: env.OFFER_MODEL || process.env.OFFER_MODEL,
+          })
+          const id = await storeOffer(offer)
+          const token = encodeOfferToken(offer)
+          const shareUrl = id ? `${url.origin}/tarjous/${id}` : `${url.origin}/tarjous#${token}`
+          sendJson(res, 200, { offer, id, token, shareUrl, markdown: offerToMarkdown(offer) })
+        } catch (err) {
+          sendJson(res, 500, { error: 'offer_generation_failed', detail: String(err) })
+        }
+      })
+    },
+  }
+}
 
-        const chunks: Buffer[] = []
-        req.on('data', (c: Buffer) => chunks.push(c))
-        req.on('end', async () => {
-          try {
-            const raw = Buffer.concat(chunks).toString('utf8')
-            const body = raw ? JSON.parse(raw) : {}
-            const offer = await generateOffer(normalizeInput(body), {
-              ANTHROPIC_API_KEY: env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY,
-              OFFER_MODEL: env.OFFER_MODEL || process.env.OFFER_MODEL,
-            })
-            const token = encodeOfferToken(offer)
-            json(res, 200, { offer, token, shareUrl: `${url.origin}/tarjous#${token}`, markdown: offerToMarkdown(offer) })
-          } catch (err) {
-            json(res, 500, { error: 'offer_generation_failed', detail: String(err) })
-          }
-        })
+// Serves /api/contact during `vite dev` — mirrors the lead-capture function.
+function devContactApi(): Plugin {
+  return {
+    name: 'dev-contact-api',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/api/contact', async (req, res) => {
+        const url = new URL(req.url ?? '', 'http://localhost')
+        if (req.method === 'GET') {
+          if (url.searchParams.get('list') === null) return sendJson(res, 400, { error: 'bad_request' })
+          return sendJson(res, 200, { leads: await listLeads() })
+        }
+        if (req.method !== 'POST') return sendJson(res, 405, { error: 'method_not_allowed' })
+        const body = (await readBody(req)) as Record<string, unknown>
+        if (typeof body.website === 'string' && body.website.trim()) return sendJson(res, 200, { ok: true })
+        const parsed = parseLead(body)
+        if (!parsed.ok) return sendJson(res, 400, { error: parsed.error })
+        const [id, emailed] = await Promise.all([storeLead(parsed.lead), notifyLead(parsed.lead)])
+        if (id === null && !emailed) return sendJson(res, 503, { error: 'not_configured' })
+        sendJson(res, 200, { ok: true, id, emailed })
       })
     },
   }
@@ -80,8 +122,13 @@ function devOffersApi(env: Record<string, string>): Plugin {
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  // Bridge server-only vars from .env onto process.env so the persistence layer
+  // (Neon/email, read via process.env in api/_lib) works under `vite dev` too.
+  for (const k of ['DATABASE_URL', 'OFFER_API_KEY', 'BREVO_API_KEY', 'RESEND_API_KEY', 'RESEND_FROM']) {
+    if (env[k] && !process.env[k]) process.env[k] = env[k]
+  }
   return {
-    plugins: [react(), tailwindcss(), devActivityApi(env), devOffersApi(env)],
+    plugins: [react(), tailwindcss(), devActivityApi(env), devOffersApi(env), devContactApi()],
     build: {
       // Modern baseline — avoids shipping legacy transforms/polyfills to the
       // evergreen browsers this site targets.

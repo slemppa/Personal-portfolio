@@ -81,3 +81,15 @@ export function offerTokenFromLocation(loc: { hash: string; search: string }): s
   const q = new URLSearchParams(loc.search).get('t')
   return q?.trim() || null
 }
+
+/** Fetch a stored offer by its short id (from a /tarjous/<id> link). */
+export async function fetchStoredOffer(id: string, signal?: AbortSignal): Promise<Offer | null> {
+  try {
+    const res = await fetch(`/api/offers?id=${encodeURIComponent(id)}`, { signal })
+    if (!res.ok) return null
+    const body = (await res.json()) as { offer?: Offer }
+    return body.offer ?? null
+  } catch {
+    return null
+  }
+}
