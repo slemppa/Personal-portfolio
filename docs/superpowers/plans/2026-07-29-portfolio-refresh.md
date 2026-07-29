@@ -1501,6 +1501,39 @@ gallery: [
 - [ ] **Step 3:** Verify: lint, vitest, build, dev server — both langs; animation runs, reduced-motion static.
 - [ ] **Step 4:** Commit `feat: tech section principles row + animated stack flow`
 
+### Task 17: Manifesto rewrite — kill the AI slop (user feedback 2026-07-29)
+
+**Files:**
+- Modify: `src/site/copy.ts` (man* keys), `src/site/markup.ts` (manifesti section layout), `src/index.css` (responsive rule if a new grid pattern is introduced)
+
+**Context:** User verdict on the current manifesto: "100 % AI slop". Two problems: (1) the six principle bodies are generic platitudes, (2) the layout wastes a huge empty left column under the intro.
+
+- [ ] **Step 1: New copy.** Replace the `man*` values in copy.ts. Each principle now has a title key, body key and a mono "receipt" key (`man1t/man1/man1r` … `man6t/man6/man6r` — extend the HomeCopy type accordingly; intro shortens). Values (verbatim):
+
+FI:
+- manIntro: 'Ei teesejä joita kukaan ei voi vastustaa — vaan säännöt, joiden mukaan nämä kuusi tuotetta on oikeasti rakennettu. Jokaisessa on kuitti.'
+- man1t: 'Tuotanto on ainoa mittari.', man1: 'Demo ei todista mitään. Järjestelmä on valmis vasta, kun se pyörii maksavilla asiakkailla myös silloin kun kukaan ei katso.', man1r: 'kuitti: 423 julkaisua tuotantoon ~13 kk:ssa'
+- man2t: 'Tylsä matikka ensin, AI vasta sitten.', man2: 'Kaiken minkä voi laskea deterministisesti, lasken koodilla — auditoitavasti ja ilmaiseksi. LLM saa harkinnan, ei kirjanpitoa.', man2r: 'kuitti: Altion progressiomoottori · Pesän senttitarkka vyörytys'
+- man3t: 'Turva ei ole ominaisuus.', man3: 'Eristys tehdään tietokannassa asti, ei käyttöliittymässä. Virhetilanne sulkee oven — ei koskaan avaa väärän asiakkaan dataa.', man3r: 'kuitti: RLS 78+50 taulussa · fail-closed-korjaus tuotannossa'
+- man4t: 'Kolmas toisto automatisoidaan.', man4: 'Kahdesti käsin, kolmannella kerralla koneelle. Pienistä toistoista kertyy viikkoja — ja koneisto ei unohda.', man4r: 'kuitti: 27 edge-funktiota hoitaa julkaisut, token-refreshit ja healthcheckit'
+- man5t: 'Rakennan kun se on etu, ostan kun ei ole.', man5: 'Oma workflow-moottori siellä missä se erottaa tuotteen — valmis Twilio siellä missä ei. Raja on kilpailuetu, ei ideologia.', man5r: 'kuitti: oma OAuth 2.1 -palvelin · ostettu puheluinfra'
+- man6t: 'Nopeus tulee kurista.', man6: 'Speksi ennen koodia, testit ennen mergeä, julkaisu joka päivä. Kuri ei hidasta — se poistaa pelon muuttaa mitä vain.', man6r: 'kuitti: ~3 000 testiä · 65+ design-spekkiä'
+
+EN (mirror):
+- manIntro: 'Not theses nobody could disagree with — the actual rules these six products were built by. Each one comes with a receipt.'
+- man1t: 'Production is the only scoreboard.', man1: 'A demo proves nothing. A system is done when it runs for paying customers even when nobody is watching.', man1r: 'receipt: 423 production releases in ~13 months'
+- man2t: 'Boring math first, AI second.', man2: 'Everything that can be computed deterministically, I compute in code — auditable and free. The LLM gets judgment, never the bookkeeping.', man2r: 'receipt: Altio’s progression engine · Pesä’s cent-exact avalanche'
+- man3t: 'Security is not a feature.', man3: 'Isolation goes down to the database, not the UI. Failure closes the door — it never opens another customer’s data.', man3r: 'receipt: RLS across 78+50 tables · a fail-closed fix in production'
+- man4t: 'The third repetition gets automated.', man4: 'Twice by hand, third time to the machine. Small repetitions add up to weeks — and the machine doesn’t forget.', man4r: 'receipt: 27 edge functions run publishing, token refresh and health checks'
+- man5t: 'Build where it’s an edge, buy where it isn’t.', man5: 'A custom workflow engine where it differentiates the product — off-the-shelf Twilio where it doesn’t. The line is competitive advantage, not ideology.', man5r: 'receipt: a from-scratch OAuth 2.1 server · bought call infrastructure'
+- man6t: 'Speed comes from discipline.', man6: 'Spec before code, tests before merge, releases every day. Discipline doesn’t slow you down — it removes the fear of changing anything.', man6r: 'receipt: ~3,000 tests · 65+ design specs'
+
+Title stays 'Automaatio on / uusi lukutaito.' / 'Automation is / the new literacy.' (brand line), eyebrow stays.
+
+- [ ] **Step 2: New layout.** Replace the sticky-left-intro + right-list structure: compact intro row (title left, manIntro right, no sticky, no tall empty column), then the six principles as a 3×2 card grid (2-col at ≤1100px if needed, 1-col ≤860px): each card = mono number+title line (e.g. `01 — Tuotanto on ainoa mittari.` title in text-primary weight 600), body in text-secondary, and the receipt as a mono 11px line in text-muted with a hairline top border inside the card. Cards match the tech/principles card language (hairline border, radius 13-14px, background rgba(255,255,255,.015)).
+- [ ] **Step 3:** Verify lint/vitest/build + both langs render, screenshot check.
+- [ ] **Step 4:** Commit `feat: manifesto rewritten with receipts, card grid layout`
+
 ## Task execution order
 
 Strict order: 1 → 2+3+4 (one sitting) → 5 → 6 → 7 → 8 → 10 → 11 → 9 → 12 → 13 → 14 → 15. (10+11 before 9 because CaseStudy's CTA consumes the consent-aware ContactForm.)
