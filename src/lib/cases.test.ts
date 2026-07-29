@@ -36,4 +36,12 @@ describe('case data integrity', () => {
   it('first three cases are featured, rest not', () => {
     expect(getCases('fi').map((c) => c.featured)).toEqual([true, true, true, false, false, false])
   })
+
+  it('gallery entries point under the case folder', () => {
+    for (const c of getCases('fi')) {
+      for (const g of c.gallery) {
+        expect(g.src.startsWith(`/cases/${c.slug}/`), `${c.slug}: ${g.src}`).toBe(true)
+      }
+    }
+  })
 })

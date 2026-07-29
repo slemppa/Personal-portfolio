@@ -50,7 +50,9 @@ const entries: CaseEntry[] = [
       { group: 'Product', items: ['React', 'Vite', 'Supabase', 'Postgres + RLS'] },
       { group: 'Infra', items: ['Vercel', 'Upstash Redis', 'Sentry', 'n8n'] },
     ],
-    gallery: [],
+    gallery: [
+      { src: '/cases/rascal-ai/site.png', caption: { fi: 'rascalai.fi — myynnin ja markkinoinnin ekosysteemi', en: 'rascalai.fi — the sales & marketing ecosystem' } },
+    ],
     copy: {
       fi: {
         title: 'Rascal AI',
@@ -133,7 +135,9 @@ const entries: CaseEntry[] = [
       { group: 'Voice', items: ['Twilio Voice SDK', 'Mistral', 'Vapi'] },
       { group: 'Integrations', items: ['Recall.ai', 'Unipile', 'Slack', 'Tiptap'] },
     ],
-    gallery: [],
+    gallery: [
+      { src: '/cases/rascal-crm/rascal-id.jpg', caption: { fi: 'Rascal ID — yksi kirjautuminen avaa koko tuoteperheen (itse rakennettu SSO)', en: 'Rascal ID — one sign-in opens the whole suite (self-built SSO)' } },
+    ],
     copy: {
       fi: {
         title: 'Rascal CRM',
@@ -210,7 +214,9 @@ const entries: CaseEntry[] = [
       { group: 'AI', items: ['Claude', 'ElevenLabs', 'n8n'] },
       { group: 'Provisioning', items: ['GitHub API', 'Vercel API'] },
     ],
-    gallery: [],
+    gallery: [
+      { src: '/cases/rascal-pages/site.jpg', caption: { fi: 'rascalpages.fi — konvertoiva landing page alle 60 sekunnissa', en: 'rascalpages.fi — a converting landing page in under 60 seconds' } },
+    ],
     copy: {
       fi: {
         title: 'Rascal Pages',
@@ -287,7 +293,9 @@ const entries: CaseEntry[] = [
       { group: 'Backend', items: ['Supabase', 'pgvector', 'pg_cron', 'n8n'] },
       { group: 'AI & data', items: ['Claude', 'Whisper', 'Strava API', 'Mapbox'] },
     ],
-    gallery: [],
+    gallery: [
+      { src: '/cases/altio/marketing.png', caption: { fi: 'Altio — private beta -markkinointisivu (EN/FI)', en: 'Altio — private beta marketing site (EN/FI)' } },
+    ],
     copy: {
       fi: {
         title: 'Altio',
@@ -318,10 +326,10 @@ const entries: CaseEntry[] = [
           'Ruoan kirjaus kolmella tavalla: viivakoodi, valokuva tai vapaa teksti',
           'Generoidut päivittäiset meditaatiot (Claude-skripti + TTS-ääni)',
           'Räätälöidyt SVG-visualisoinnit ilman chart-kirjastoa',
-          'Private beta: app.altio.app',
+          'Private beta käynnissä (kutsulista)',
         ],
         links: [
-          { label: 'app.altio.app', href: 'https://app.altio.app' },
+          { label: 'Marketing-sivu (beta)', href: 'https://superhuman-ios.vercel.app/welcome.html' },
           { label: 'Blogi: näin se on rakennettu', href: '/blog/nain-superhuman-on-rakennettu' },
         ],
       },
@@ -354,10 +362,10 @@ const entries: CaseEntry[] = [
           'Food logging three ways: barcode, photo or free text',
           'Generated daily meditations (Claude script + TTS audio)',
           'Hand-rolled SVG visualizations, no chart library',
-          'Private beta: app.altio.app',
+          'Private beta running (invite waitlist)',
         ],
         links: [
-          { label: 'app.altio.app', href: 'https://app.altio.app' },
+          { label: 'Marketing site (beta)', href: 'https://superhuman-ios.vercel.app/welcome.html' },
           { label: 'Blog: how it’s built', href: '/en/blog/nain-superhuman-on-rakennettu' },
         ],
       },
@@ -370,7 +378,9 @@ const entries: CaseEntry[] = [
       { group: 'Data', items: ['Neon Postgres', 'Drizzle ORM', 'Better Auth'] },
       { group: 'Quality', items: ['TypeScript strict', 'Zod', 'node:test'] },
     ],
-    gallery: [],
+    gallery: [
+      { src: '/cases/pesa/login.png', caption: { fi: 'Pesä — kirjautuminen: "give every euro a job"', en: 'Pesä — sign in: "give every euro a job"' } },
+    ],
     copy: {
       fi: {
         title: 'Pesä',
@@ -444,7 +454,9 @@ const entries: CaseEntry[] = [
       { group: 'App', items: ['Expo', 'React Native', 'NativeWind', 'TanStack Query'] },
       { group: 'Backend', items: ['Supabase', 'Postgres RLS', 'Realtime'] },
     ],
-    gallery: [],
+    gallery: [
+      { src: '/cases/perhe-app/login.png', caption: { fi: 'Arkireitti — kaksitasoinen kirjautuminen: lapsi koodilla, vanhempi tilillä', en: 'Arkireitti — two-tier sign-in: kids use a code, parents an account' } },
+    ],
     copy: {
       fi: {
         title: 'Arkireitti',
