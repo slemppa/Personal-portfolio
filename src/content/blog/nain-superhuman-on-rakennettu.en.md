@@ -22,7 +22,7 @@ project — and at the same time a glimpse into why it's more than just one more
 
 For most of us, health is scattered. Sleep in one app, workouts in another,
 nutrition in a third, and goals on some sticky note. There's more data than ever,
-but **[no more understanding at all](/blog/pesa-anna-jokaiselle-eurolle-koti).** The numbers don't tell you
+but **[no more understanding at all](/en/blog/pesa-anna-jokaiselle-eurolle-koti).** The numbers don't tell you
 what you're supposed to do with them.
 
 Superhuman starts from the opposite idea: one place that gathers the pieces

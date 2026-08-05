@@ -20,7 +20,7 @@ I wanted something different: a tool that helps you _plan_ your spending before 
 
 ## The solution: envelope budgeting, modernised
 
-Pesä is built on an old and proven idea — the **[envelope method](/blog/nain-superhuman-on-rakennettu)**. The concept is simple: when money comes in, you immediately split it into "envelopes" for different purposes. Rent, food, fuel, a holiday fund, an unexpected bill. Every euro has a job before it's ever spent.
+Pesä is built on an old and proven idea — the **[envelope method](/en/blog/nain-superhuman-on-rakennettu)**. The concept is simple: when money comes in, you immediately split it into "envelopes" for different purposes. Rent, food, fuel, a holiday fund, an unexpected bill. Every euro has a job before it's ever spent.
 
 This is the same philosophy that YNAB (You Need A Budget) made world-famous. Pesä brings it to everyday Finnish life — in Finnish, in euros, and privacy first.
 
@@ -28,7 +28,7 @@ The app's slogan sums it all up: **"A home for every euro."**
 
 ## YNAB's four rules — and how they show up in Pesä
 
-Pesä maps the four rules of the [YNAB methodology](/blog/markkinoinnin-automaatio-30-paivan-paatospuu.en) straight into the core of the product:
+Pesä maps the four rules of the [YNAB methodology](/en/blog/markkinoinnin-automaatio-30-paivan-paatospuu) straight into the core of the product:
 
 **1. Give every euro a job.**  
 Everything revolves around the **Ready to Assign** figure. It tells you how much money is waiting for a home. The goal is to get it to zero — not because you're out of money, but because every euro is assigned to something.

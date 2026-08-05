@@ -8,6 +8,7 @@ import { getPost, getTranslation } from '../lib/posts'
 import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
 import { applyHead, type Alternate } from '../lib/head'
+import { postJsonLd } from '../lib/seo'
 import type { Lang } from '../lib/parsePost'
 
 export default function BlogPost({ lang }: { lang: Lang }) {
@@ -36,6 +37,10 @@ export default function BlogPost({ lang }: { lang: Lang }) {
       description: post?.description,
       canonical: blogPostPath(lang, slug),
       alternates,
+      image: post?.cover,
+      type: post ? 'article' : 'website',
+      publishedTime: post?.date,
+      jsonLd: post ? postJsonLd(post, blogPostPath(lang, slug)) : [],
     })
   }, [lang, slug, post])
 
