@@ -7,6 +7,7 @@ import { normalizeInput, offerToMarkdown, encodeOfferToken, decodeOfferToken } f
 import { generateOffer } from './api/_lib/offerAI'
 import { storeOffer, getStoredOffer, listOffers } from './api/_lib/offerStore'
 import { parseLead, storeLead, notifyLead, listLeads } from './api/_lib/leads'
+import { seoBuild } from './scripts/seoBuild'
 
 type DevRes = { statusCode: number; setHeader: (k: string, v: string) => void; end: (b: string) => void }
 const sendJson = (res: DevRes, code: number, body: unknown) => {
@@ -128,7 +129,7 @@ export default defineConfig(({ mode }) => {
     if (env[k] && !process.env[k]) process.env[k] = env[k]
   }
   return {
-    plugins: [react(), tailwindcss(), devActivityApi(env), devOffersApi(env), devContactApi()],
+    plugins: [react(), tailwindcss(), devActivityApi(env), devOffersApi(env), devContactApi(), seoBuild()],
     build: {
       // Modern baseline — avoids shipping legacy transforms/polyfills to the
       // evergreen browsers this site targets.

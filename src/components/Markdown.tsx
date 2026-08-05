@@ -10,6 +10,15 @@ export default function Markdown({ children }: { children: string }) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSlug, rehypeHighlight]}
+        components={{
+          // Wide comparison tables must scroll inside their own box; without
+          // this a 7-column table pushes the whole page sideways on mobile.
+          table: ({ children, ...props }) => (
+            <div className="overflow-x-auto">
+              <table {...props}>{children}</table>
+            </div>
+          ),
+        }}
       >
         {children}
       </ReactMarkdown>
