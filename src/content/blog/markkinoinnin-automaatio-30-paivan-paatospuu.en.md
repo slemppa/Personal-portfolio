@@ -32,7 +32,7 @@ The most common mistake in this process is automating content before the data an
 
 ## A lightweight stack: get started without a heavy MAP platform
 
-Most SMBs make the same mistake: they buy an expensive [marketing automation platform](/blog/sisaltomarkkinointi-pk-yrityksen-tyokalut-2026.en) before they even have the basics in order. The truth is, you don't need HubSpot, Marketo, or Pardot to get started. It's enough to have four basic components: a CRM, an email tool, forms, and analytics. This is what's called a "minimum viable automation" stack, and it's enough for 80 percent of SMBs for the first 6–12 months.
+Most SMBs make the same mistake: they buy an expensive [marketing automation platform](/en/blog/sisaltomarkkinointi-pk-yrityksen-tyokalut-2026) before they even have the basics in order. The truth is, you don't need HubSpot, Marketo, or Pardot to get started. It's enough to have four basic components: a CRM, an email tool, forms, and analytics. This is what's called a "minimum viable automation" stack, and it's enough for 80 percent of SMBs for the first 6–12 months.
 
 The CRM is the heart of automation. It needs to hold contacts, deals, and source data. Use Pipedrive, HubSpot, or even free Airtable if the budget is tight. The most important thing is that every lead and its source — such as UTM parameters or campaign data — gets saved into the CRM. Without this data you can't measure what works and what doesn't.
 
