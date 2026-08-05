@@ -39,6 +39,7 @@ Päälle tavallinen CRM-perusta, joka on syytä olettaa mistä tahansa tuotteest
 | Kokousmuistiinpanot | Botti Meet/Zoom/Teams-kokoukseen, tehtävät CRM:ään | Erillinen työkalu tai lisäosa | Erillinen työkalu tai lisäosa | Erillinen työkalu | Erillinen työkalu | Erillinen työkalu |
 | Tarjous + e-allekirjoitus | Sisäänrakennettu | Quotes + erillinen allekirjoituspalvelu | CPQ omana tuotteenaan | Smart Docs -lisäosa | Zoho Sign erillisenä sovelluksena | Erillinen palvelu |
 | Ajanvaraussivu | Sisäänrakennettu | Meetings-työkalu | Scheduler-lisenssi | Scheduler tietyissä paketeissa | Bookings erillisenä sovelluksena | Sisältyy osaan paketteja |
+| Markkinointi (sisältö, some, kampanjat) | Rascal AI samassa tuoteperheessä, yksi kirjautuminen | Marketing Hub erikseen hinnoiteltuna | Marketing Cloud omana tuotteenaan | Campaigns-lisäosa | Zoho Marketing Automation erillisenä | Freshmarketer erikseen |
 | Suomenkielinen käyttöliittymä | Ensimmäinen kieli | Vaihtelee näkymittäin | Osittain, konfiguroitava | Osittain | Osittain | Osittain |
 | Käyttöönotto | Päivissä, ilman konsulttiprojektia | Viikoissa | Yleensä kumppaniprojekti | Päivissä | Viikoissa | Päivissä |
 
@@ -46,11 +47,24 @@ Taulukon idea ei ole, että muut olisivat huonoja tuotteita. Idea on, että ero 
 
 ## Rascal CRM vs. HubSpot
 
-HubSpot on tämän joukon paras markkinointikoneisto. Jos yrityksen tärkein ongelma on liidien tuottaminen sisällöllä, sähköposteilla ja laskeutumissivuilla, HubSpotin ekosysteemiä on vaikea voittaa — ja ilmainen taso on aito tapa aloittaa.
+HubSpotin ekosysteemi on aito ja ilmainen taso on rehellinen tapa aloittaa. Kipu tulee myöhemmin ja kahdesta suunnasta. Ensimmäinen on paketointi: Sales Hub, Marketing Hub ja Service Hub hinnoitellaan erikseen, ja se ominaisuus, jonka takia tulit, on usein juuri seuraavassa tasossa. Toinen on markkinointikontaktien laskutuslogiikka — kustannus kasvaa listan koon mukana, ei myynnin mukana.
 
-Kipu tulee myöhemmin ja kahdesta suunnasta. Ensimmäinen on paketointi: Sales Hub, Marketing Hub ja Service Hub hinnoitellaan erikseen, ja se ominaisuus, jonka takia tulit, on usein juuri seuraavassa tasossa. Toinen on markkinointikontaktien laskutuslogiikka — kustannus kasvaa listan koon mukana, ei myynnin mukana.
+Tavallinen vasta-argumentti kuuluu: "mutta HubSpotista saa markkinoinnin samasta paikasta." Se pitäisi paikkansa, jos vaihtoehto olisi pelkkä CRM. Ei ole. Markkinointipuolen hoitaa saman tuoteperheen toinen tuote, **Rascal AI**, ja [Rascal ID:n](/projektit/rascal-crm) ansiosta molempiin mennään yhdellä kirjautumisella.
 
-Rascal CRM ei yritä olla markkinointiautomaatio. Se on myyntitiimin työkalu, jossa puhelu, kokous, tarjous ja allekirjoitus ovat samassa tuotteessa ilman hub-matematiikkaa. Jos markkinointi pyörii jo jossain, tämä on vahvempi vaihtoehto. Jos etsit sisältökoneistoa, HubSpot on rehellisesti parempi ostos — ja jos mietit, mitä markkinoinnin automaatiosta kannattaa ylipäätään ostaa ensin, kirjoitin siitä erikseen: [markkinoinnin automaation 30 päivän päätöspuu](/blog/markkinoinnin-automaatio-30-paivan-paatospuu).
+Mitä Rascal AI oikeasti tekee — nämä ovat ominaisuuksia, eivät lupauksia:
+
+- **Kuukausittainen kuuden minuutin äänihaastattelu.** ElevenLabs-agentti haastattelee yrittäjää, ja vastaukset tislataan teemoiksi ja sitaateiksi, jotka ohjaavat sisältöstrategiaa. Tämä on vastaus siihen, miksi AI-sisältö kuulostaa botilta: malli ei arvaa yrityksen ääntä, vaan saa sen haastattelusta.
+- **Koko sisältöputki strategiasta julkaisuun.** Sisältöstrategia ihanneasiakasprofiilin pohjalta, postausideat, blogit, uutiskirjeet, kuvageneraatio, karusellipohjat ja ajastettu julkaisu somekanaviin — kanavat pysyvät kiinni kuukausia ilman käsityötä.
+- **Puhelukampanjat, joita HubSpot ei tee.** CSV-import, ajastus arkipäiville, AI-ohjatut outbound- ja inbound-puhelut soittoskriptin mukaan, ja tulokset takaisin järjestelmään raportoituna.
+- **Liidien hankinta.** Lead scraping, liidihaut ja julkiset lead magnet -sivut, joilla liidi syntyy ilman erillistä lomaketyökalua.
+- **Analytiikka yhdessä paikassa.** Somekanavien suorituskyky, sisällön mittarit, puheluanalytiikka ja Google Analytics OAuth-integraationa.
+- **Tuote on myös MCP-serveri.** 20 työkalua, joilla Claude ajaa kampanjoita, generoi sisältöä ja lukee analytiikkaa luonnollisella kielellä. Pohjalla itse rakennettu OAuth 2.1 -auktorisointipalvelin, ei jaettu API-avain.
+
+Mittakaava sekin: ~207 000 riviä koodia, 78 taulua rivitason käyttöoikeuksilla, 1 400+ automaattitestiä ja 423 julkaisua noin 13 kuukaudessa.
+
+Ero HubSpotiin ei siis ole "meillä ei ole markkinointia" vaan se, mitä markkinointi tarkoittaa. HubSpotissa se on liidien kerääminen sisällöllä ja lomakkeilla, jotka sinä kirjoitat. Rascal AI:ssa sisältö syntyy yrittäjän omasta äänestä ja liidit soitetaan läpi — ja kaupaksi ne kääntyvät CRM:n puolella samassa tuoteperheessä. Yksi rehellinen poikkeus: jos tarvitset kymmenien laskeutumissivujen A/B-testausta ja monikanavaista attribuutiomallinnusta, HubSpot on siinä kohtaa edelleen syvempi työkalu.
+
+Jos taas mietit mistä markkinoinnin automaatiossa ylipäätään kannattaa aloittaa, kirjoitin siitä erikseen: [markkinoinnin automaation 30 päivän päätöspuu](/blog/markkinoinnin-automaatio-30-paivan-paatospuu).
 
 ## Rascal CRM vs. Salesforce
 
@@ -91,7 +105,7 @@ Rehellisyys tässä kohtaa maksaa itsensä takaisin demossa, joten sanotaan ää
 - **Ekosysteemi.** Ei AppExchangea eikä tuhatta valmisintegraatiota. Yleisimmät (kalenteri, sähköposti, Slack, n8n) ovat mukana, loput rakennetaan tarvittaessa.
 - **Referenssimassa.** Salesforcella on kolme vuosikymmentä ja miljoona asiakasta. Meillä ei.
 - **Globaali 24/7-tuki.** Tuki on suomeksi ja englanniksi, ihmisiltä, mutta ei ympäri vuorokauden kolmella mantereella.
-- **Markkinointiautomaatio.** Sähköpostikampanjat ja yleisöt ovat mukana, mutta HubSpotin tasoista markkinointikoneistoa täällä ei ole.
+- **Markkinointi on eri tuote.** Rascal AI hoitaa sisällön, somen ja kampanjat, mutta se on oma sovelluksensa — yksi kirjautuminen, kaksi käyttöliittymää. Jos haluat ehdottomasti kaiken saman navigaation alla, se on HubSpotin etu.
 
 Jos jokin näistä on teille ratkaiseva, valitse toinen tuote. Se on parempi lopputulos kuin väärä käyttöönotto.
 
@@ -127,7 +141,7 @@ Yleensä ei vielä. Yksin myyvälle riittää usein kevyempi putki. Hyöty synty
 
 ## Yhteenveto
 
-HubSpot voittaa markkinoinnissa. Salesforce voittaa monimutkaisuuden hallinnassa. Zoho voittaa hinnalla. Pipedrive voittaa yksinkertaisuudella, ja Freshsales tekee soittamisesta mukavaa.
+Salesforce voittaa monimutkaisuuden hallinnassa. Zoho voittaa hinnalla. Pipedrive voittaa yksinkertaisuudella, ja Freshsales tekee soittamisesta mukavaa. HubSpotin markkinointietu taas kutistuu olennaisesti, kun vastapuolella on Rascal AI: sisältö syntyy yrittäjän omasta äänestä, liidit soitetaan läpi, ja kauppa jatkuu CRM:ssä yhdellä kirjautumisella.
 
 Rascal CRM voittaa siinä, mikä on suomalaisen myyntitiimin arkea: soitat, tapaat, tarjoat ja klousaat samassa järjestelmässä, suomeksi, ilman että kolme lisäosaa yrittää pysyä perässä. Se on rakennettu myyjän päivän ympärille, ei ominaisuuslistan ympärille.
 

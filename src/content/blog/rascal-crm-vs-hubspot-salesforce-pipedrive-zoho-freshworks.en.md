@@ -39,6 +39,7 @@ On top of that, the CRM basics you should assume from any product: kanban pipeli
 | Meeting notes | Bot joins Meet/Zoom/Teams, tasks into the CRM | Separate tool or add-on | Separate tool or add-on | Separate tool | Separate tool | Separate tool |
 | Quote + e-signature | Built in | Quotes + a separate signing service | CPQ as its own product | Smart Docs add-on | Zoho Sign as a separate app | Separate service |
 | Booking page | Built in | Meetings tool | Scheduler licence | Scheduler on some plans | Bookings as a separate app | Included on some plans |
+| Marketing (content, social, campaigns) | Rascal AI in the same family, one sign-in | Marketing Hub priced separately | Marketing Cloud as its own product | Campaigns add-on | Zoho Marketing Automation separately | Freshmarketer separately |
 | Finnish UI | The first language | Varies by view | Partial, configurable | Partial | Partial | Partial |
 | Time to onboard | Days, without a consulting project | Weeks | Usually a partner project | Days | Weeks | Days |
 
@@ -46,11 +47,24 @@ The point of the table isn't that the others are bad products. The point is that
 
 ## Rascal CRM vs. HubSpot
 
-HubSpot is the best marketing machine in this group. If your main problem is generating leads with content, emails and landing pages, its ecosystem is hard to beat — and the free tier is a genuine way to start.
+HubSpot's ecosystem is real and its free tier is an honest way to start. The pain arrives later, from two directions. First, packaging: Sales Hub, Marketing Hub and Service Hub are priced separately, and the feature you came for is often in the next tier up. Second, marketing-contact billing — your cost grows with the size of your list, not with your sales.
 
-The pain arrives later, from two directions. First, packaging: Sales Hub, Marketing Hub and Service Hub are priced separately, and the feature you came for is often in the next tier up. Second, marketing-contact billing — your cost grows with the size of your list, not with your sales.
+The usual counter-argument goes: "but with HubSpot I get marketing from the same place." That would hold if the alternative were a CRM alone. It isn't. Marketing is handled by the other product in the same family, **Rascal AI**, and thanks to [Rascal ID](/en/projektit/rascal-crm) one sign-in opens both.
 
-Rascal CRM doesn't try to be marketing automation. It's a sales team's tool where the call, the meeting, the quote and the signature live in one product with no hub arithmetic. If marketing already runs somewhere, this is the stronger option. If you're shopping for a content engine, HubSpot is honestly the better buy — and if you're wondering what marketing automation is even worth buying first, I wrote that up separately: [a 30-day decision tree for marketing automation](/en/blog/markkinoinnin-automaatio-30-paivan-paatospuu).
+What Rascal AI actually does — these are features, not promises:
+
+- **A six-minute voice interview every month.** An ElevenLabs agent interviews the business owner, and the answers are distilled into themes and verbatim quotes that drive the content strategy. That's the answer to why AI content sounds like a bot: the model doesn't guess your company's voice, it gets it from the interview.
+- **The whole content pipeline, strategy to publish.** A content strategy built from your ideal customer profile, post ideas, blogs, newsletters, image generation, carousel templates and scheduled publishing to social channels — channels stay connected for months without manual work.
+- **Call campaigns HubSpot doesn't run.** CSV import, business-day scheduling, AI-driven outbound and inbound calls following your script, and results reported back into the system.
+- **Lead acquisition.** Lead scraping, lead searches and public lead-magnet pages, so a lead is captured without a separate form tool.
+- **Analytics in one place.** Social channel performance, content metrics, call analytics and Google Analytics via OAuth.
+- **The product is also an MCP server.** 20 tools that let Claude run campaigns, generate content and read analytics in natural language — on top of a hand-built OAuth 2.1 authorization server, not a shared API key.
+
+Scale, for what it's worth: ~207,000 lines of code, 78 tables under row-level security, 1,400+ automated tests and 423 releases in about 13 months.
+
+So the difference from HubSpot isn't "we have no marketing" — it's what marketing means. In HubSpot it's collecting leads with content and forms that you write. In Rascal AI the content comes out of the owner's own voice and the leads get called through — and they turn into deals on the CRM side, in the same product family. One honest exception: if you need A/B testing across dozens of landing pages and multi-touch attribution modelling, HubSpot is still the deeper tool there.
+
+And if you're wondering where to even start with marketing automation, I wrote that up separately: [a 30-day decision tree for marketing automation](/en/blog/markkinoinnin-automaatio-30-paivan-paatospuu).
 
 ## Rascal CRM vs. Salesforce
 
@@ -91,7 +105,7 @@ Being honest here pays for itself in the demo, so let's say it out loud:
 - **Ecosystem.** No AppExchange and no thousand pre-built integrations. The common ones (calendar, email, Slack, n8n) ship with it; the rest get built when needed.
 - **Reference mass.** Salesforce has three decades and a million customers. We don't.
 - **Global 24/7 support.** Support is in Finnish and English, from humans, but not around the clock on three continents.
-- **Marketing automation.** Email campaigns and audiences are included, but there's no HubSpot-grade marketing engine here.
+- **Marketing is a separate product.** Rascal AI handles content, social and campaigns, but it's its own app — one sign-in, two interfaces. If you insist on everything under one navigation bar, that's HubSpot's edge.
 
 If any one of those is decisive for you, choose another product. That's a better outcome than the wrong rollout.
 
@@ -127,7 +141,7 @@ Usually not yet. A solo seller is often fine with a lighter pipeline. The benefi
 
 ## Summary
 
-HubSpot wins on marketing. Salesforce wins on managing complexity. Zoho wins on price. Pipedrive wins on simplicity, and Freshsales makes calling pleasant.
+Salesforce wins on managing complexity. Zoho wins on price. Pipedrive wins on simplicity, and Freshsales makes calling pleasant. HubSpot's marketing advantage, meanwhile, shrinks considerably when the other side of the table is Rascal AI: content that comes out of the owner's own voice, leads that get called through, and a deal that continues in the CRM on one sign-in.
 
 Rascal CRM wins on what a Finnish sales team's day actually consists of: you call, meet, quote and close in one system, in Finnish, without three add-ons trying to keep up. It's built around the rep's day, not around a feature list.
 
