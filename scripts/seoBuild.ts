@@ -32,6 +32,8 @@ type Route = {
   /** Sitemapin painotus: etusivu > listat > sisältösivut. */
   priority: string
   lastmod?: string
+  /** Pois sitemapista + `noindex, nofollow` prerenderöityyn HTML:ään. */
+  noindex?: boolean
 }
 
 function escapeAttr(value: string): string {
@@ -50,6 +52,39 @@ function loadPosts(root: string): Post[] {
     .filter((p): p is Post => p !== null)
   // Prerender only what production actually serves — drafts stay dev-only.
   return selectPosts(parsed, false)
+}
+
+/**
+ * Reitit joita ei saa indeksoida: admin-näkymä ja asiakaskohtaiset
+ * tarjoussivut. Nämä jätetään sitemapista pois ja prerenderöidään
+ * `noindex, nofollow` -tagilla.
+ *
+ * Miksi ei robots.txt:n Disallow: Disallow estää crawlin, jolloin hakukone ei
+ * koskaan näe noindex-tagia — ja voi silti indeksoida paljaan URLin ulkoisen
+ * linkin perusteella. Crawlattava noindex on ainoa signaali joka oikeasti
+ * pitää sivun poissa indeksistä.
+ *
+ * Dynaamiset :id-polut (/tarjous/:id, /offer/:id) eivät saa omaa
+ * tiedostoa vaan osuvat SPA-rewriteen, joten ne katetaan `X-Robots-Tag`
+ * -headerilla vercel.json:ssa. Pidä listat synkassa.
+ */
+const NOINDEX_ROUTES: { path: string; lang: Lang; title: string }[] = [
+  { path: '/hallinta', lang: 'fi', title: 'Hallinta · Sami Kiias' },
+  { path: '/tarjous', lang: 'fi', title: 'Tarjous · Sami Kiias' },
+  { path: '/offer', lang: 'en', title: 'Offer · Sami Kiias' },
+]
+
+function noindexRoutes(): Route[] {
+  return NOINDEX_ROUTES.map(({ path, lang, title }) => ({
+    path,
+    lang,
+    title,
+    type: 'website' as const,
+    alternates: [],
+    jsonLd: [],
+    priority: '0.0',
+    noindex: true,
+  }))
 }
 
 export function collectRoutes(root: string): Route[] {
@@ -140,10 +175,17 @@ export function collectRoutes(root: string): Route[] {
     })
   }
 
+  routes.push(...noindexRoutes())
+
   return routes
 }
 
 export function headTags(route: Route): string {
+  // Ei kanonisia, hreflang- eikä jakotageja sivulle jota ei haluta indeksiin —
+  // pelkkä robots-direktiivi. Ei data-managed-lippua, jotta SPA:n applyHead ei
+  // siivoa tagia pois navigoinnissa.
+  if (route.noindex) return '<meta name="robots" content="noindex, nofollow" />'
+
   const image = absoluteUrl(route.image ?? DEFAULT_OG_IMAGE)
   const tags: string[] = [
     `<link rel="canonical" href="${escapeAttr(absoluteUrl(route.path))}" data-managed />`,
@@ -189,6 +231,7 @@ export function renderRouteHtml(template: string, route: Route): string {
 
 export function renderSitemap(routes: Route[]): string {
   const urls = routes
+    .filter((r) => !r.noindex)
     .map((r) => {
       const alts = r.alternates
         .map((a) => `    <xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${absoluteUrl(a.path)}" />`)
@@ -231,7 +274,10 @@ export function seoBuild(): Plugin {
       }
       writeFileSync(join(outDir, 'sitemap.xml'), renderSitemap(routes))
       writeFileSync(join(outDir, 'robots.txt'), renderRobots())
-      console.log(`[seo] prerendered ${routes.length} routes + sitemap.xml + robots.txt`)
+      const indexed = routes.filter((r) => !r.noindex).length
+      console.log(
+        `[seo] prerendered ${routes.length} routes (${routes.length - indexed} noindex) + sitemap.xml + robots.txt`,
+      )
     },
   }
 }

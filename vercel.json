@@ -6,6 +6,18 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
+    },
+    {
+      "source": "/hallinta",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/tarjous/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/offer/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     }
   ]
 }
