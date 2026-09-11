@@ -2,7 +2,7 @@
 title: "Markkinoinnin automaatio: AI ja ChatGPT käytäntöön"
 date: 2026-09-11
 tags: []
-draft: true
+draft: false
 ---
 
 Markkinoinnin automaatio ei enää tarkoita pelkkiä sähköpostiputkia ja lomakkeita. Kun siihen lisätään AI ja fiksut integraatiot, sä voit automatisoida kampanjoiden ideointia, mainosversioita, sähköposteja, liidien käsittelyä ja raportointia ilman että markkinointi muuttuu geneeriseksi mössöksi. Tässä artikkelissa käydään suoraan läpi, mitä pk-yrityksen kannattaa automatisoida, missä AI tuo oikeasti hyötyä ja miten rakennat mallin, joka säästää aikaa mutta pysyy hallinnassa.

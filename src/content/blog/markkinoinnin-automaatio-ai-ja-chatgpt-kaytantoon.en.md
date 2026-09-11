@@ -1,9 +1,19 @@
 ---
-title: "Marketing automation no longer means just email funnels and forms"
-description: "In 2025, marketing automation for SMEs combines AI and smart integrations to speed up campaign ideation, ad variants, email production, lead handling, and reporting—without turning marketing into generic mush. Here’s what to automate, where AI truly helps, and how to build a model that saves time while staying under control."
+title: Marketing automation no longer means just email funnels and forms
+description: In 2025, marketing automation for SMEs combines AI and smart integrations to speed up campaign ideation, ad variants, email production, lead handling, and reporting—without turning marketing into generic mush. Here’s what to automate, where AI truly helps, and how to build a model that saves time while staying under control.
 date: 2026-09-11
-tags: ["Marketing automation", "AI marketing", "SMB marketing", "CRM", "Lead management", "Google Ads", "Meta Ads", "LinkedIn marketing", "ChatGPT", "Integrations"]
-draft: true
+tags:
+  - Marketing automation
+  - AI marketing
+  - SMB marketing
+  - CRM
+  - Lead management
+  - Google Ads
+  - Meta Ads
+  - LinkedIn marketing
+  - ChatGPT
+  - Integrations
+draft: false
 ---
 
 Marketing automation no longer means just email funnels and forms. When you add AI and smart integrations, you can automate campaign ideation, ad variants, emails, lead handling, and reporting—without marketing turning into generic mush. In this article we’ll go straight through what an SME should automate, where AI actually delivers value, and how you build a model that saves time but stays under control.
