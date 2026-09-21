@@ -2,7 +2,7 @@
 title: "Sivustouudistus SEO: vältä näkyvyyden romahdus nyt"
 date: 2026-09-21
 tags: []
-draft: true
+draft: false
 ---
 
 Sivustouudistus SEO menee usein pieleen jo ennen kuin uusi sivusto on edes julkaistu. Ei siksi, että uusi sivusto olisi huono, vaan siksi että vanhat URLit, tärkeimmät laskeutumissivut, redirectit ja mittarit unohtuvat projektin sivulauseeseen. Lopputulos on tuttu: hienompi sivusto, vähemmän orgaanista liikennettä ja hiljaisempi liidiputki. Tässä on käytännön malli, jolla viet uudistuksen läpi kolmessa vaiheessa: ennen julkaisua, julkaisussa ja julkaisun jälkeen.

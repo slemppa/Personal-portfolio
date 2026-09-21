@@ -1,9 +1,15 @@
 ---
-title: "Website Redesign SEO Often Goes Wrong Before the New Site Is Even Launched"
+title: Website Redesign SEO Often Goes Wrong Before the New Site Is Even Launched
 description: "A practical three-phase framework to protect organic visibility during a website redesign: what to do before launch, on launch day, and in the first 30 days after."
 date: 2026-09-21
-tags: ["SEO", "Website redesign", "Redirects", "Technical SEO", "Google Search Console", "Analytics"]
-draft: true
+tags:
+  - SEO
+  - Website redesign
+  - Redirects
+  - Technical SEO
+  - Google Search Console
+  - Analytics
+draft: false
 ---
 
 Website redesign SEO often goes wrong before the new site is even launched. Not because the new site is bad, but because old URLs, the most important landing pages, redirects, and metrics get forgotten as a side note in the project. The end result is familiar: a nicer website, less organic traffic, and a quieter lead pipeline. Here is a practical model to take the redesign through three phases: before launch, at launch, and after launch.
