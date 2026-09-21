@@ -1,7 +1,11 @@
 ---
 title: "Sivustouudistus SEO: vältä näkyvyyden romahdus nyt"
+description: "Käytännöllinen kolmivaiheinen toimintamalli orgaanisen näkyvyyden turvaamiseksi verkkosivuston uudistuksen aikana: mitä tehdä ennen julkaisua, julkaisupäivänä ja ensimmäisten 30 päivän aikana sen jälkeen."
 date: 2026-09-21
-tags: []
+tags:
+  - SEO
+  - Redirects
+  - Analytics
 draft: false
 ---
 
