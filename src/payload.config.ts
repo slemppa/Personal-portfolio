@@ -42,6 +42,9 @@ export default buildConfig({
     // token is configured; locally they fall back to cms/media/.
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      // Keep the plugin's fields in the schema even without a token, so
+      // migrations generated locally match production.
+      alwaysInsertFields: true,
       // Serve files straight from the Blob CDN so post covers are plain URLs.
       collections: { media: { disablePayloadAccessControl: true } },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
