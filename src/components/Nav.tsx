@@ -1,5 +1,7 @@
+'use client'
+
 import { useEffect, useRef } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import { usePathname, useRouter } from 'next/navigation'
 import type { Lang } from '../lib/parsePost'
 import { navHtml } from '../site/markup'
 import { wireHover, wireNav } from '../site/effects'
@@ -14,9 +16,8 @@ import { mirrorPath, homePath } from '../lib/i18n'
  */
 export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
   const ref = useRef<HTMLDivElement>(null)
-  const location = useLocation()
-  const { pathname } = location
-  const navigate = useNavigate()
+  const pathname = usePathname()
+  const router = useRouter()
   const home = homePath(lang)
   const isHome = pathname === home
   const base = navHtml(lang)
@@ -34,7 +35,7 @@ export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
       const onLogo = (e: MouseEvent) => {
         e.preventDefault()
         if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
-        else navigate(home)
+        else router.push(home)
       }
       logo.addEventListener('click', onLogo)
       disposers.push(() => logo.removeEventListener('click', onLogo))
@@ -44,7 +45,7 @@ export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
     if (langSwitch) {
       const onLangSwitch = (e: MouseEvent) => {
         e.preventDefault()
-        navigate(mirrorPath(pathname))
+        router.push(mirrorPath(pathname))
       }
       langSwitch.addEventListener('click', onLangSwitch)
       disposers.push(() => langSwitch.removeEventListener('click', onLangSwitch))
@@ -72,11 +73,7 @@ export default function Nav({ lang = 'fi' }: { lang?: Lang }) {
     }
 
     return () => disposers.forEach((d) => d())
-    // `location` is included (not just `pathname`) because the nav's DOM
-    // subtree can be replaced on any navigation, including hash-only
-    // changes (e.g. tapping an in-page anchor link) that leave `pathname`
-    // unchanged. Without it, listeners get wired to nodes React discards.
-  }, [html, isHome, navigate, pathname, home, location])
+  }, [html, isHome, router, pathname, home])
 
   return <div ref={ref} dangerouslySetInnerHTML={{ __html: html }} />
 }

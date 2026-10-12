@@ -1,4 +1,6 @@
-import { Link } from 'react-router'
+'use client'
+
+import Link from 'next/link'
 import { getCases, type CaseStudy } from '../lib/cases'
 import { casePath } from '../lib/i18n'
 import type { Lang } from '../lib/parsePost'
@@ -21,7 +23,7 @@ const SECTION_COPY = {
 function Card({ c, lang, featured }: { c: CaseStudy; lang: Lang; featured: string }) {
   return (
     <Link
-      to={casePath(lang, c.slug)}
+      href={casePath(lang, c.slug)}
       className="group block rounded-[14px] border border-border bg-white/[.015] p-7 transition-colors hover:border-border-hover hover:bg-white/[.03]"
     >
       <div className="flex items-center justify-between gap-3">

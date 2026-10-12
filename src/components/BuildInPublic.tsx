@@ -1,8 +1,9 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
+import Link from 'next/link'
 import { fetchActivity, type Activity } from '../lib/activity'
-import type { Post } from '../lib/posts'
-import type { Lang } from '../lib/parsePost'
+import type { Lang, Post } from '../lib/parsePost'
 import { blogPostPath } from '../lib/i18n'
 import ContributionHeatmap from './ContributionHeatmap'
 
@@ -83,7 +84,7 @@ function relTime(iso: string, t: Copy): string {
 /** Count up to a target once when it first becomes available. */
 function useCountUp(target: number | null): number {
   const [reduced] = useState(
-    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
   const [n, setN] = useState(0)
   const done = useRef(false)
@@ -182,11 +183,10 @@ function SkeletonBox({ h }: { h: number }) {
   return <div style={{ ...tileStyle, height: h, animation: 'glowPulse 1.6s ease-in-out infinite' }} />
 }
 
-export default function BuildInPublic({ lang = 'fi' }: { lang?: Lang }) {
+export default function BuildInPublic({ lang = 'fi', latestPosts }: { lang?: Lang; latestPosts: Post[] }) {
   const t = SECTION_COPY[lang]
   const [data, setData] = useState<Activity | null>(null)
   const [failed, setFailed] = useState(false)
-  const [latestPosts, setLatestPosts] = useState<Post[]>([])
   const contributions = useCountUp(data?.github.totalContributions ?? null)
 
   useEffect(() => {
@@ -196,17 +196,8 @@ export default function BuildInPublic({ lang = 'fi' }: { lang?: Lang }) {
       .catch((e) => {
         if (e?.name !== 'AbortError') setFailed(true)
       })
-    // Load blog metadata lazily: posts.ts eagerly bundles every markdown file
-    // plus js-yaml, which we don't want on the home page's critical path.
-    let active = true
-    import('../lib/posts').then(({ getAllPosts }) => {
-      if (active) setLatestPosts(getAllPosts(lang).slice(0, 3))
-    })
-    return () => {
-      active = false
-      ctrl.abort()
-    }
-  }, [lang])
+    return () => ctrl.abort()
+  }, [])
 
   // Loading skeleton.
   if (!data && !failed) {
@@ -296,7 +287,7 @@ export default function BuildInPublic({ lang = 'fi' }: { lang?: Lang }) {
               {latestPosts.map((post, i) => (
                 <Link
                   key={post.slug}
-                  to={blogPostPath(lang, post.slug)}
+                  href={blogPostPath(lang, post.slug)}
                   style={{
                     display: 'block',
                     textDecoration: 'none',
