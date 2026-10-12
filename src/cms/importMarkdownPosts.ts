@@ -49,44 +49,67 @@ function parse(raw: string, filename: string): Parsed | null {
   }
 }
 
+const context = { skipRevalidate: true }
+
+function seedPosts(): Parsed[] {
+  return readdirSync(SEED_DIR)
+    .filter((f) => f.endsWith('.md') && f !== 'template.md')
+    .map((f) => {
+      const post = parse(readFileSync(path.join(SEED_DIR, f), 'utf8'), f)
+      if (!post) console.warn(`skip ${f}: no valid frontmatter`)
+      return post
+    })
+    .filter((p): p is Parsed => p !== null)
+}
+
+/** Uploads a seed cover (a public/ path) to Media once; returns its id. */
+async function coverId(
+  payload: Payload,
+  cover: string | undefined,
+  cache: Map<string, number>,
+  req?: PayloadRequest,
+): Promise<number | undefined> {
+  if (!cover) return undefined
+  // On Vercel the build disk is thrown away: without Blob storage the file
+  // would be lost, so skip the cover (it can be set in the admin later).
+  if (process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
+    console.warn(`  cover skipped (no BLOB_READ_WRITE_TOKEN): ${cover}`)
+    return undefined
+  }
+  if (cache.has(cover)) return cache.get(cover)
+  const file = path.join(PUBLIC_DIR, cover)
+  if (!existsSync(file)) {
+    console.warn(`  cover not found: ${cover}`)
+    return undefined
+  }
+  const filename = path.basename(file)
+  const existing = await payload.find({ collection: 'media', where: { filename: { equals: filename } }, limit: 1, req })
+  const media =
+    existing.docs[0] ??
+    (await payload.create({ collection: 'media', data: { alt: filename }, filePath: file, context, req }))
+  cache.set(cover, media.id)
+  return media.id
+}
+
+async function findPost(payload: Payload, post: Parsed, req?: PayloadRequest) {
+  const res = await payload.find({
+    collection: 'posts',
+    where: { and: [{ slug: { equals: post.slug } }, { lang: { equals: post.lang } }] },
+    limit: 1,
+    depth: 0,
+    draft: true,
+    req,
+  })
+  return res.docs[0]
+}
+
 /** `req` keeps the writes inside a migration's transaction. */
 export async function importMarkdownPosts(payload: Payload, req?: PayloadRequest) {
-  const context = { skipRevalidate: true }
   const mediaByPath = new Map<string, number>()
-
-  async function coverId(cover: string | undefined) {
-    if (!cover) return undefined
-    // On Vercel the build disk is thrown away: without Blob storage the file
-    // would be lost, so skip the cover (it can be set in the admin later).
-    if (process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
-      console.warn(`  cover skipped (no BLOB_READ_WRITE_TOKEN): ${cover}`)
-      return undefined
-    }
-    if (mediaByPath.has(cover)) return mediaByPath.get(cover)
-    const file = path.join(PUBLIC_DIR, cover)
-    if (!existsSync(file)) {
-      console.warn(`  cover not found: ${cover}`)
-      return undefined
-    }
-    const filename = path.basename(file)
-    const existing = await payload.find({ collection: 'media', where: { filename: { equals: filename } }, limit: 1, req })
-    const media =
-      existing.docs[0] ??
-      (await payload.create({ collection: 'media', data: { alt: filename }, filePath: file, context, req }))
-    mediaByPath.set(cover, media.id)
-    return media.id
-  }
-
-  const files = readdirSync(SEED_DIR).filter((f) => f.endsWith('.md') && f !== 'template.md')
   let created = 0
   let updated = 0
 
-  for (const file of files) {
-    const post = parse(readFileSync(path.join(SEED_DIR, file), 'utf8'), file)
-    if (!post) {
-      console.warn(`skip ${file}: no valid frontmatter`)
-      continue
-    }
+  for (const post of seedPosts()) {
     const data = {
       title: post.title,
       slug: post.slug,
@@ -94,19 +117,13 @@ export async function importMarkdownPosts(payload: Payload, req?: PayloadRequest
       date: new Date(`${post.date}T12:00:00Z`).toISOString(),
       description: post.description,
       tags: post.tags,
-      cover: await coverId(post.cover),
+      cover: await coverId(payload, post.cover, mediaByPath, req),
       content: await markdownToLexical(payload.config, post.content),
       _status: post.draft ? ('draft' as const) : ('published' as const),
     }
-    const existing = await payload.find({
-      collection: 'posts',
-      where: { and: [{ slug: { equals: post.slug } }, { lang: { equals: post.lang } }] },
-      limit: 1,
-      draft: true,
-      req,
-    })
-    if (existing.docs[0]) {
-      await payload.update({ collection: 'posts', id: existing.docs[0].id, data, draft: post.draft, context, req })
+    const existing = await findPost(payload, post, req)
+    if (existing) {
+      await payload.update({ collection: 'posts', id: existing.id, data, draft: post.draft, context, req })
       updated++
     } else {
       await payload.create({ collection: 'posts', data, draft: post.draft, context, req })
@@ -116,4 +133,22 @@ export async function importMarkdownPosts(payload: Payload, req?: PayloadRequest
   }
 
   console.log(`\nDone: ${created} created, ${updated} updated.`)
+}
+
+/**
+ * Sets the seed cover on imported posts that have none yet (the first import
+ * ran before Blob storage existed). Touches nothing else, so edits made in
+ * the admin are kept.
+ */
+export async function attachSeedCovers(payload: Payload, req?: PayloadRequest) {
+  const mediaByPath = new Map<string, number>()
+  for (const post of seedPosts()) {
+    if (!post.cover) continue
+    const existing = await findPost(payload, post, req)
+    if (!existing || existing.cover) continue
+    const cover = await coverId(payload, post.cover, mediaByPath, req)
+    if (!cover) continue
+    await payload.update({ collection: 'posts', id: existing.id, data: { cover }, context, req })
+    console.log(`cover set: ${post.lang} ${post.slug}`)
+  }
 }
