@@ -196,8 +196,8 @@ export default function BuildInPublic({ lang = 'fi' }: { lang?: Lang }) {
       .catch((e) => {
         if (e?.name !== 'AbortError') setFailed(true)
       })
-    // Load blog metadata lazily: posts.ts eagerly bundles every markdown file
-    // plus js-yaml, which we don't want on the home page's critical path.
+    // Load blog metadata lazily: posts.ts bundles every post's full content,
+    // which we don't want on the home page's critical path.
     let active = true
     import('../lib/posts').then(({ getAllPosts }) => {
       if (active) setLatestPosts(getAllPosts(lang).slice(0, 3))

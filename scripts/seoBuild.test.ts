@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { collectRoutes, headTags, renderRobots, renderSitemap, renderRouteHtml } from './seoBuild'
 
-const routes = collectRoutes(process.cwd())
+const routes = collectRoutes([])
 const sensitive = ['/hallinta', '/tarjous', '/offer']
 
 describe('noindex-reitit', () => {

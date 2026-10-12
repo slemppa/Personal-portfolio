@@ -1,5 +1,3 @@
-import yaml from 'js-yaml'
-
 export type Lang = 'fi' | 'en'
 
 export const LANGS: Lang[] = ['fi', 'en']
@@ -17,51 +15,45 @@ export type Post = {
   content: string
 }
 
-const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/
-
-function normalizeDate(value: unknown): string {
-  if (value instanceof Date) return value.toISOString().slice(0, 10)
-  if (typeof value === 'string') return value
-  return ''
+/** The subset of a Payload `posts` document (REST, depth=1) the site uses. */
+export type CmsPostDoc = {
+  slug?: unknown
+  lang?: unknown
+  title?: unknown
+  date?: unknown
+  description?: unknown
+  tags?: unknown
+  cover?: unknown
+  _status?: unknown
+  markdown?: unknown
 }
 
-export function parsePost(raw: string, filename: string): Post | null {
-  // A trailing `.fi`/`.en` before `.md` selects the language; both variants of
-  // a post share the same slug (e.g. `foo.fi.md` and `foo.en.md` → slug `foo`).
-  const langMatch = filename.match(/\.(fi|en)\.md$/)
-  const lang: Lang = (langMatch?.[1] as Lang | undefined) ?? DEFAULT_LANG
-  const slug = filename.replace(/(\.(fi|en))?\.md$/, '')
-  const match = raw.match(FRONTMATTER_RE)
-  if (!match) {
-    console.warn(`[blog] ${filename}: ei frontmatteria, skipataan`)
+/**
+ * Maps a Payload post to the site's Post shape. `cmsUrl` makes relative media
+ * URLs (local uploads: `/api/media/file/x.jpg`) absolute.
+ */
+export function postFromCms(doc: CmsPostDoc, cmsUrl: string): Post | null {
+  const slug = typeof doc.slug === 'string' ? doc.slug : ''
+  const title = typeof doc.title === 'string' ? doc.title : ''
+  const date = typeof doc.date === 'string' ? doc.date.slice(0, 10) : ''
+  if (!slug || !title || !date) {
+    console.warn(`[blog] CMS-postaus "${slug || title}": slug, title tai date puuttuu, skipataan`)
     return null
   }
-
-  let data: Record<string, unknown>
-  try {
-    data = (yaml.load(match[1]) ?? {}) as Record<string, unknown>
-  } catch (e) {
-    console.warn(`[blog] ${filename}: virheellinen frontmatter, skipataan`, e)
-    return null
-  }
-
-  const title = typeof data.title === 'string' ? data.title : ''
-  const date = normalizeDate(data.date)
-  if (!title || !date) {
-    console.warn(`[blog] ${filename}: title tai date puuttuu, skipataan`)
-    return null
-  }
-
+  const coverUrl =
+    doc.cover && typeof doc.cover === 'object' && typeof (doc.cover as { url?: unknown }).url === 'string'
+      ? (doc.cover as { url: string }).url
+      : undefined
   return {
     slug,
-    lang,
+    lang: doc.lang === 'en' ? 'en' : DEFAULT_LANG,
     title,
     date,
-    description: typeof data.description === 'string' ? data.description : undefined,
-    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-    cover: typeof data.cover === 'string' ? data.cover : undefined,
-    draft: data.draft === true,
-    content: match[2].trim(),
+    description: typeof doc.description === 'string' && doc.description ? doc.description : undefined,
+    tags: Array.isArray(doc.tags) ? doc.tags.map(String) : [],
+    cover: coverUrl && !/^https?:\/\//.test(coverUrl) ? cmsUrl.replace(/\/$/, '') + coverUrl : coverUrl,
+    draft: doc._status === 'draft',
+    content: typeof doc.markdown === 'string' ? doc.markdown.trim() : '',
   }
 }
 

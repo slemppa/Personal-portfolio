@@ -1,18 +1,9 @@
-import { parsePost, selectPosts, type Post, type Lang } from './parsePost'
-
-const modules = import.meta.glob('../content/blog/*.md', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-}) as Record<string, string>
-
-const allParsed: Post[] = Object.entries(modules)
-  .map(([path, raw]) => parsePost(raw, path.split('/').pop()!))
-  .filter((p): p is Post => p !== null)
+import allPosts from 'virtual:blog-posts'
+import { selectPosts, type Post, type Lang } from './parsePost'
 
 export function getAllPosts(lang: Lang): Post[] {
   return selectPosts(
-    allParsed.filter((p) => p.lang === lang),
+    allPosts.filter((p) => p.lang === lang),
     !import.meta.env.PROD,
   )
 }

@@ -8,6 +8,7 @@ import { generateOffer } from './api/_lib/offerAI'
 import { storeOffer, getStoredOffer, listOffers } from './api/_lib/offerStore'
 import { parseLead, storeLead, notifyLead, listLeads } from './api/_lib/leads'
 import { seoBuild } from './scripts/seoBuild'
+import { cmsPosts } from './scripts/cmsPosts'
 
 type DevRes = { statusCode: number; setHeader: (k: string, v: string) => void; end: (b: string) => void }
 const sendJson = (res: DevRes, code: number, body: unknown) => {
@@ -128,8 +129,17 @@ export default defineConfig(({ mode }) => {
   for (const k of ['DATABASE_URL', 'OFFER_API_KEY', 'BREVO_API_KEY', 'RESEND_API_KEY', 'RESEND_FROM']) {
     if (env[k] && !process.env[k]) process.env[k] = env[k]
   }
+  const cmsEnv = { CMS_URL: env.CMS_URL, CMS_API_KEY: env.CMS_API_KEY }
   return {
-    plugins: [react(), tailwindcss(), devActivityApi(env), devOffersApi(env), devContactApi(), seoBuild()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      devActivityApi(env),
+      devOffersApi(env),
+      devContactApi(),
+      cmsPosts(cmsEnv),
+      seoBuild(cmsEnv),
+    ],
     build: {
       // Modern baseline — avoids shipping legacy transforms/polyfills to the
       // evergreen browsers this site targets.

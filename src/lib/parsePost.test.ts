@@ -1,72 +1,63 @@
 import { describe, it, expect } from 'vitest'
-import { parsePost } from './parsePost'
+import { postFromCms } from './parsePost'
 import { selectPosts } from './parsePost'
 
 const make = (slug: string, date: string, draft = false): import('./parsePost').Post => ({
   slug, lang: 'fi', title: slug, date, tags: [], draft, content: '',
 })
 
-const RAW = `---
-title: "Tervetuloa"
-date: 2026-06-04
-description: "Kuvaus"
-tags: [react, obsidian]
-cover: /blog/x.png
-draft: false
----
+const CMS = 'https://cms.example.com'
 
-Sisältö **tähän**.
-`
+const DOC = {
+  slug: 'tervetuloa',
+  lang: 'fi',
+  title: 'Tervetuloa',
+  date: '2026-06-04T12:00:00.000Z',
+  description: 'Kuvaus',
+  tags: ['react', 'payload'],
+  cover: { id: 1, url: '/api/media/file/x.png' },
+  _status: 'published',
+  markdown: 'Sisältö **tähän**.\n',
+}
 
-describe('parsePost', () => {
-  it('parses all frontmatter fields and body', () => {
-    const post = parsePost(RAW, 'tervetuloa.md')
-    expect(post).not.toBeNull()
-    expect(post!.slug).toBe('tervetuloa')
-    expect(post!.title).toBe('Tervetuloa')
-    expect(post!.date).toBe('2026-06-04')
-    expect(post!.description).toBe('Kuvaus')
-    expect(post!.tags).toEqual(['react', 'obsidian'])
-    expect(post!.cover).toBe('/blog/x.png')
-    expect(post!.draft).toBe(false)
-    expect(post!.content).toBe('Sisältö **tähän**.')
+describe('postFromCms', () => {
+  it('maps all fields of a Payload post', () => {
+    const post = postFromCms(DOC, CMS)
+    expect(post).toEqual({
+      slug: 'tervetuloa',
+      lang: 'fi',
+      title: 'Tervetuloa',
+      date: '2026-06-04',
+      description: 'Kuvaus',
+      tags: ['react', 'payload'],
+      cover: 'https://cms.example.com/api/media/file/x.png',
+      draft: false,
+      content: 'Sisältö **tähän**.',
+    })
   })
 
-  it('defaults language to fi for an unsuffixed filename', () => {
-    const post = parsePost(RAW, 'tervetuloa.md')
-    expect(post!.lang).toBe('fi')
-    expect(post!.slug).toBe('tervetuloa')
+  it('reads the language and keeps the shared slug', () => {
+    expect(postFromCms({ ...DOC, lang: 'en' }, CMS)!.lang).toBe('en')
+    expect(postFromCms({ ...DOC, lang: 'en' }, CMS)!.slug).toBe('tervetuloa')
   })
 
-  it('reads the language suffix and strips it from the slug', () => {
-    const fi = parsePost(RAW, 'foo.fi.md')
-    expect(fi!.lang).toBe('fi')
-    expect(fi!.slug).toBe('foo')
-
-    const en = parsePost(RAW, 'foo.en.md')
-    expect(en!.lang).toBe('en')
-    expect(en!.slug).toBe('foo')
+  it('keeps absolute cover URLs (Vercel Blob) as they are', () => {
+    const url = 'https://abc.public.blob.vercel-storage.com/x.png'
+    expect(postFromCms({ ...DOC, cover: { url } }, CMS)!.cover).toBe(url)
   })
 
-  it('defaults tags to [] and draft to false when omitted', () => {
-    const raw = `---\ntitle: A\ndate: 2026-01-01\n---\nBody`
-    const post = parsePost(raw, 'a.md')
+  it('marks drafts and defaults optional fields', () => {
+    const post = postFromCms({ ...DOC, _status: 'draft', tags: null, cover: null, description: null }, CMS)
+    expect(post!.draft).toBe(true)
     expect(post!.tags).toEqual([])
-    expect(post!.draft).toBe(false)
+    expect(post!.cover).toBeUndefined()
     expect(post!.description).toBeUndefined()
   })
 
-  it('returns null when frontmatter is missing', () => {
-    expect(parsePost('No frontmatter here', 'b.md')).toBeNull()
-  })
-
-  it('returns null when title or date is missing', () => {
-    expect(parsePost('---\ntitle: Only\n---\nx', 'c.md')).toBeNull()
-    expect(parsePost('---\ndate: 2026-01-01\n---\nx', 'd.md')).toBeNull()
-  })
-
-  it('returns null on invalid yaml', () => {
-    expect(parsePost('---\ntitle: "unterminated\n---\nx', 'e.md')).toBeNull()
+  it('returns null when slug, title or date is missing', () => {
+    expect(postFromCms({ ...DOC, slug: '' }, CMS)).toBeNull()
+    expect(postFromCms({ ...DOC, title: undefined }, CMS)).toBeNull()
+    expect(postFromCms({ ...DOC, date: null }, CMS)).toBeNull()
   })
 })
 

@@ -7,16 +7,16 @@
 // staattisessa HTML:ssä. Vercel tarjoilee tiedostojärjestelmän ennen
 // rewritea, joten /blog/slug osuu dist/blog/slug/index.html:ään; SPA hydratoi
 // päälle normaalisti ja applyHead korvaa data-managed-tagit navigoinnissa.
-import { readdirSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs'
+import { readFileSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import type { Plugin } from 'vite'
-import { parsePost, selectPosts, type Lang, type Post } from '../src/lib/parsePost'
+import { selectPosts, type Lang, type Post } from '../src/lib/parsePost'
+import { loadCmsPosts, type CmsEnv } from './cmsPosts'
 import { getCases } from '../src/lib/cases'
 import { blogListPath, blogPostPath, casePath, homePath } from '../src/lib/i18n'
 import { homeCopy } from '../src/site/copy'
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, absoluteUrl, ogLocale, postJsonLd } from '../src/lib/seo'
 
-const BLOG_DIR = 'src/content/blog'
 const LANGS: Lang[] = ['fi', 'en']
 
 type Route = {
@@ -42,16 +42,6 @@ function escapeAttr(value: string): string {
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-}
-
-function loadPosts(root: string): Post[] {
-  const dir = join(root, BLOG_DIR)
-  const parsed = readdirSync(dir)
-    .filter((f) => f.endsWith('.md'))
-    .map((f) => parsePost(readFileSync(join(dir, f), 'utf8'), f))
-    .filter((p): p is Post => p !== null)
-  // Prerender only what production actually serves — drafts stay dev-only.
-  return selectPosts(parsed, false)
 }
 
 /**
@@ -87,8 +77,9 @@ function noindexRoutes(): Route[] {
   }))
 }
 
-export function collectRoutes(root: string): Route[] {
-  const posts = loadPosts(root)
+export function collectRoutes(allPosts: Post[]): Route[] {
+  // Prerender only what production actually serves — drafts stay dev-only.
+  const posts = selectPosts(allPosts, false)
   const routes: Route[] = []
 
   for (const lang of LANGS) {
@@ -256,15 +247,14 @@ export function renderRobots(): string {
 }
 
 /** Kirjoittaa per-reitti-HTML:t, sitemapin ja robots.txt:n buildin jälkeen. */
-export function seoBuild(): Plugin {
+export function seoBuild(env: CmsEnv): Plugin {
   return {
     name: 'seo-build',
     apply: 'build',
-    closeBundle() {
-      const root = process.cwd()
-      const outDir = join(root, 'dist')
+    async closeBundle() {
+      const outDir = join(process.cwd(), 'dist')
       const template = readFileSync(join(outDir, 'index.html'), 'utf8')
-      const routes = collectRoutes(root)
+      const routes = collectRoutes(await loadCmsPosts(env, true))
 
       for (const route of routes) {
         const html = renderRouteHtml(template, route)
