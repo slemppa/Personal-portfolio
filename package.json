@@ -5,14 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
-    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && cross-env NODE_OPTIONS=--no-deprecation next build",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "eslint .",
     "test": "vitest run",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
-    "import:markdown": "cross-env NODE_OPTIONS=--no-deprecation payload run src/cms/importMarkdown.ts"
+    "import:markdown": "cross-env NODE_OPTIONS=--no-deprecation payload run src/cms/importMarkdown.ts",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.115.0",

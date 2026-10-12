@@ -32,6 +32,9 @@ export default buildConfig({
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL || '' },
     schemaName: 'payload',
+    // Schema changes ship as migrations (src/migrations), run by `pnpm build`
+    // before `next build`. Dev still auto-pushes the schema.
+    migrationDir: path.resolve(dirname, 'migrations'),
   }),
   sharp,
   plugins: [

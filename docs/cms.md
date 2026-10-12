@@ -41,20 +41,19 @@ Payloadin taulut ovat Neonissa omassa `payload`-skeemassaan, eivätkä ne törm�
 
 Ensimmäisen deployn jälkeen: avaa `/admin` ja luo ensimmäinen käyttäjä.
 
-## Vanhojen postausten migraatio (kerran, ennen mergeä)
+## Tietokanta ja migraatiot
 
-Vanhat markdown-postaukset ovat kansiossa `seed/blog/`.
+`pnpm build` ajaa ensin `payload migrate` ja sitten `next build`, joten
+Vercelin build luo Payloadin taulut Neoniin ja ajaa uudet migraatiot itse.
 
-```bash
-cp .env.example .env   # DATABASE_URL (Neon) + PAYLOAD_SECRET (sama kuin Vercelissä)
-pnpm install
-pnpm import:markdown
-```
+- `src/migrations/*_initial.ts` — `payload`-skeema ja taulut.
+- `src/migrations/*_seed_markdown_posts.ts` — tuo vanhat markdown-postaukset
+  (`seed/blog/`) kerran. Ilman `BLOB_READ_WRITE_TOKEN`ia kansikuvat ohitetaan.
+  Käsin uudelleen: `pnpm import:markdown` (idempotentti, upsert slug + lang).
 
-Skripti on idempotentti (upsert slug + lang), säilyttää luonnos/julkaistu-tilan
-ja vie kansikuvat Media-kokoelmaan. Aja se `BLOB_READ_WRITE_TOKEN` asetettuna,
-jotta kuvat menevät Blobiin eivätkä paikalliselle levylle. Kun migraatio on
-tarkistettu, `seed/` voidaan poistaa.
+Kokoelmia muutettaessa: `pnpm migrate:create <nimi>` ja commitoi migraatio.
+Huom: preview-deployt käyttävät samaa `DATABASE_URL`ia, joten myös ne ajavat
+migraatiot tuotantokantaan.
 
 ## Paikallinen kehitys
 
