@@ -29,3 +29,9 @@ dist-ssr
 .trash
 .env
 .vercel
+
+# Next.js / Payload
+.next
+next-env.d.ts
+*.tsbuildinfo
+media

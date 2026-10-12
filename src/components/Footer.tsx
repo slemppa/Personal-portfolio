@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef } from 'react'
 import { FOOTER_HTML } from '../site/markup'
 import { wireHover } from '../site/effects'

@@ -1,3 +1,5 @@
+'use client'
+
 // Monochrome GitHub contribution heatmap, recolored white-on-dark to match the
 // site's design language. `weeks` is oldest→newest, each up to 7 daily counts.
 // The grid is fluid — week columns flex to fill the card width, so it never

@@ -1,3 +1,5 @@
+'use client'
+
 import type { Lang } from '../lib/parsePost'
 import { homeCopy } from '../site/copy'
 import ContactForm from './ContactForm'

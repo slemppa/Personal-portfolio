@@ -6,8 +6,6 @@ const make = (slug: string, date: string, draft = false): import('./parsePost').
   slug, lang: 'fi', title: slug, date, tags: [], draft, content: '',
 })
 
-const CMS = 'https://cms.example.com'
-
 const DOC = {
   slug: 'tervetuloa',
   lang: 'fi',
@@ -22,7 +20,7 @@ const DOC = {
 
 describe('postFromCms', () => {
   it('maps all fields of a Payload post', () => {
-    const post = postFromCms(DOC, CMS)
+    const post = postFromCms(DOC)
     expect(post).toEqual({
       slug: 'tervetuloa',
       lang: 'fi',
@@ -30,24 +28,24 @@ describe('postFromCms', () => {
       date: '2026-06-04',
       description: 'Kuvaus',
       tags: ['react', 'payload'],
-      cover: 'https://cms.example.com/api/media/file/x.png',
+      cover: '/api/media/file/x.png',
       draft: false,
       content: 'Sisältö **tähän**.',
     })
   })
 
   it('reads the language and keeps the shared slug', () => {
-    expect(postFromCms({ ...DOC, lang: 'en' }, CMS)!.lang).toBe('en')
-    expect(postFromCms({ ...DOC, lang: 'en' }, CMS)!.slug).toBe('tervetuloa')
+    expect(postFromCms({ ...DOC, lang: 'en' })!.lang).toBe('en')
+    expect(postFromCms({ ...DOC, lang: 'en' })!.slug).toBe('tervetuloa')
   })
 
   it('keeps absolute cover URLs (Vercel Blob) as they are', () => {
     const url = 'https://abc.public.blob.vercel-storage.com/x.png'
-    expect(postFromCms({ ...DOC, cover: { url } }, CMS)!.cover).toBe(url)
+    expect(postFromCms({ ...DOC, cover: { url } })!.cover).toBe(url)
   })
 
   it('marks drafts and defaults optional fields', () => {
-    const post = postFromCms({ ...DOC, _status: 'draft', tags: null, cover: null, description: null }, CMS)
+    const post = postFromCms({ ...DOC, _status: 'draft', tags: null, cover: null, description: null })
     expect(post!.draft).toBe(true)
     expect(post!.tags).toEqual([])
     expect(post!.cover).toBeUndefined()
@@ -55,9 +53,9 @@ describe('postFromCms', () => {
   })
 
   it('returns null when slug, title or date is missing', () => {
-    expect(postFromCms({ ...DOC, slug: '' }, CMS)).toBeNull()
-    expect(postFromCms({ ...DOC, title: undefined }, CMS)).toBeNull()
-    expect(postFromCms({ ...DOC, date: null }, CMS)).toBeNull()
+    expect(postFromCms({ ...DOC, slug: '' })).toBeNull()
+    expect(postFromCms({ ...DOC, title: undefined })).toBeNull()
+    expect(postFromCms({ ...DOC, date: null })).toBeNull()
   })
 })
 

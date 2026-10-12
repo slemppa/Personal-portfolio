@@ -1,73 +1,68 @@
-# Blogi: Payload CMS
+# Sivusto + blogi: Next.js ja Payload CMS
 
-Blogipostaukset ovat [Payload CMS](https://payloadcms.com):ssä (sama CMS kuin
-rascal-ai-news-repossa). CMS on oma Next.js-appinsa kansiossa `cms/`; itse
-portfolio pysyy staattisena Vite-sivuna.
+Portfolio on yksi Next.js 16 -appi, jossa pyörii myös [Payload CMS](https://payloadcms.com)
+(sama CMS kuin rascal-ai-news-repossa). Yksi repo, yksi Vercel-projekti, yksi
+Neon-tietokanta.
 
-```
-Payload (cms/, Neon Postgres, skeema "payload")
-  │  julkaisu → afterChange-hook → Vercel deploy hook
-  ▼
-portfolio build: scripts/cmsPosts.ts hakee GET /api/posts → virtual:blog-posts
-  ▼
-staattinen sivusto + prerenderöidyt /blog-sivut (scripts/seoBuild.ts)
-```
+| Polku | Mitä |
+|---|---|
+| `/`, `/blog`, `/projektit/*` (+ `/en/...`) | sivusto (`src/app/(fi)`, `src/app/(en)`) |
+| `/admin` | Payloadin hallintapaneeli (`src/app/(payload)`) |
+| `/api/posts`, `/api/media`, `/api/graphql` | Payloadin REST/GraphQL |
+| `/api/contact`, `/api/offers`, `/api/activity` | sivuston omat API:t (`src/app/api`) |
 
-- Sisältö kirjoitetaan Lexical-editorilla (taulukot tuettu). API palauttaa
-  jokaisesta postauksesta myös `markdown`-kentän, jonka sivusto renderöi
-  react-markdownilla kuten ennenkin.
-- fi- ja en-versio ovat erillisiä postauksia samalla `slug`illa ja eri `lang`illa.
-- Luonnokset (Payloadin drafts) eivät näy anonyymille API-kutsulle, joten ne
-  eivät päädy tuotantoon. Devissä ne näkyvät, jos `CMS_API_KEY` on asetettu.
+## Miten blogi toimii
 
-## Käyttöönotto
+- Postaukset ovat Payloadin `posts`-kokoelmassa (fi- ja en-versio samalla
+  `slug`illa, eri `lang`illa). Editorina Lexical, taulukot tuettu. Jokaisella
+  postauksella on myös `markdown`-kenttä, jonka sivu renderöi react-markdownilla.
+- Sivut haetaan Payloadin Local API:lla (`src/lib/posts.ts`) ja renderöidään
+  staattisesti. Kun julkaistua postausta muutetaan, `Posts`-kokoelman hook
+  kutsuu `revalidatePath('/', 'layout')` → sivut päivittyvät seuraavalla
+  latauksella ilman uutta deployta.
+- Luonnokset näkyvät vain `next dev`issä.
+- SEO (title, canonical, hreflang, OG, JSON-LD, sitemap) tulee yhdestä
+  lähteestä: `src/lib/routes.ts`.
 
-### 1. CMS (uusi Vercel-projekti)
+Payloadin taulut ovat Neonissa omassa `payload`-skeemassaan, eivätkä ne törmää
+`portfolio_offers`/`portfolio_leads`-tauluihin.
 
-1. Vercel → New Project → tämä repo, **Root Directory: `cms`**.
-2. Ympäristömuuttujat (ks. `cms/.env.example`):
-   - `DATABASE_URL` — Portfolio-Neonin connection string. Payload luo taulunsa
-     omaan `payload`-skeemaansa, eivätkä ne törmää `portfolio_*`-tauluihin.
-   - `PAYLOAD_SECRET` — pitkä satunnainen merkkijono.
-   - `BLOB_READ_WRITE_TOKEN` — lisää Vercel Blob -store projektiin (kuvat).
-   - `PORTFOLIO_DEPLOY_HOOK_URL` — portfolio-projektin deploy hook (kohta 2).
-3. Avaa `https://<cms-domain>/admin` ja luo ensimmäinen käyttäjä.
+## Käyttöönotto Vercelissä
 
-### 2. Portfolio (nykyinen Vercel-projekti)
+`vercel.json` vaihtaa projektin frameworkiksi Next.js:n. Ympäristömuuttujat
+(Settings → Environment Variables):
 
-1. Settings → Environment Variables: `CMS_URL=https://<cms-domain>`.
-   Ilman sitä tuotantobuild kaatuu tarkoituksella, jottei sivustoa julkaista
-   ilman blogia.
-2. Settings → Git → Deploy Hooks → luo hook ja laita sen URL CMS:n
-   `PORTFOLIO_DEPLOY_HOOK_URL`-muuttujaan.
+- `DATABASE_URL` — on jo olemassa (Neon).
+- `PAYLOAD_SECRET` — **uusi**, pitkä satunnainen merkkijono (`openssl rand -hex 32`).
+- `BLOB_READ_WRITE_TOKEN` — **uusi**: Storage → Create → Blob → yhdistä
+  projektiin; Vercel lisää muuttujan itse. Tarvitaan kuvien lataukseen.
+- `VITE_PUBLIC_POSTHOG_*` toimivat edelleen; ne kannattaa nimetä
+  `NEXT_PUBLIC_POSTHOG_*`:ksi jossain vaiheessa (`next.config.ts` hyväksyy molemmat).
 
-### 3. Vanhojen postausten migraatio (kerran)
+Ensimmäisen deployn jälkeen: avaa `/admin` ja luo ensimmäinen käyttäjä.
 
-Vanhat markdown-postaukset ovat kansiossa `cms/seed/blog/`.
+## Vanhojen postausten migraatio (kerran, ennen mergeä)
+
+Vanhat markdown-postaukset ovat kansiossa `seed/blog/`.
 
 ```bash
-cd cms
-cp .env.example .env   # täytä DATABASE_URL ja PAYLOAD_SECRET
+cp .env.example .env   # DATABASE_URL (Neon) + PAYLOAD_SECRET (sama kuin Vercelissä)
 pnpm install
 pnpm import:markdown
 ```
 
 Skripti on idempotentti (upsert slug + lang), säilyttää luonnos/julkaistu-tilan
-ja vie kansikuvat Media-kokoelmaan. Kun migraatio on tehty ja tarkistettu,
-`cms/seed/` voidaan poistaa.
+ja vie kansikuvat Media-kokoelmaan. Aja se `BLOB_READ_WRITE_TOKEN` asetettuna,
+jotta kuvat menevät Blobiin eivätkä paikalliselle levylle. Kun migraatio on
+tarkistettu, `seed/` voidaan poistaa.
 
 ## Paikallinen kehitys
 
 ```bash
-cd cms && pnpm dev            # http://localhost:3001/admin
-# toisessa terminaalissa, portfolion juuressa (.env):
-#   CMS_URL=http://localhost:3001
-#   CMS_API_KEY=...           # valinnainen: Users → API Key → näyttää luonnokset
-npm run dev
+pnpm install
+pnpm dev          # http://localhost:3000 ja http://localhost:3000/admin
+pnpm test         # vitest
+pnpm lint
 ```
 
-Jos CMS ei vastaa devissä, sivusto käynnistyy tyhjällä blogilla ja varoittaa
-konsolissa.
-
-Collectioneiden muuttamisen jälkeen: `pnpm generate:types` ja
-`pnpm generate:importmap` (cms/-kansiossa).
+Collectioneiden muuttamisen jälkeen: `pnpm generate:types` ja `pnpm generate:importmap`.

@@ -15,7 +15,7 @@ export type Post = {
   content: string
 }
 
-/** The subset of a Payload `posts` document (REST, depth=1) the site uses. */
+/** The subset of a Payload `posts` document (depth=1) the site uses. */
 export type CmsPostDoc = {
   slug?: unknown
   lang?: unknown
@@ -29,10 +29,10 @@ export type CmsPostDoc = {
 }
 
 /**
- * Maps a Payload post to the site's Post shape. `cmsUrl` makes relative media
- * URLs (local uploads: `/api/media/file/x.jpg`) absolute.
+ * Maps a Payload post to the site's Post shape. Cover URLs are either Vercel
+ * Blob URLs or same-origin `/api/media/file/...` paths — both usable as-is.
  */
-export function postFromCms(doc: CmsPostDoc, cmsUrl: string): Post | null {
+export function postFromCms(doc: CmsPostDoc): Post | null {
   const slug = typeof doc.slug === 'string' ? doc.slug : ''
   const title = typeof doc.title === 'string' ? doc.title : ''
   const date = typeof doc.date === 'string' ? doc.date.slice(0, 10) : ''
@@ -51,7 +51,7 @@ export function postFromCms(doc: CmsPostDoc, cmsUrl: string): Post | null {
     date,
     description: typeof doc.description === 'string' && doc.description ? doc.description : undefined,
     tags: Array.isArray(doc.tags) ? doc.tags.map(String) : [],
-    cover: coverUrl && !/^https?:\/\//.test(coverUrl) ? cmsUrl.replace(/\/$/, '') + coverUrl : coverUrl,
+    cover: coverUrl,
     draft: doc._status === 'draft',
     content: typeof doc.markdown === 'string' ? doc.markdown.trim() : '',
   }
