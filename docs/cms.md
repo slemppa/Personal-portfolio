@@ -41,6 +41,23 @@ Payloadin taulut ovat Neonissa omassa `payload`-skeemassaan, eivätkä ne törm�
 
 Ensimmäisen deployn jälkeen: avaa `/admin` ja luo ensimmäinen käyttäjä.
 
+## Automaatiot: `POST /api/posts/import`
+
+n8n-workflow "Portfolio Blog" julkaisee postaukset tähän endpointiin:
+
+```http
+POST /api/posts/import
+Authorization: users API-Key <avain>
+Content-Type: application/json
+
+{ "slug": "oma-postaus", "lang": "fi", "title": "…", "date": "2026-10-12",
+  "description": "…", "tags": ["…"], "draft": true, "markdown": "…" }
+```
+
+- API-avain: `/admin` → Users → oma käyttäjä → *Enable API Key*.
+- Upsert slug + lang -parilla; fi ja en jakavat slugin.
+- `draft` on oletuksena `true` (julkaisu administa). `false` julkaisee heti.
+
 ## Tietokanta ja migraatiot
 
 `pnpm build` ajaa ensin `payload migrate` ja sitten `next build`, joten

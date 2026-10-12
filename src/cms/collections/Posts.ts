@@ -1,16 +1,9 @@
 import { revalidatePath } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, CollectionConfig } from 'payload'
 
+import { importEndpoint } from '../importEndpoint'
 import { lexicalToMarkdown } from '../markdown'
-
-export function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
+import { slugify } from '../slugify'
 
 // Blog pages are statically rendered; a change to a published post marks every
 // page stale so the next visit re-renders it (home lists the latest posts,
@@ -46,6 +39,7 @@ export const Posts: CollectionConfig = {
     read: ({ req }) => (req.user ? true : { _status: { equals: 'published' } }),
   },
   versions: { drafts: true },
+  endpoints: [importEndpoint],
   defaultSort: '-date',
   // fi and en variants of a post share a slug.
   indexes: [{ fields: ['slug', 'lang'], unique: true }],
