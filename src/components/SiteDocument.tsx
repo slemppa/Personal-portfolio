@@ -34,6 +34,11 @@ export default function SiteDocument({ lang, children }: { lang: Lang; children:
       <body>
         {children}
         <Analytics />
+        <Script
+          src="https://analytiikka.analytiikka.workers.dev/t.js"
+          data-site="045c4ca3"
+          strategy="afterInteractive"
+        />
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-93LNVBX246" strategy="afterInteractive" />
         <Script id="gtag-init" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
