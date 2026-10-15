@@ -28,7 +28,13 @@ export function initAnalytics(): void {
     })
 }
 
+type AnalytiikkaWindow = Window & {
+  analytiikka?: { track: (event: string, props?: Record<string, unknown>) => void }
+}
+
 /** Capture an event. No-op until analytics has finished loading. */
 export function capture(event: string, props?: Record<string, unknown>): void {
   client?.capture(event, props)
+  // Own cookieless analytics (analytiikka.analytiikka.workers.dev), loaded in SiteDocument.
+  if (typeof window !== 'undefined') (window as AnalytiikkaWindow).analytiikka?.track(event, props)
 }
