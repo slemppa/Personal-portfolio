@@ -8,6 +8,34 @@ export const SITE_NAME = 'Sami Kiias'
 export const AUTHOR_NAME = 'Sami Kiias'
 export const DEFAULT_OG_IMAGE = '/portfolio-hero-fix.png'
 
+// Hakutuloksen mitat: otsikko 30–60 merkkiä, kuvaus 70–160 merkkiä.
+export const TITLE_MAX = 60
+export const DESCRIPTION_MAX = 160
+const TITLE_SUFFIX = ` · ${SITE_NAME}`
+
+/** Lisää sivuston nimen otsikon perään vain, jos se mahtuu 60 merkkiin. */
+export function pageTitle(title: string): string {
+  return title.length + TITLE_SUFFIX.length <= TITLE_MAX ? title + TITLE_SUFFIX : title
+}
+
+/** Lyhentää tekstin sanarajalta enintään `max` merkkiin (… mukaan lukien). */
+export function clampText(text: string, max = DESCRIPTION_MAX): string {
+  const clean = text.replace(/\s+/g, ' ').trim()
+  if (clean.length <= max) return clean
+  const cut = clean.slice(0, max - 1)
+  const lastSpace = cut.lastIndexOf(' ')
+  return `${(lastSpace > max / 2 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:—–-]+$/, '')}…`
+}
+
+/** Markdownin ensimmäinen leipätekstikappale pelkkänä tekstinä (otsikot, kuvat ja listat ohitetaan). */
+export function firstParagraph(markdown: string): string | undefined {
+  const block = markdown
+    .split(/\r?\n\s*\r?\n/)
+    .map((b) => b.trim())
+    .find((b) => b && !/^(#|!\[|[-*+>|]\s|\d+\.\s|```|<)/.test(b))
+  return block ? stripInlineMarkdown(block.replace(/\r?\n/g, ' ')) : undefined
+}
+
 /** Site-absolute path → absolute URL. Passes through URLs that already are one. */
 export function absoluteUrl(pathOrUrl: string): string {
   return /^https?:\/\//.test(pathOrUrl) ? pathOrUrl : SITE_URL + pathOrUrl

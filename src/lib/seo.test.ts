@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { absoluteUrl, extractFaq, postJsonLd, stripInlineMarkdown, SITE_URL } from './seo'
+import { absoluteUrl, clampText, extractFaq, firstParagraph, pageTitle, postJsonLd, stripInlineMarkdown, SITE_URL } from './seo'
 import type { Post } from './parsePost'
 
 const post = (content: string, extra: Partial<Post> = {}): Post => ({
@@ -90,5 +90,25 @@ describe('postJsonLd', () => {
     const withFaq = postJsonLd(post('## Usein kysytyt kysymykset\n\n### Q?\n\nA.'), '/blog/testi')
     expect(withFaq).toHaveLength(2)
     expect(withFaq[1]['@type']).toBe('FAQPage')
+  })
+})
+
+describe('hakutuloksen mitat', () => {
+  it('pageTitle lisää sivuston nimen vain jos se mahtuu', () => {
+    expect(pageTitle('Lyhyt otsikko')).toBe('Lyhyt otsikko · Sami Kiias')
+    const long = 'x'.repeat(50)
+    expect(pageTitle(long)).toBe(long)
+  })
+
+  it('clampText lyhentää sanarajalta 160 merkkiin', () => {
+    const text = 'sana '.repeat(60)
+    const out = clampText(text)
+    expect(out.length).toBeLessThanOrEqual(160)
+    expect(out.endsWith('sana…')).toBe(true)
+    expect(clampText('lyhyt')).toBe('lyhyt')
+  })
+
+  it('firstParagraph ohittaa otsikot ja kuvat', () => {
+    expect(firstParagraph('# Otsikko\n\n![kuva](/a.png)\n\nEka **kappale** tässä.\n\nToka.')).toBe('Eka kappale tässä.')
   })
 })

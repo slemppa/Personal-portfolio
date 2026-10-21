@@ -133,6 +133,14 @@ export interface Post {
   lang: 'fi' | 'en';
   date: string;
   description?: string | null;
+  /**
+   * Hakutuloksen otsikko (30–60 merkkiä). Tyhjänä käytetään otsikkoa.
+   */
+  metaTitle?: string | null;
+  /**
+   * Hakutuloksen kuvaus (70–160 merkkiä). Tyhjänä käytetään kuvausta lyhennettynä.
+   */
+  metaDescription?: string | null;
   tags?: string[] | null;
   cover?: (number | null) | Media;
   content: {
@@ -294,6 +302,8 @@ export interface PostsSelect<T extends boolean = true> {
   lang?: T;
   date?: T;
   description?: T;
+  metaTitle?: T;
+  metaDescription?: T;
   tags?: T;
   cover?: T;
   content?: T;
