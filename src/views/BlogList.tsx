@@ -37,7 +37,7 @@ export default function BlogList({ lang, posts }: { lang: Lang; posts: Post[] })
                   className="group block rounded-2xl border border-border hover:border-border-hover bg-bg-secondary p-6 transition-colors"
                 >
                   {post.cover && (
-                    <img src={post.cover} alt="" className="mb-4 aspect-video w-full rounded-xl object-cover" />
+                    <img src={post.cover} alt={post.coverAlt ?? post.title} className="mb-4 aspect-video w-full rounded-xl object-cover" />
                   )}
                   <time className="text-xs uppercase tracking-wide text-text-muted">
                     {formatDate(post.date, lang)}

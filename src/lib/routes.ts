@@ -4,10 +4,46 @@ import type { Metadata, MetadataRoute } from 'next'
 import { selectPosts, type Lang, type Post } from './parsePost'
 import { getCases } from './cases'
 import { blogListPath, blogPostPath, casePath, homePath } from './i18n'
-import { homeCopy } from '../site/copy'
-import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, absoluteUrl, ogLocale, postJsonLd } from './seo'
+import {
+  DEFAULT_OG_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  absoluteUrl,
+  clampText,
+  firstParagraph,
+  ogLocale,
+  pageTitle,
+  postJsonLd,
+} from './seo'
 
 const LANGS: Lang[] = ['fi', 'en']
+
+// Hakutulosta varten kirjoitetut tekstit (otsikko 30–60, kuvaus 70–160 merkkiä).
+const HOME_META: Record<Lang, { title: string; description: string }> = {
+  fi: {
+    title: 'Sami Kiias — Fullstack-tuoterakentaja',
+    description:
+      'Rakennan fullstack-tuotteita ideasta tuotantoon: SaaS, mobiilisovellukset ja AI-integraatiot. Kuusi tuotetta, kolme tuotannossa maksavilla asiakkailla.',
+  },
+  en: {
+    title: 'Sami Kiias — Fullstack product builder',
+    description:
+      'I build fullstack products from idea to production: SaaS, mobile apps and AI integrations. Six products built, three in production with paying customers.',
+  },
+}
+
+const BLOG_META: Record<Lang, { title: string; description: string }> = {
+  fi: {
+    title: 'Blogi: AI, markkinointi ja tuotekehitys · Sami Kiias',
+    description:
+      'Käytännön kirjoituksia tekoälystä, markkinoinnin automaatiosta ja SaaS-tuotteiden rakentamisesta pk-yrityksen näkökulmasta.',
+  },
+  en: {
+    title: 'Blog: AI, marketing and product building · Sami Kiias',
+    description:
+      'Practical writing on AI, marketing automation and building SaaS products, from the point of view of a small business.',
+  },
+}
 
 export type Route = {
   path: string
@@ -67,8 +103,8 @@ export function collectRoutes(allPosts: Post[]): Route[] {
     routes.push({
       path: homePath(lang),
       lang,
-      title: lang === 'fi' ? 'Sami Kiias — Fullstack-tuoterakentaja' : 'Sami Kiias — Fullstack product builder',
-      description: homeCopy[lang].heroBody,
+      title: HOME_META[lang].title,
+      description: HOME_META[lang].description,
       type: 'website',
       alternates: [
         { hreflang: 'fi', path: '/' },
@@ -90,8 +126,8 @@ export function collectRoutes(allPosts: Post[]): Route[] {
     routes.push({
       path: blogListPath(lang),
       lang,
-      title: lang === 'fi' ? 'Blogi · Sami Kiias' : 'Blog · Sami Kiias',
-      description: lang === 'fi' ? 'Ajatuksia ja muistiinpanoja.' : 'Thoughts and notes.',
+      title: BLOG_META[lang].title,
+      description: BLOG_META[lang].description,
       type: 'website',
       alternates: [
         { hreflang: 'fi', path: blogListPath('fi') },
@@ -107,8 +143,8 @@ export function collectRoutes(allPosts: Post[]): Route[] {
       routes.push({
         path: casePath(lang, study.slug),
         lang,
-        title: `${study.title} — Sami Kiias`,
-        description: study.summary,
+        title: study.metaTitle,
+        description: study.metaDescription,
         image: study.gallery[0]?.src,
         type: 'website',
         alternates: [
@@ -135,8 +171,8 @@ export function collectRoutes(allPosts: Post[]): Route[] {
     routes.push({
       path,
       lang: post.lang,
-      title: `${post.title} · Sami Kiias`,
-      description: post.description,
+      title: post.metaTitle ?? pageTitle(post.title),
+      description: postDescription(post),
       image: post.cover,
       type: 'article',
       publishedTime: post.date,
@@ -152,6 +188,12 @@ export function collectRoutes(allPosts: Post[]): Route[] {
   return routes
 }
 
+
+/** SEO-kuvaus → kuvaus → ensimmäinen kappale, aina enintään 160 merkkiä. */
+function postDescription(post: Post): string | undefined {
+  const text = post.metaDescription ?? post.description ?? firstParagraph(post.content)
+  return text ? clampText(text) : undefined
+}
 
 export function findRoute(routes: Route[], path: string): Route | undefined {
   return routes.find((r) => r.path === path)

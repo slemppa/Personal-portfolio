@@ -86,6 +86,26 @@ export const Posts: CollectionConfig = {
       admin: { position: 'sidebar', date: { pickerAppearance: 'dayOnly', displayFormat: 'yyyy-MM-dd' } },
     },
     { name: 'description', label: 'Kuvaus', type: 'textarea' },
+    {
+      name: 'metaTitle',
+      label: 'SEO-otsikko',
+      type: 'text',
+      maxLength: 60,
+      admin: {
+        position: 'sidebar',
+        description: 'Hakutuloksen otsikko (30–60 merkkiä). Tyhjänä käytetään otsikkoa.',
+      },
+    },
+    {
+      name: 'metaDescription',
+      label: 'SEO-kuvaus',
+      type: 'textarea',
+      maxLength: 160,
+      admin: {
+        position: 'sidebar',
+        description: 'Hakutuloksen kuvaus (70–160 merkkiä). Tyhjänä käytetään kuvausta lyhennettynä.',
+      },
+    },
     { name: 'tags', label: 'Tagit', type: 'text', hasMany: true },
     { name: 'cover', label: 'Kansikuva', type: 'upload', relationTo: 'media' },
     { name: 'content', label: 'Sisältö', type: 'richText', required: true },

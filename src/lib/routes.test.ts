@@ -65,3 +65,32 @@ describe('robots', () => {
     expect(r.sitemap).toBe('https://www.samikiias.fi/sitemap.xml')
   })
 })
+
+describe('otsikot ja kuvaukset', () => {
+  const all = collectRoutes([
+    post('long', 'fi', { title: 'x'.repeat(55), description: 'kuvaus '.repeat(40) }),
+    post('seo', 'fi', { title: 'Otsikko', metaTitle: 'Oma SEO-otsikko hakutulokseen', metaDescription: 'Oma kuvaus' }),
+    post('none', 'fi', { content: '## Väliotsikko\n\nEnsimmäinen kappale kertoo aiheesta.' }),
+  ]).filter((r) => !r.noindex)
+
+  it('ovat yksilöllisiä kaikilla julkisilla sivuilla', () => {
+    const titles = all.map((r) => r.title)
+    expect(new Set(titles).size).toBe(titles.length)
+  })
+
+  it('pysyvät 60 / 160 merkissä', () => {
+    for (const r of all) {
+      expect(r.title.length, r.path).toBeLessThanOrEqual(60)
+      expect(r.description?.length ?? 0, r.path).toBeLessThanOrEqual(160)
+    }
+  })
+
+  it('casejen ja listojen kuvaukset ovat vähintään 70 merkkiä', () => {
+    for (const r of all.filter((r) => r.type === 'website')) expect(r.description!.length, r.path).toBeGreaterThanOrEqual(70)
+  })
+
+  it('käyttävät SEO-kenttiä ja ensimmäistä kappaletta varalla', () => {
+    expect(findRoute(all, '/blog/seo')).toMatchObject({ title: 'Oma SEO-otsikko hakutulokseen', description: 'Oma kuvaus' })
+    expect(findRoute(all, '/blog/none')?.description).toBe('Ensimmäinen kappale kertoo aiheesta.')
+  })
+})

@@ -9,8 +9,13 @@ export type Post = {
   title: string
   date: string
   description?: string
+  /** Hakukoneelle erikseen kirjoitettu otsikko; muuten `title`. */
+  metaTitle?: string
+  /** Hakukoneelle erikseen kirjoitettu kuvaus; muuten `description`. */
+  metaDescription?: string
   tags: string[]
   cover?: string
+  coverAlt?: string
   draft: boolean
   content: string
 }
@@ -22,6 +27,8 @@ export type CmsPostDoc = {
   title?: unknown
   date?: unknown
   description?: unknown
+  metaTitle?: unknown
+  metaDescription?: unknown
   tags?: unknown
   cover?: unknown
   _status?: unknown
@@ -40,18 +47,22 @@ export function postFromCms(doc: CmsPostDoc): Post | null {
     console.warn(`[blog] CMS-postaus "${slug || title}": slug, title tai date puuttuu, skipataan`)
     return null
   }
-  const coverUrl =
-    doc.cover && typeof doc.cover === 'object' && typeof (doc.cover as { url?: unknown }).url === 'string'
-      ? (doc.cover as { url: string }).url
-      : undefined
+  const cover = doc.cover && typeof doc.cover === 'object' ? (doc.cover as { url?: unknown; alt?: unknown }) : undefined
+  const coverUrl = typeof cover?.url === 'string' ? cover.url : undefined
+  const nonEmpty = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : undefined)
   return {
     slug,
     lang: doc.lang === 'en' ? 'en' : DEFAULT_LANG,
     title,
     date,
-    description: typeof doc.description === 'string' && doc.description ? doc.description : undefined,
+    description: nonEmpty(doc.description),
+    metaTitle: nonEmpty(doc.metaTitle),
+    metaDescription: nonEmpty(doc.metaDescription),
     tags: Array.isArray(doc.tags) ? doc.tags.map(String) : [],
     cover: coverUrl,
+    // Seed-import tallensi altiksi tiedostonimen; se ei kuvaa kuvaa, joten
+    // sivu käyttää silloin postauksen otsikkoa.
+    coverAlt: coverUrl && !/\.(jpe?g|png|webp|gif|avif)$/i.test(String(cover?.alt)) ? nonEmpty(cover?.alt) : undefined,
     draft: doc._status === 'draft',
     content: typeof doc.markdown === 'string' ? doc.markdown.trim() : '',
   }

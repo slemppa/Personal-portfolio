@@ -58,7 +58,7 @@ export default function BlogPost({
                   </div>
                 )}
                 {post.cover && (
-                  <img src={post.cover} alt="" className="mt-6 aspect-video w-full rounded-2xl object-cover" />
+                  <img src={post.cover} alt={post.coverAlt ?? post.title} className="mt-6 aspect-video w-full rounded-2xl object-cover" />
                 )}
               </header>
               <Markdown>{post.content}</Markdown>
