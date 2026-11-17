@@ -12,6 +12,8 @@ function revalidateSite(context: Record<string, unknown>) {
   if (context.skipRevalidate) return
   try {
     revalidatePath('/', 'layout')
+    // Metadata routes are not under any layout; revalidate them explicitly.
+    revalidatePath('/sitemap.xml')
   } catch (err) {
     console.warn('[posts] revalidatePath failed', err)
   }

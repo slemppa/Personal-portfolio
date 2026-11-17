@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import type { ReactNode } from 'react'
 import Analytics from './Analytics'
-import { SITE_URL } from '../lib/seo'
+import JsonLd from './JsonLd'
+import { SITE_URL, siteGraph } from '../lib/seo'
 import type { Lang } from '../lib/parsePost'
 import '../index.css'
 
@@ -30,6 +31,8 @@ export default function SiteDocument({ lang, children }: { lang: Lang; children:
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="stylesheet" href={FONTS} />
+        {/* Person + WebSite on every page, so page-level JSON-LD can reference them by @id. */}
+        <JsonLd blocks={[siteGraph(lang)]} />
       </head>
       <body>
         {children}

@@ -8,6 +8,7 @@ import ContactForm from '../components/ContactForm'
 import { getCaseStudy } from '../lib/cases'
 import { capture } from '../lib/analytics'
 import { t, homePath } from '../lib/i18n'
+import { ABOUT_PATH, AUTHOR_NAME } from '../lib/seo'
 import type { Lang } from '../lib/parsePost'
 
 function isExternal(href: string) {
@@ -56,6 +57,13 @@ export default function CaseStudy({ lang = 'fi', slug }: { lang?: Lang; slug: st
           </h1>
           <p className="mt-4 text-xl text-text-secondary leading-relaxed max-w-2xl">
             {study.tagline}
+          </p>
+          <p className="mt-4 text-sm text-text-muted">
+            {t(lang, 'caseBuiltBy')}{' '}
+            <Link href={ABOUT_PATH} rel="author" className="font-medium text-text-secondary hover:text-text-primary">
+              {AUTHOR_NAME}
+            </Link>{' '}
+            · {study.role}
           </p>
 
           {study.links.length > 0 && (
@@ -197,6 +205,14 @@ export default function CaseStudy({ lang = 'fi', slug }: { lang?: Lang; slug: st
                 lang={lang}
                 onSuccess={() => capture('case_study_contact_clicked', { case_slug: slug })}
               />
+            </div>
+            <div className="mt-8 text-center">
+              <Link
+                href="/mvp-kehitys"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-bg-tertiary border border-border rounded-lg text-sm font-medium text-text-primary hover:border-accent/50 transition-all"
+              >
+                {t(lang, 'caseMvpCta')}
+              </Link>
             </div>
             <div className="mt-6 text-center">
               <Link href={homePath(lang) + '#projektit'} className="text-sm text-text-muted hover:text-text-primary transition-colors">

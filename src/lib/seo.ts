@@ -8,6 +8,63 @@ export const SITE_NAME = 'Sami Kiias'
 export const AUTHOR_NAME = 'Sami Kiias'
 export const DEFAULT_OG_IMAGE = '/portfolio-hero-fix.png'
 
+// --- Entiteetti: yksi Person- ja WebSite-solmu koko sivustolle.
+// Jokainen sivu tulostaa nämä (SiteDocument), joten muut JSON-LD-blokit voivat
+// viitata niihin pelkällä @id:llä ja viittaus osuu aina samalla sivulla olevaan
+// solmuun.
+export const PERSON_ID = `${SITE_URL}/#person`
+export const WEBSITE_ID = `${SITE_URL}/#website`
+/** Kirjoittaja- ja tietoa-sivu (ProfilePage). */
+export const ABOUT_PATH = '/tietoa'
+
+/**
+ * Profiilit, jotka kuvaavat samaa henkilöä. Vain varmistetut URLit: tyhjät
+ * jätetään JSON-LD:stä pois, jotta sameAs ei koskaan osoita väärään paikkaan.
+ */
+export const PROFILES = {
+  youtube: 'https://www.youtube.com/@samikiias',
+  github: 'https://github.com/slemppa',
+  mak8r: 'https://mak8r.fi',
+  // TODO(Sami): LinkedIn-profiilin URL (myös Footer/YhteysSection odottavat tätä, data-todo="linkedin-url")
+  linkedin: '',
+  // TODO(Sami): Instagram-profiilin URL
+  instagram: '',
+} as const
+
+export const SAME_AS: string[] = Object.values(PROFILES).filter(Boolean)
+
+/** Sivuston Person- ja WebSite-solmut yhtenä @graphina. */
+export function siteGraph(lang: Lang): Record<string, unknown> {
+  const fi = lang === 'fi'
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': PERSON_ID,
+        name: AUTHOR_NAME,
+        url: `${SITE_URL}/`,
+        jobTitle: fi ? ['Fullstack-tuoterakentaja', 'CTO'] : ['Fullstack product builder', 'CTO'],
+        worksFor: { '@type': 'Organization', name: 'Rascal AI', url: 'https://rascalai.fi' },
+        alumniOf: { '@type': 'CollegeOrUniversity', name: 'Haaga-Helia' },
+        knowsAbout: fi
+          ? ['Fullstack-kehitys', 'SaaS', 'Mobiilisovellukset', 'AI-integraatiot', 'n8n']
+          : ['Fullstack development', 'SaaS', 'Mobile apps', 'AI integrations', 'n8n'],
+        sameAs: SAME_AS,
+      },
+      {
+        '@type': 'WebSite',
+        '@id': WEBSITE_ID,
+        url: `${SITE_URL}/`,
+        name: SITE_NAME,
+        inLanguage: ['fi', 'en'],
+        author: { '@id': PERSON_ID },
+        publisher: { '@id': PERSON_ID },
+      },
+    ],
+  }
+}
+
 // Hakutuloksen mitat: otsikko 30–60 merkkiä, kuvaus 70–160 merkkiä.
 export const TITLE_MAX = 60
 export const DESCRIPTION_MAX = 160
@@ -81,6 +138,11 @@ export function extractFaq(markdown: string): FaqItem[] {
   return items
 }
 
+/** Päivityspäivä: CMS:n updatedAt, mutta ei koskaan ennen julkaisupäivää. */
+export function postModified(post: Post): string {
+  return post.updated && post.updated > post.date ? post.updated : post.date
+}
+
 /** Rakenteinen data yhdelle postaukselle: BlogPosting + mahdollinen FAQPage. */
 export function postJsonLd(post: Post, path: string): Record<string, unknown>[] {
   const url = absoluteUrl(path)
@@ -89,32 +151,34 @@ export function postJsonLd(post: Post, path: string): Record<string, unknown>[] 
     '@type': 'BlogPosting',
     headline: post.title,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: postModified(post),
     inLanguage: post.lang,
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    author: { '@type': 'Person', name: AUTHOR_NAME, url: SITE_URL },
-    publisher: { '@type': 'Person', name: AUTHOR_NAME, url: SITE_URL },
+    author: { '@id': PERSON_ID },
+    publisher: { '@id': PERSON_ID },
+    isPartOf: { '@id': WEBSITE_ID },
     image: absoluteUrl(post.cover ?? DEFAULT_OG_IMAGE),
   }
   if (post.description) blogPosting.description = post.description
   if (post.tags.length > 0) blogPosting.keywords = post.tags.join(', ')
 
-  const faq = extractFaq(post.content)
-  if (faq.length === 0) return [blogPosting]
+  const faq = faqJsonLd(extractFaq(post.content))
+  return faq ? [blogPosting, faq] : [blogPosting]
+}
 
-  return [
-    blogPosting,
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: faq.map((item) => ({
-        '@type': 'Question',
-        name: item.question,
-        acceptedAnswer: { '@type': 'Answer', text: item.answer },
-      })),
-    },
-  ]
+/** FAQPage kysymyksistä; ei mitään, jos kysymyksiä ei ole. */
+export function faqJsonLd(items: FaqItem[]): Record<string, unknown> | undefined {
+  if (items.length === 0) return undefined
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  }
 }
 
 /** Open Graph -locale schema.org/hreflang-kielikoodista. */

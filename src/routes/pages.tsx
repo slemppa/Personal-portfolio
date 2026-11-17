@@ -8,6 +8,8 @@ import Home from '../views/Home'
 import BlogList from '../views/BlogList'
 import BlogPost from '../views/BlogPost'
 import CaseStudy from '../views/CaseStudy'
+import ServicePageView from '../views/ServicePage'
+import { getServicePage, servicePath } from '../lib/servicePages'
 import { getAllPosts, getEveryPost, getPost } from '../lib/posts'
 import { getCaseStudy, getCases } from '../lib/cases'
 import { blogListPath, blogPostPath, casePath, homePath, otherLang } from '../lib/i18n'
@@ -91,6 +93,28 @@ export function casePage(lang: Lang) {
   return async function Page({ params }: SlugProps) {
     const { slug } = await params
     if (!getCaseStudy(slug, lang)) notFound()
-    return <CaseStudy lang={lang} slug={slug} />
+    return (
+      <>
+        <JsonLd blocks={await jsonLdFor(casePath(lang, slug))} />
+        <CaseStudy lang={lang} slug={slug} />
+      </>
+    )
+  }
+}
+
+// --- Finnish service, guide and about pages (lib/servicePages.ts)
+
+export const serviceMetadata = (slug: string) => () => metadataFor(servicePath(slug))
+
+export function servicePage(slug: string) {
+  return async function Page() {
+    const page = getServicePage(slug)
+    if (!page) notFound()
+    return (
+      <>
+        <JsonLd blocks={await jsonLdFor(servicePath(slug))} />
+        <ServicePageView page={page} />
+      </>
+    )
   }
 }

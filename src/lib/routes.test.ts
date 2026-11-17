@@ -94,3 +94,43 @@ describe('otsikot ja kuvaukset', () => {
     expect(findRoute(all, '/blog/none')?.description).toBe('Ensimmäinen kappale kertoo aiheesta.')
   })
 })
+
+describe('entiteetti ja uudet sivut', () => {
+  const NEW = ['/tietoa', '/mvp-kehitys', '/n8n-automaatiot', '/ohjelmistokehityksen-hinta']
+
+  it('uudet sivut ovat sitemapissa ja canonical osoittaa itseensä', () => {
+    for (const path of NEW) {
+      expect(urls, path).toContain(`https://www.samikiias.fi${path}`)
+      expect(routeMetadata(findRoute(routes, path)!).alternates?.canonical).toBe(`https://www.samikiias.fi${path}`)
+    }
+  })
+
+  it('suomenkielisillä sivuilla on fi + x-default itseensä, ei en-paria', () => {
+    const meta = routeMetadata(findRoute(routes, '/mvp-kehitys')!)
+    expect(meta.alternates?.languages).toEqual({
+      fi: 'https://www.samikiias.fi/mvp-kehitys',
+      'x-default': 'https://www.samikiias.fi/mvp-kehitys',
+    })
+  })
+
+  it('/tietoa on ProfilePage, jonka mainEntity on #person', () => {
+    const [page] = findRoute(routes, '/tietoa')!.jsonLd
+    expect(page).toMatchObject({ '@type': 'ProfilePage', mainEntity: { '@id': 'https://www.samikiias.fi/#person' } })
+  })
+
+  it('case-sivun JSON-LD viittaa tekijään @id:llä', () => {
+    const [cw] = findRoute(routes, '/projektit/rascal-ai')!.jsonLd
+    expect(cw).toMatchObject({ '@type': 'CreativeWork', creator: { '@id': 'https://www.samikiias.fi/#person' } })
+  })
+
+  it('FAQPage sisältää vain valmiit vastaukset, ei TODO-kohtia', () => {
+    for (const path of NEW) {
+      expect(JSON.stringify(findRoute(routes, path)!.jsonLd), path).not.toContain('TODO')
+    }
+  })
+
+  it('blogipostauksen lastmod on päivityspäivä', () => {
+    const r = collectRoutes([post('u', 'fi', { updated: '2026-09-01' })])
+    expect(findRoute(r, '/blog/u')?.lastmod).toBe('2026-09-01')
+  })
+})

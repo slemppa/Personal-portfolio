@@ -9,6 +9,12 @@ type Dict = {
   notFoundBody: string
   /** Label of the link that switches to the other language. */
   switchLabel: string
+  // Author line
+  byline: string
+  published: string
+  updated: string
+  caseBuiltBy: string
+  caseMvpCta: string
   // Case pages
   caseBack: string
   caseNotFound: string
@@ -51,6 +57,11 @@ const strings: Record<Lang, Dict> = {
     notFoundTitle: 'Postausta ei löytynyt',
     notFoundBody: 'Tarkista osoite tai palaa blogiin.',
     switchLabel: 'In English',
+    byline: 'Kirjoittaja',
+    published: 'Julkaistu',
+    updated: 'Päivitetty',
+    caseBuiltBy: 'Rakentanut',
+    caseMvpCta: 'Näin MVP-projekti etenee →',
     // Case pages
     caseBack: 'Takaisin projekteihin',
     caseNotFound: 'Projektia ei löytynyt',
@@ -91,6 +102,11 @@ const strings: Record<Lang, Dict> = {
     notFoundTitle: 'Post not found',
     notFoundBody: 'Check the URL or head back to the blog.',
     switchLabel: 'Suomeksi',
+    byline: 'By',
+    published: 'Published',
+    updated: 'Updated',
+    caseBuiltBy: 'Built by',
+    caseMvpCta: 'How an MVP project works (in Finnish) →',
     // Case pages
     caseBack: 'Back to projects',
     caseNotFound: 'Project not found',

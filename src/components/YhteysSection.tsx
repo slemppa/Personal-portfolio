@@ -14,6 +14,14 @@ import ContactForm from './ContactForm'
 
 const mono = "'JetBrains Mono', monospace"
 
+// Finnish-only service pages (lib/servicePages.ts).
+const SERVICES_FI = [
+  { label: 'MVP-kehitys', href: '/mvp-kehitys' },
+  { label: 'n8n-automaatiot', href: '/n8n-automaatiot' },
+  { label: 'Ohjelmistokehityksen hinta', href: '/ohjelmistokehityksen-hinta' },
+  { label: 'Tietoa Samista', href: '/tietoa' },
+]
+
 const sectionStyle: React.CSSProperties = {
   position: 'relative',
   background: '#0c0d10',
@@ -138,6 +146,19 @@ export default function YhteysSection({ lang }: { lang: Lang }) {
                 <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>{c.contactGhCta}</span>
               </a>
             </div>
+            {lang === 'fi' && (
+              <>
+                <div style={labelStyle}>Palvelut</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 30 }}>
+                  {SERVICES_FI.map((s) => (
+                    <a key={s.href} href={s.href} style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
+                      <span style={{ color: '#e9eaec', fontWeight: 500, fontSize: 14.5 }}>{s.label}</span>
+                      <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>→</span>
+                    </a>
+                  ))}
+                </div>
+              </>
+            )}
             <div style={labelStyle}>{c.contactCompanies}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <CompanyRow name={c.contactC1n} desc={c.contactC1d} role={c.contactC1r} />
