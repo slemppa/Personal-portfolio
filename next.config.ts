@@ -25,6 +25,8 @@ const nextConfig: NextConfig = {
     return [
       { source: '/projektit/superhuman', destination: '/projektit/altio', permanent: true },
       { source: '/en/projektit/superhuman', destination: '/en/projektit/altio', permanent: true },
+      // The contact form lives on the home page; one place instead of a thin duplicate page.
+      { source: '/yhteys', destination: '/#yhteys', permanent: true },
     ]
   },
   async headers() {

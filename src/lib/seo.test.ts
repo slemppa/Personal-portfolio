@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { absoluteUrl, clampText, extractFaq, firstParagraph, pageTitle, postJsonLd, stripInlineMarkdown, SITE_URL } from './seo'
+import { PERSON_ID, SAME_AS, siteGraph, absoluteUrl, clampText, extractFaq, firstParagraph, pageTitle, postJsonLd, stripInlineMarkdown, SITE_URL } from './seo'
 import type { Post } from './parsePost'
 
 const post = (content: string, extra: Partial<Post> = {}): Post => ({
@@ -110,5 +110,26 @@ describe('hakutuloksen mitat', () => {
 
   it('firstParagraph ohittaa otsikot ja kuvat', () => {
     expect(firstParagraph('# Otsikko\n\n![kuva](/a.png)\n\nEka **kappale** tässä.\n\nToka.')).toBe('Eka kappale tässä.')
+  })
+})
+
+describe('entiteetti', () => {
+  it('Person- ja WebSite-solmuilla on vakaat @id:t ja WebSite viittaa henkilöön', () => {
+    const graph = siteGraph('fi')['@graph'] as Record<string, unknown>[]
+    expect(graph[0]).toMatchObject({ '@type': 'Person', '@id': PERSON_ID, name: 'Sami Kiias', url: `${SITE_URL}/` })
+    expect(graph[1]).toMatchObject({ '@type': 'WebSite', publisher: { '@id': PERSON_ID } })
+  })
+
+  it('sameAs sisältää vain oikeita URLeja', () => {
+    expect(SAME_AS.length).toBeGreaterThan(0)
+    for (const url of SAME_AS) expect(url).toMatch(/^https:\/\//)
+  })
+
+  it('BlogPosting viittaa kirjoittajaan ja kertoo päivityspäivän', () => {
+    const [bp] = postJsonLd(post('x', { updated: '2026-09-01' }), '/blog/testi')
+    expect(bp.author).toEqual({ '@id': PERSON_ID })
+    expect(bp.dateModified).toBe('2026-09-01')
+    const [same] = postJsonLd(post('x', { updated: '2026-01-01' }), '/blog/testi')
+    expect(same.dateModified).toBe('2026-08-05')
   })
 })

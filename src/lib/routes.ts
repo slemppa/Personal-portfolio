@@ -2,14 +2,18 @@
 // sitemapille. Puhtaita funktioita, jotta molemmat tuottavat saman tuloksen.
 import type { Metadata, MetadataRoute } from 'next'
 import { selectPosts, type Lang, type Post } from './parsePost'
-import { getCases } from './cases'
+import { getCases, type CaseStudy } from './cases'
+import { getServicePages, publishedFaq, servicePair, servicePath, type ServicePage } from './servicePages'
 import { blogListPath, blogPostPath, casePath, homePath } from './i18n'
 import {
   DEFAULT_OG_IMAGE,
   SITE_NAME,
-  SITE_URL,
+  PERSON_ID,
+  WEBSITE_ID,
   absoluteUrl,
   clampText,
+  faqJsonLd,
+  postModified,
   firstParagraph,
   ogLocale,
   pageTitle,
@@ -111,15 +115,8 @@ export function collectRoutes(allPosts: Post[]): Route[] {
         { hreflang: 'en', path: '/en' },
         { hreflang: 'x-default', path: '/' },
       ],
-      jsonLd: [
-        {
-          '@context': 'https://schema.org',
-          '@type': 'Person',
-          name: SITE_NAME,
-          url: SITE_URL,
-          jobTitle: lang === 'fi' ? 'Fullstack-tuoterakentaja' : 'Fullstack product builder',
-        },
-      ],
+      // Person + WebSite tulevat jokaiselle sivulle SiteDocumentista.
+      jsonLd: [],
       priority: 1,
     })
 
@@ -152,11 +149,13 @@ export function collectRoutes(allPosts: Post[]): Route[] {
           { hreflang: 'en', path: casePath('en', study.slug) },
           { hreflang: 'x-default', path: casePath('fi', study.slug) },
         ],
-        jsonLd: [],
+        jsonLd: caseJsonLd(study, casePath(lang, study.slug), lang),
         priority: 0.8,
       })
     }
   }
+
+  for (const page of getServicePages()) routes.push(serviceRoute(page))
 
   for (const post of posts) {
     const path = blogPostPath(post.lang, post.slug)
@@ -179,7 +178,7 @@ export function collectRoutes(allPosts: Post[]): Route[] {
       alternates,
       jsonLd: postJsonLd(post, path),
       priority: 0.7,
-      lastmod: post.date,
+      lastmod: postModified(post),
     })
   }
 
@@ -188,6 +187,85 @@ export function collectRoutes(allPosts: Post[]): Route[] {
   return routes
 }
 
+
+/**
+ * Case-sivun JSON-LD: vain sivulla näkyvää tietoa. CreativeWork on itse
+ * case-kuvaus; `about` kertoo, mistä tuotteesta se kertoo.
+ */
+function caseJsonLd(study: CaseStudy, path: string, lang: Lang): Record<string, unknown>[] {
+  const url = absoluteUrl(path)
+  const productUrl = study.links.find((l) => /^https?:\/\//.test(l.href))?.href
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      '@id': `${url}#case`,
+      name: study.title,
+      headline: `${study.title} – ${study.tagline}`,
+      description: study.summary,
+      url,
+      inLanguage: lang,
+      image: study.gallery[0] ? absoluteUrl(study.gallery[0].src) : undefined,
+      creator: { '@id': PERSON_ID },
+      author: { '@id': PERSON_ID },
+      isPartOf: { '@id': WEBSITE_ID },
+      about: {
+        '@type': 'SoftwareApplication',
+        name: study.title,
+        description: study.tagline,
+        ...(productUrl ? { url: productUrl } : {}),
+        creator: { '@id': PERSON_ID },
+      },
+    },
+  ]
+}
+
+/** Palvelu-, opas- ja tietoa-sivut molemmilla kielillä (lib/servicePages.ts). */
+function serviceRoute(page: ServicePage): Route {
+  const path = servicePath(page.slug)
+  const url = absoluteUrl(path)
+  const base = { url, name: page.h1, description: page.metaDescription, inLanguage: page.lang, isPartOf: { '@id': WEBSITE_ID } }
+  const main: Record<string, unknown> =
+    page.kind === 'about'
+      ? { '@context': 'https://schema.org', '@type': 'ProfilePage', '@id': `${url}#webpage`, ...base, mainEntity: { '@id': PERSON_ID } }
+      : page.kind === 'service'
+        ? {
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            '@id': `${url}#service`,
+            ...base,
+            name: page.serviceType ?? page.h1,
+            serviceType: page.serviceType,
+            provider: { '@id': PERSON_ID },
+          }
+        : {
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            '@id': `${url}#article`,
+            ...base,
+            headline: page.h1,
+            mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+            author: { '@id': PERSON_ID },
+            publisher: { '@id': PERSON_ID },
+          }
+  const faq = faqJsonLd(publishedFaq(page))
+  const fi = servicePair(page, 'fi')
+  const en = servicePair(page, 'en')
+  return {
+    path,
+    lang: page.lang,
+    title: page.metaTitle,
+    description: page.metaDescription,
+    type: 'website',
+    alternates: [
+      ...(fi ? [{ hreflang: 'fi', path: servicePath(fi.slug) }] : []),
+      ...(en ? [{ hreflang: 'en', path: servicePath(en.slug) }] : []),
+      { hreflang: 'x-default', path: servicePath((fi ?? page).slug) },
+    ],
+    jsonLd: faq ? [main, faq] : [main],
+    priority: page.key === 'about' ? 0.6 : 0.9,
+  }
+}
 
 /** SEO-kuvaus → kuvaus → ensimmäinen kappale, aina enintään 160 merkkiä. */
 function postDescription(post: Post): string | undefined {

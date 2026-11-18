@@ -5,7 +5,7 @@ export type HomeCopy = typeof FI
 const FI = {
   // NAV
   navManifesto: 'Periaatteet', navProjects: 'Projektit', navTech: 'Tech',
-  navStory: 'Tarina', navBlog: 'Blogi', navCta: 'Ota yhteyttä', navLangSwitch: 'In English',
+  navStory: 'Tarina', navServices: 'Palvelut', navBlog: 'Blogi', navCta: 'Ota yhteyttä', navLangSwitch: 'In English',
   // HERO — NEW COPY (positioning change)
   heroBadge: 'Avoinna uusille projekteille',
   heroTitleA: 'Tuotteita, jotka pyörivät', heroTitleB: 'tuotannossa.', heroTitleC: 'Ei demoja.',
@@ -91,7 +91,7 @@ const FI = {
 
 const EN: HomeCopy = {
   navManifesto: 'Principles', navProjects: 'Projects', navTech: 'Tech',
-  navStory: 'Story', navBlog: 'Blog', navCta: 'Get in touch', navLangSwitch: 'Suomeksi',
+  navStory: 'Story', navServices: 'Services', navBlog: 'Blog', navCta: 'Get in touch', navLangSwitch: 'Suomeksi',
   heroBadge: 'Open for new projects',
   heroTitleA: 'Products that run', heroTitleB: 'in production.', heroTitleC: 'Not demos.',
   heroSub: 'Sami Kiias · CTO @ Rascal AI · Founder @ Mak8r.fi',

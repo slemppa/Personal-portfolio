@@ -66,7 +66,7 @@ const entries: CaseEntry[] = [
           'Multi-tenant SaaS, joka hoitaa pk-yrityksen markkinoinnin ja myynnin: AI-sisältöputki, äänipuhelukampanjat ja analytiikka. ~207 000 riviä koodia, 423 julkaisua.',
         metaTitle: 'Rascal AI – AI-markkinointi ja -myynti pk-yritykselle',
         metaDescription:
-          'Rascal AI hoitaa pk-yrityksen markkinoinnin ja myynnin yhdessä alustassa: AI-sisältöputki, äänipuhelukampanjat ja analytiikka. Case-tutkimus.',
+          'Sami Kiias rakensi Rascal AI:n CTO:na: alusta hoitaa pk-yrityksen markkinoinnin ja myynnin. AI-sisältöputki, puhelukampanjat ja analytiikka.',
         problem:
           'AI-generoitu sisältö kuulostaa botilta, ja pk-yrityksen markkinointi hajoaa viiteen eri työkaluun. Tarvittiin alusta, joka tuottaa asiakkaan kuuloista sisältöä ja hoitaa koko putken strategiasta julkaisuun ja soittokampanjoihin — yhden hengen ylläpidettävissä.',
         approach: [
@@ -105,7 +105,7 @@ const entries: CaseEntry[] = [
           'Multi-tenant SaaS that runs an SMB’s marketing and sales: AI content pipeline, voice-call campaigns and analytics. ~207,000 lines of code, 423 releases.',
         metaTitle: 'Rascal AI – AI marketing and sales platform for SMBs',
         metaDescription:
-          'Rascal AI runs an SMB’s marketing and sales on one platform: an AI content pipeline, voice-call campaigns and analytics. A case study.',
+          'Sami Kiias built Rascal AI as CTO: one platform that runs an SMB’s marketing and sales, with an AI content pipeline, voice-call campaigns and analytics.',
         problem:
           'AI-generated content sounds like a bot, and SMB marketing fragments across five tools. The goal: a platform that produces content in the customer’s own voice and runs the whole pipeline from strategy to publishing and call campaigns — maintainable by one person.',
         approach: [
@@ -157,7 +157,7 @@ const entries: CaseEntry[] = [
           'Pipedrive-luokan myynti-CRM, jossa on sisäänrakennettu selainpohjainen soittokeskus live-AI-valmennuksella, workflow-moottori ja dokumenttien e-allekirjoitus. ~123 000 riviä, ~1 600 testiä.',
         metaTitle: 'Rascal CRM – myynti-CRM sisäänrakennetulla soittokeskuksella',
         metaDescription:
-          'Myynti-CRM, jossa on selainpohjainen soittokeskus live-AI-valmennuksella, workflow-moottori ja e-allekirjoitus. Näin Rascal CRM on rakennettu.',
+          'Sami Kiias rakensi Rascal CRM:n: myynti-CRM, jossa on selainpohjainen soittokeskus live-AI-valmennuksella, workflow-moottori ja e-allekirjoitus.',
         problem:
           'Myyntitiimin työkalut ovat siiloissa: CRM yhdessä, puhelut toisessa, dokumentit kolmannessa — ja "AI-ominaisuudet" ovat päälle liimattuja. Tavoite oli CRM, jossa puhelu, kalenteri, dokumentit ja automaatio elävät samassa tietomallissa, multi-tenant-eristyksellä jota ei voi ohittaa.',
         approach: [
@@ -193,7 +193,7 @@ const entries: CaseEntry[] = [
           'A Pipedrive-class sales CRM with a built-in browser call center with live AI coaching, a workflow engine and document e-signing. ~123,000 lines, ~1,600 tests.',
         metaTitle: 'Rascal CRM – a sales CRM with a built-in call center',
         metaDescription:
-          'A sales CRM with a browser call center, live AI coaching, a workflow engine and e-signing. How Rascal CRM was built, ~123,000 lines in.',
+          'Sami Kiias built Rascal CRM: a sales CRM with a browser call center, live AI coaching, a workflow engine and e-signing. ~123,000 lines in.',
         problem:
           'Sales tooling lives in silos: CRM here, calls there, documents elsewhere — with "AI features" bolted on top. The goal: a CRM where calling, calendar, documents and automation share one data model, with multi-tenant isolation that cannot be bypassed.',
         approach: [
@@ -242,7 +242,7 @@ const entries: CaseEntry[] = [
           'Multi-tenant-sivustogeneraattori: kuvaile yrityksesi puhumalla, ja koneisto luo GitHub-repon, Vercel-projektin, domainin ja valmiin sivun — jonka voi luovuttaa asiakkaalle yhdellä komennolla.',
         metaTitle: 'Rascal Pages – kotisivukone, jossa omistat koodin',
         metaDescription:
-          'Kuvaile yrityksesi puhumalla, ja Rascal Pages luo GitHub-repon, Vercel-projektin, domainin ja valmiin sivun, jonka asiakas omistaa itse.',
+          'Sami Kiias rakensi Rascal Pagesin: kuvaile yrityksesi puhumalla, ja kone luo GitHub-repon, Vercel-projektin, domainin ja sivun, jonka asiakas omistaa.',
         problem:
           'Webflow ja Squarespace lukitsevat asiakkaan alustaansa: sivun voi rakentaa, mutta ei omistaa. Tavoite oli sivustotuote, jossa jokainen asiakassivu on oikea, itsenäinen Next.js-repo — ja silti sivun luonti on yhtä helppoa kuin lomakkeen täyttö tai puhelu.',
         approach: [
@@ -278,7 +278,7 @@ const entries: CaseEntry[] = [
           'A multi-tenant site generator: describe your business by voice, and the machine creates a GitHub repo, a Vercel project, a domain and a finished site — transferable to the customer with one command.',
         metaTitle: 'Rascal Pages – a website builder where you own the code',
         metaDescription:
-          'Describe your business by voice and Rascal Pages creates a GitHub repo, a Vercel project, a domain and a finished site the customer owns.',
+          'Sami Kiias built Rascal Pages: describe your business by voice and it creates a GitHub repo, a Vercel project, a domain and a site the customer owns.',
         problem:
           'Webflow and Squarespace lock customers in: you can build a site but never own it. The goal: a site product where every customer site is a real, standalone Next.js repo — while creating one stays as easy as filling a form or making a call.',
         approach: [
@@ -327,7 +327,7 @@ const entries: CaseEntry[] = [
           'Treenin, ravinnon, palautumisen ja päiväkirjan yhdistävä valmennussovellus. Deterministinen progressiomoottori + LLM-valmentaja pgvector-muistilla. iOS, Android ja PWA yhdestä koodipohjasta.',
         metaTitle: 'Altio – AI-valmentaja, joka perustelee neuvonsa datallasi',
         metaDescription:
-          'Altio yhdistää treenin, ravinnon, palautumisen ja päiväkirjan. Deterministinen progressiomoottori ja LLM-valmentaja. iOS, Android ja PWA.',
+          'Sami Kiias rakensi Altion yksin: treeni, ravinto, palautuminen ja päiväkirja yhdessä. Progressiomoottori ja LLM-valmentaja. iOS, Android ja PWA.',
         problem:
           'Terveysdata on hajallaan eikä mikään sovellus kerro, mitä numeroille pitäisi tehdä. Halusin valmentajan, joka näkee kaiken — uni, treenit, ravinto, päiväkirja — ja perustelee jokaisen neuvonsa käyttäjän omalla datalla, ei internetin yleisviisauksilla.',
         approach: [
@@ -366,7 +366,7 @@ const entries: CaseEntry[] = [
           'A coaching app unifying training, nutrition, recovery and journaling. A deterministic progression engine + an LLM coach with pgvector memory. iOS, Android and PWA from one codebase.',
         metaTitle: 'Altio – an AI coaching app that cites your own data',
         metaDescription:
-          'Altio unifies training, nutrition, recovery and journaling: a deterministic progression engine plus an LLM coach. iOS, Android and PWA.',
+          'Sami Kiias built Altio solo: training, nutrition, recovery and journaling in one app, with a progression engine and an LLM coach. iOS, Android, PWA.',
         problem:
           'Health data is scattered, and no app tells you what to do with the numbers. I wanted a coach that sees everything — sleep, sessions, food, journal — and backs every recommendation with the user’s own data, not generic internet wisdom.',
         approach: [
@@ -418,7 +418,7 @@ const entries: CaseEntry[] = [
           'YNAB-tyylinen kirjekuoribudjetointi + velkojen hallinta suomalaiseen arkeen. Kaikki raha kulkee kokonaislukusentteinä, ja velkavyörytys jakaa potin senttitarkasti. iOS, Android ja web yhdestä koodipohjasta.',
         metaTitle: 'Pesä – kirjekuoribudjetointi ja velkojen hallinta',
         metaDescription:
-          'YNAB-tyylinen kirjekuoribudjetointi ja velkojen hallinta suomalaiseen arkeen. Velkavyörytys jakaa potin senttitarkasti. iOS, Android ja web.',
+          'Sami Kiias rakensi Pesän: YNAB-tyylinen kirjekuoribudjetointi ja velkojen hallinta. Velkavyörytys jakaa potin senttitarkasti. iOS, Android ja web.',
         problem:
           'Budjetointisovellukset budjetoivat peruutuspeilistä: ne näyttävät mihin raha meni, eivät auta päättämään mihin se menee. Ja velkaantuneelle tärkein työkalu — suunnitelmallinen velanmaksu korkoineen — puuttuu niistä kokonaan.',
         approach: [
@@ -453,7 +453,7 @@ const entries: CaseEntry[] = [
           'YNAB-style envelope budgeting + debt management for Finnish life. All money moves as integer cents, and the debt-avalanche allocator splits the pool to the exact cent. iOS, Android and web from one codebase.',
         metaTitle: 'Pesä – envelope budgeting and debt management app',
         metaDescription:
-          'YNAB-style envelope budgeting and debt management for Finnish life. The debt-avalanche allocator splits the pool to the cent. iOS, Android, web.',
+          'Sami Kiias built Pesä: YNAB-style envelope budgeting and debt management. The debt-avalanche allocator splits the pool to the cent. iOS, Android, web.',
         problem:
           'Budgeting apps budget through the rear-view mirror: they show where money went, not where it should go. And the tool that matters most to someone in debt — interest-aware, planned payoff — is missing from them entirely.',
         approach: [
@@ -500,7 +500,7 @@ const entries: CaseEntry[] = [
           'Perheen rutiinitaulu tablettiin ja vanhempien puhelimiin. Lapset kirjautuvat 5-merkkisellä koodilla ilman tiliä, vanhemmat näkevät edistymisen reaaliajassa. Rakennettu kolmessa päivässä.',
         metaTitle: 'Arkireitti – perheen tehtävätaulu lapsille ilman tiliä',
         metaDescription:
-          'Perheen rutiinitaulu tablettiin ja vanhempien puhelimiin. Lapset kirjautuvat koodilla ilman tiliä, vanhemmat näkevät edistymisen reaaliajassa.',
+          'Sami Kiias rakensi Arkireitin kolmessa päivässä: perheen rutiinitaulu, johon lapset kirjautuvat koodilla ilman tiliä. Vanhemmat näkevät edistymisen livenä.',
         problem:
           'Lapsi ei voi omistaa sähköpostia eikä salasanaa — mutta perheen yhteinen tehtävätaulu tarvitsee silti tunnistautumisen ja tietoturvan. Miten annetaan lapselle pääsy omaan tauluunsa heikentämättä koko kannan suojausta?',
         approach: [
@@ -533,7 +533,7 @@ const entries: CaseEntry[] = [
           'A family routine board for a shared tablet and parents’ phones. Kids sign in with a 5-character code — no account — while parents see progress in real time. Built in three days.',
         metaTitle: 'Arkireitti – a family task board for kids without accounts',
         metaDescription:
-          'A family routine board for a shared tablet and parents’ phones. Kids sign in with a code, no account, and parents see progress in real time.',
+          'Sami Kiias built Arkireitti in three days: a family routine board where kids sign in with a code, no account, and parents see progress in real time.',
         problem:
           'A child can’t own an email address or a password — yet a shared family task board still needs authentication and security. How do you give a kid access to their own board without weakening the database’s protection?',
         approach: [

@@ -8,6 +8,8 @@ export type Post = {
   lang: Lang
   title: string
   date: string
+  /** Viimeisin muutos (CMS:n updatedAt, YYYY-MM-DD). */
+  updated?: string
   description?: string
   /** Hakukoneelle erikseen kirjoitettu otsikko; muuten `title`. */
   metaTitle?: string
@@ -26,6 +28,7 @@ export type CmsPostDoc = {
   lang?: unknown
   title?: unknown
   date?: unknown
+  updatedAt?: unknown
   description?: unknown
   metaTitle?: unknown
   metaDescription?: unknown
@@ -55,6 +58,7 @@ export function postFromCms(doc: CmsPostDoc): Post | null {
     lang: doc.lang === 'en' ? 'en' : DEFAULT_LANG,
     title,
     date,
+    updated: typeof doc.updatedAt === 'string' ? doc.updatedAt.slice(0, 10) : undefined,
     description: nonEmpty(doc.description),
     metaTitle: nonEmpty(doc.metaTitle),
     metaDescription: nonEmpty(doc.metaDescription),

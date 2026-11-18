@@ -20,5 +20,7 @@ describe('mirrorPath', () => {
 
   it('falls back to the English home for fi-only pages', () => {
     expect(mirrorPath('/yhteys')).toBe('/en')
+    expect(mirrorPath('/mvp-kehitys')).toBe('/en/mvp-development')
+    expect(mirrorPath('/en/about')).toBe('/tietoa')
   })
 })

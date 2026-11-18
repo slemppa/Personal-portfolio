@@ -7,6 +7,8 @@ import Markdown from '../components/Markdown'
 import NewsletterForm from '../components/NewsletterForm'
 import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
+import { AUTHOR_NAME, aboutPath, postModified } from '../lib/seo'
+import { serviceHref } from '../lib/servicePages'
 import type { Lang, Post } from '../lib/parsePost'
 
 export default function BlogPost({
@@ -46,8 +48,27 @@ export default function BlogPost({
           <>
             <article className="mt-8">
               <header className="mb-10">
-                <time className="text-xs uppercase tracking-wide text-text-muted">{formatDate(post.date, lang)}</time>
-                <h1 className="mt-2 text-4xl font-bold text-text-primary">{post.title}</h1>
+                <h1 className="text-4xl font-bold text-text-primary">{post.title}</h1>
+                <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
+                  <span>
+                    {t(lang, 'byline')}{' '}
+                    <Link href={aboutPath(lang)} rel="author" className="font-medium text-text-secondary hover:text-text-primary">
+                      {AUTHOR_NAME}
+                    </Link>
+                  </span>
+                  <span aria-hidden="true">·</span>
+                  <span>
+                    {t(lang, 'published')} <time dateTime={post.date}>{formatDate(post.date, lang)}</time>
+                  </span>
+                  {postModified(post) !== post.date && (
+                    <>
+                      <span aria-hidden="true">·</span>
+                      <span>
+                        {t(lang, 'updated')} <time dateTime={postModified(post)}>{formatDate(postModified(post), lang)}</time>
+                      </span>
+                    </>
+                  )}
+                </p>
                 {post.tags.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
@@ -61,8 +82,21 @@ export default function BlogPost({
                   <img src={post.cover} alt={post.coverAlt ?? post.title} className="mt-6 aspect-video w-full rounded-2xl object-cover" />
                 )}
               </header>
-              <Markdown>{post.content}</Markdown>
+              <Markdown demoteH1>{post.content}</Markdown>
             </article>
+            <aside className="mt-12 rounded-2xl border border-border bg-bg-secondary p-6">
+              <p className="font-semibold text-text-primary">{t(lang, 'postCtaTitle')}</p>
+              <p className="mt-2 text-sm text-text-secondary">
+                {t(lang, 'postCtaBody')}{' '}
+                <Link href={serviceHref('mvp', lang)} className="text-accent underline underline-offset-4 hover:text-accent-hover">
+                  {t(lang, 'postCtaMvp')}
+                </Link>{' '}
+                ·{' '}
+                <Link href={serviceHref('n8n', lang)} className="text-accent underline underline-offset-4 hover:text-accent-hover">
+                  {t(lang, 'postCtaN8n')}
+                </Link>
+              </p>
+            </aside>
             <div className="mt-12">
               <NewsletterForm lang={lang} source={`newsletter:${slug}`} />
             </div>

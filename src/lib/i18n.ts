@@ -9,6 +9,17 @@ type Dict = {
   notFoundBody: string
   /** Label of the link that switches to the other language. */
   switchLabel: string
+  // Author line
+  byline: string
+  published: string
+  updated: string
+  caseBuiltBy: string
+  caseMvpCta: string
+  postCtaTitle: string
+  postCtaBody: string
+  postCtaMvp: string
+  postCtaN8n: string
+  faqTitle: string
   // Case pages
   caseBack: string
   caseNotFound: string
@@ -51,6 +62,16 @@ const strings: Record<Lang, Dict> = {
     notFoundTitle: 'Postausta ei löytynyt',
     notFoundBody: 'Tarkista osoite tai palaa blogiin.',
     switchLabel: 'In English',
+    byline: 'Kirjoittaja',
+    published: 'Julkaistu',
+    updated: 'Päivitetty',
+    caseBuiltBy: 'Rakentanut',
+    caseMvpCta: 'Näin MVP-projekti etenee →',
+    postCtaTitle: 'Tarvitsetko tekijän omaan projektiisi?',
+    postCtaBody: 'Rakennan MVP:t, AI-integraatiot ja n8n-automaatiot ideasta tuotantoon.',
+    postCtaMvp: 'MVP-kehitys',
+    postCtaN8n: 'n8n-automaatiot',
+    faqTitle: 'Usein kysytyt kysymykset',
     // Case pages
     caseBack: 'Takaisin projekteihin',
     caseNotFound: 'Projektia ei löytynyt',
@@ -91,6 +112,16 @@ const strings: Record<Lang, Dict> = {
     notFoundTitle: 'Post not found',
     notFoundBody: 'Check the URL or head back to the blog.',
     switchLabel: 'Suomeksi',
+    byline: 'By',
+    published: 'Published',
+    updated: 'Updated',
+    caseBuiltBy: 'Built by',
+    caseMvpCta: 'How an MVP project works →',
+    postCtaTitle: 'Need a builder for your own project?',
+    postCtaBody: 'I build MVPs, AI integrations and n8n automation from idea to production.',
+    postCtaMvp: 'MVP development',
+    postCtaN8n: 'n8n automation',
+    faqTitle: 'Frequently asked questions',
     // Case pages
     caseBack: 'Back to projects',
     caseNotFound: 'Project not found',
@@ -139,10 +170,23 @@ export const casePath = (lang: Lang, slug: string): string =>
   lang === 'fi' ? `/projektit/${slug}` : `/en/projektit/${slug}`
 export const homePath = (lang: Lang): string => (lang === 'fi' ? '/' : '/en')
 
+// Service/about pages have different slugs per language; keep in sync with
+// lib/servicePages.ts (PATHS). Tested in i18n.test.ts.
+const SERVICE_MIRRORS: [fi: string, en: string][] = [
+  ['/tietoa', '/en/about'],
+  ['/mvp-kehitys', '/en/mvp-development'],
+  ['/n8n-automaatiot', '/en/n8n-automation'],
+  ['/ohjelmistokehityksen-hinta', '/en/software-development-cost'],
+]
+
 // Maps the current path to its counterpart in the other language, for the
-// nav language switcher. Pages that don't exist in fi (e.g. /yhteys) fall
-// back to the English home rather than a 404.
+// nav language switcher. Pages that don't exist in the other language fall
+// back to its home rather than a 404.
 export function mirrorPath(pathname: string): string {
+  for (const [fi, en] of SERVICE_MIRRORS) {
+    if (pathname === fi) return en
+    if (pathname === en) return fi
+  }
   if (pathname === '/en' || pathname.startsWith('/en/')) return pathname.replace(/^\/en\/?/, '/') || '/'
   if (pathname === '/') return '/en'
   if (pathname.startsWith('/projektit/') || pathname.startsWith('/blog')) return `/en${pathname}`
