@@ -7,13 +7,12 @@ import { slugify } from '../slugify'
 
 // Blog pages are statically rendered; a change to a published post marks every
 // page stale so the next visit re-renders it (home lists the latest posts,
-// the sitemap lists them all). Skipped outside Next (e.g. the import script).
+// the sitemap is rendered per request, see app/sitemap.ts). Skipped outside
+// Next (e.g. the import script).
 function revalidateSite(context: Record<string, unknown>) {
   if (context.skipRevalidate) return
   try {
     revalidatePath('/', 'layout')
-    // Metadata routes are not under any layout; revalidate them explicitly.
-    revalidatePath('/sitemap.xml')
   } catch (err) {
     console.warn('[posts] revalidatePath failed', err)
   }
