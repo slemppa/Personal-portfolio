@@ -4,6 +4,9 @@
 //   pnpm build && pnpm start          # or pnpm dev
 //   node scripts/seo-check.mjs http://localhost:3000
 //
+// Protected Vercel preview: pass the auth cookie from a share link, e.g.
+//   SEO_CHECK_COOKIE="_vercel_jwt=…" node scripts/seo-check.mjs https://<preview>.vercel.app
+//
 // For every URL in sitemap.xml plus every internal link found on those pages:
 //   - status is 200 (links: not 404)
 //   - exactly one <h1>
@@ -21,7 +24,8 @@ const toLocal = (url) => url.replace(PROD, BASE)
 const toPath = (url) => new URL(url, BASE).pathname
 
 async function get(path) {
-  const res = await fetch(BASE + path, { redirect: 'manual' })
+  const headers = process.env.SEO_CHECK_COOKIE ? { cookie: process.env.SEO_CHECK_COOKIE } : {}
+  const res = await fetch(BASE + path, { redirect: 'manual', headers })
   return { status: res.status, body: res.status === 200 ? await res.text() : '' }
 }
 
