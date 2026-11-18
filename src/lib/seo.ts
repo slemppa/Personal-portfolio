@@ -14,8 +14,8 @@ export const DEFAULT_OG_IMAGE = '/portfolio-hero-fix.png'
 // solmuun.
 export const PERSON_ID = `${SITE_URL}/#person`
 export const WEBSITE_ID = `${SITE_URL}/#website`
-/** Kirjoittaja- ja tietoa-sivu (ProfilePage). */
-export const ABOUT_PATH = '/tietoa'
+/** Kirjoittaja- ja tietoa-sivu (ProfilePage). Pidä synkassa servicePages.ts:n PATHS.about kanssa. */
+export const aboutPath = (lang: Lang): string => (lang === 'fi' ? '/tietoa' : '/en/about')
 
 /**
  * Profiilit, jotka kuvaavat samaa henkilöä. Vain varmistetut URLit: tyhjät
@@ -25,10 +25,8 @@ export const PROFILES = {
   youtube: 'https://www.youtube.com/@samikiias',
   github: 'https://github.com/slemppa',
   mak8r: 'https://mak8r.fi',
-  // TODO(Sami): LinkedIn-profiilin URL (myös Footer/YhteysSection odottavat tätä, data-todo="linkedin-url")
-  linkedin: '',
-  // TODO(Sami): Instagram-profiilin URL
-  instagram: '',
+  linkedin: 'https://www.linkedin.com/in/samikiias/',
+  instagram: 'https://www.instagram.com/samikiias/',
 } as const
 
 export const SAME_AS: string[] = Object.values(PROFILES).filter(Boolean)

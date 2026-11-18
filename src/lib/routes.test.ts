@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { collectRoutes, findRoute, routeMetadata, sitemapEntries } from './routes'
 import type { Post } from './parsePost'
 import robots from '../app/robots'
+import { getServicePages } from './servicePages'
 
 const post = (slug: string, lang: 'fi' | 'en', extra: Partial<Post> = {}): Post => ({
   slug, lang, title: slug, date: '2026-08-05', tags: [], draft: false, content: '', ...extra,
@@ -96,7 +97,10 @@ describe('otsikot ja kuvaukset', () => {
 })
 
 describe('entiteetti ja uudet sivut', () => {
-  const NEW = ['/tietoa', '/mvp-kehitys', '/n8n-automaatiot', '/ohjelmistokehityksen-hinta']
+  const NEW = [
+    '/tietoa', '/mvp-kehitys', '/n8n-automaatiot', '/ohjelmistokehityksen-hinta',
+    '/en/about', '/en/mvp-development', '/en/n8n-automation', '/en/software-development-cost',
+  ]
 
   it('uudet sivut ovat sitemapissa ja canonical osoittaa itseensä', () => {
     for (const path of NEW) {
@@ -105,12 +109,14 @@ describe('entiteetti ja uudet sivut', () => {
     }
   })
 
-  it('suomenkielisillä sivuilla on fi + x-default itseensä, ei en-paria', () => {
-    const meta = routeMetadata(findRoute(routes, '/mvp-kehitys')!)
-    expect(meta.alternates?.languages).toEqual({
+  it('palvelusivut on paritettu fi ↔ en, x-default → fi', () => {
+    const expected = {
       fi: 'https://www.samikiias.fi/mvp-kehitys',
+      en: 'https://www.samikiias.fi/en/mvp-development',
       'x-default': 'https://www.samikiias.fi/mvp-kehitys',
-    })
+    }
+    expect(routeMetadata(findRoute(routes, '/mvp-kehitys')!).alternates?.languages).toEqual(expected)
+    expect(routeMetadata(findRoute(routes, '/en/mvp-development')!).alternates?.languages).toEqual(expected)
   })
 
   it('/tietoa on ProfilePage, jonka mainEntity on #person', () => {
@@ -121,6 +127,10 @@ describe('entiteetti ja uudet sivut', () => {
   it('case-sivun JSON-LD viittaa tekijään @id:llä', () => {
     const [cw] = findRoute(routes, '/projektit/rascal-ai')!.jsonLd
     expect(cw).toMatchObject({ '@type': 'CreativeWork', creator: { '@id': 'https://www.samikiias.fi/#person' } })
+  })
+
+  it('sivuilla ei ole jäljellä TODO-kohtia', () => {
+    expect(JSON.stringify(getServicePages())).not.toContain('TODO')
   })
 
   it('FAQPage sisältää vain valmiit vastaukset, ei TODO-kohtia', () => {

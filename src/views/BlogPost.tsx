@@ -7,7 +7,8 @@ import Markdown from '../components/Markdown'
 import NewsletterForm from '../components/NewsletterForm'
 import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
-import { ABOUT_PATH, AUTHOR_NAME, postModified } from '../lib/seo'
+import { AUTHOR_NAME, aboutPath, postModified } from '../lib/seo'
+import { serviceHref } from '../lib/servicePages'
 import type { Lang, Post } from '../lib/parsePost'
 
 export default function BlogPost({
@@ -51,7 +52,7 @@ export default function BlogPost({
                 <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-muted">
                   <span>
                     {t(lang, 'byline')}{' '}
-                    <Link href={ABOUT_PATH} rel="author" className="font-medium text-text-secondary hover:text-text-primary">
+                    <Link href={aboutPath(lang)} rel="author" className="font-medium text-text-secondary hover:text-text-primary">
                       {AUTHOR_NAME}
                     </Link>
                   </span>
@@ -83,21 +84,19 @@ export default function BlogPost({
               </header>
               <Markdown demoteH1>{post.content}</Markdown>
             </article>
-            {lang === 'fi' && (
-              <aside className="mt-12 rounded-2xl border border-border bg-bg-secondary p-6">
-                <p className="font-semibold text-text-primary">Tarvitsetko tekijän omaan projektiisi?</p>
-                <p className="mt-2 text-sm text-text-secondary">
-                  Rakennan MVP:t, AI-integraatiot ja n8n-automaatiot ideasta tuotantoon.{' '}
-                  <Link href="/mvp-kehitys" className="text-accent underline underline-offset-4 hover:text-accent-hover">
-                    MVP-kehitys
-                  </Link>{' '}
-                  ·{' '}
-                  <Link href="/n8n-automaatiot" className="text-accent underline underline-offset-4 hover:text-accent-hover">
-                    n8n-automaatiot
-                  </Link>
-                </p>
-              </aside>
-            )}
+            <aside className="mt-12 rounded-2xl border border-border bg-bg-secondary p-6">
+              <p className="font-semibold text-text-primary">{t(lang, 'postCtaTitle')}</p>
+              <p className="mt-2 text-sm text-text-secondary">
+                {t(lang, 'postCtaBody')}{' '}
+                <Link href={serviceHref('mvp', lang)} className="text-accent underline underline-offset-4 hover:text-accent-hover">
+                  {t(lang, 'postCtaMvp')}
+                </Link>{' '}
+                ·{' '}
+                <Link href={serviceHref('n8n', lang)} className="text-accent underline underline-offset-4 hover:text-accent-hover">
+                  {t(lang, 'postCtaN8n')}
+                </Link>
+              </p>
+            </aside>
             <div className="mt-12">
               <NewsletterForm lang={lang} source={`newsletter:${slug}`} />
             </div>

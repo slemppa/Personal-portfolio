@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { collectRoutes } from './routes'
-import { siteGraph } from './seo'
-import { getServicePages } from './servicePages'
+import { aboutPath, siteGraph } from './seo'
+import { getServicePages, serviceHref, servicePair } from './servicePages'
+import { mirrorPath } from './i18n'
 import type { Post } from './parsePost'
 
 const post = (slug: string, lang: 'fi' | 'en'): Post => ({
@@ -49,5 +50,20 @@ describe('palvelusivut', () => {
       for (const s of page.sections) expect(s.heading.endsWith('?'), `${page.slug}: ${s.heading}`).toBe(true)
       expect(page.metaTitle.length, page.slug).toBeLessThanOrEqual(60)
     }
+  })
+})
+
+describe('kieliparit', () => {
+  it('jokaisella sivulla on pari, ja kielenvaihto osuu siihen', () => {
+    for (const page of getServicePages()) {
+      const other = servicePair(page, page.lang === 'fi' ? 'en' : 'fi')
+      expect(other, page.slug).toBeDefined()
+      expect(mirrorPath(`/${page.slug}`), page.slug).toBe(`/${other!.slug}`)
+    }
+  })
+
+  it('aboutPath vastaa tietoa-sivua', () => {
+    expect(aboutPath('fi')).toBe(serviceHref('about', 'fi'))
+    expect(aboutPath('en')).toBe(serviceHref('about', 'en'))
   })
 })

@@ -3,16 +3,17 @@ import Footer from '../components/Footer'
 import Markdown from '../components/Markdown'
 import ContactForm from '../components/ContactForm'
 import type { ServicePage as ServicePageData } from '../lib/servicePages'
+import { t } from '../lib/i18n'
 
 /**
- * Template for the Finnish service, guide and about pages: one H1, a short
+ * Template for the service, guide and about pages (fi + en): one H1, a short
  * direct answer under it, question-shaped H2 sections, a visible FAQ and a
  * contact form. Content lives in lib/servicePages.ts.
  */
 export default function ServicePage({ page }: { page: ServicePageData }) {
   return (
     <>
-      <Nav lang="fi" />
+      <Nav lang={page.lang} />
       <main className="mx-auto min-h-screen max-w-3xl px-8 pb-24 pt-32">
         <article>
           <header className="mb-12">
@@ -32,7 +33,7 @@ export default function ServicePage({ page }: { page: ServicePageData }) {
           {page.faq.length > 0 && (
             <section className="mt-16" aria-labelledby="ukk">
               <h2 id="ukk" className="mb-6 text-2xl font-semibold text-text-primary">
-                Usein kysytyt kysymykset
+                {t(page.lang, 'faqTitle')}
               </h2>
               <div className="space-y-3">
                 {page.faq.map((item) => (
@@ -54,7 +55,7 @@ export default function ServicePage({ page }: { page: ServicePageData }) {
           <h2 className="mb-2 text-center text-2xl font-semibold text-text-primary">{page.cta.title}</h2>
           <p className="mx-auto mb-8 max-w-lg text-center text-text-secondary">{page.cta.body}</p>
           <div className="mx-auto max-w-lg">
-            <ContactForm source={`service:${page.slug}`} lang="fi" />
+            <ContactForm source={`service:${page.slug}`} lang={page.lang} />
           </div>
         </section>
       </main>

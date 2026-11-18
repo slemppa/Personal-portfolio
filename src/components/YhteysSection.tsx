@@ -3,6 +3,8 @@
 import type { Lang } from '../lib/parsePost'
 import { homeCopy } from '../site/copy'
 import ContactForm from './ContactForm'
+import { serviceHref } from '../lib/servicePages'
+import { PROFILES } from '../lib/seo'
 
 // The "05 — Ota yhteyttä" section. This used to be static markup (see
 // site/markup.ts) with a mailto CTA as its primary action; it's now a real
@@ -14,13 +16,27 @@ import ContactForm from './ContactForm'
 
 const mono = "'JetBrains Mono', monospace"
 
-// Finnish-only service pages (lib/servicePages.ts).
-const SERVICES_FI = [
-  { label: 'MVP-kehitys', href: '/mvp-kehitys' },
-  { label: 'n8n-automaatiot', href: '/n8n-automaatiot' },
-  { label: 'Ohjelmistokehityksen hinta', href: '/ohjelmistokehityksen-hinta' },
-  { label: 'Tietoa Samista', href: '/tietoa' },
-]
+// Service and about pages (lib/servicePages.ts).
+const SERVICES = {
+  fi: {
+    label: 'Palvelut',
+    items: [
+      { label: 'MVP-kehitys', href: serviceHref('mvp', 'fi') },
+      { label: 'n8n-automaatiot', href: serviceHref('n8n', 'fi') },
+      { label: 'Ohjelmistokehityksen hinta', href: serviceHref('cost', 'fi') },
+      { label: 'Tietoa Samista', href: serviceHref('about', 'fi') },
+    ],
+  },
+  en: {
+    label: 'Services',
+    items: [
+      { label: 'MVP development', href: serviceHref('mvp', 'en') },
+      { label: 'n8n automation', href: serviceHref('n8n', 'en') },
+      { label: 'Software development cost', href: serviceHref('cost', 'en') },
+      { label: 'About Sami', href: serviceHref('about', 'en') },
+    ],
+  },
+} as const
 
 const sectionStyle: React.CSSProperties = {
   position: 'relative',
@@ -133,7 +149,7 @@ export default function YhteysSection({ lang }: { lang: Lang }) {
           <div data-reveal data-delay="80">
             <div style={labelStyle}>{c.contactFollow}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 30 }}>
-              <a href="#" data-todo="linkedin-url" style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
+              <a href={PROFILES.linkedin} target="_blank" rel="noreferrer" style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
                 <span style={{ color: '#e9eaec', fontWeight: 500, fontSize: 14.5 }}>{c.contactLi}</span>
                 <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>{c.contactLiCta}</span>
               </a>
@@ -146,19 +162,15 @@ export default function YhteysSection({ lang }: { lang: Lang }) {
                 <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>{c.contactGhCta}</span>
               </a>
             </div>
-            {lang === 'fi' && (
-              <>
-                <div style={labelStyle}>Palvelut</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 30 }}>
-                  {SERVICES_FI.map((s) => (
-                    <a key={s.href} href={s.href} style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
-                      <span style={{ color: '#e9eaec', fontWeight: 500, fontSize: 14.5 }}>{s.label}</span>
-                      <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>→</span>
-                    </a>
-                  ))}
-                </div>
-              </>
-            )}
+            <div style={labelStyle}>{SERVICES[lang].label}</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 30 }}>
+              {SERVICES[lang].items.map((s) => (
+                <a key={s.href} href={s.href} style={linkRowStyle} data-hover="border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.03);">
+                  <span style={{ color: '#e9eaec', fontWeight: 500, fontSize: 14.5 }}>{s.label}</span>
+                  <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>→</span>
+                </a>
+              ))}
+            </div>
             <div style={labelStyle}>{c.contactCompanies}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <CompanyRow name={c.contactC1n} desc={c.contactC1d} role={c.contactC1r} />

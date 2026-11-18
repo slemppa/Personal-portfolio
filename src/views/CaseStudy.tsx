@@ -8,7 +8,8 @@ import ContactForm from '../components/ContactForm'
 import { getCaseStudy } from '../lib/cases'
 import { capture } from '../lib/analytics'
 import { t, homePath } from '../lib/i18n'
-import { ABOUT_PATH, AUTHOR_NAME } from '../lib/seo'
+import { AUTHOR_NAME, aboutPath } from '../lib/seo'
+import { serviceHref } from '../lib/servicePages'
 import type { Lang } from '../lib/parsePost'
 
 function isExternal(href: string) {
@@ -60,7 +61,7 @@ export default function CaseStudy({ lang = 'fi', slug }: { lang?: Lang; slug: st
           </p>
           <p className="mt-4 text-sm text-text-muted">
             {t(lang, 'caseBuiltBy')}{' '}
-            <Link href={ABOUT_PATH} rel="author" className="font-medium text-text-secondary hover:text-text-primary">
+            <Link href={aboutPath(lang)} rel="author" className="font-medium text-text-secondary hover:text-text-primary">
               {AUTHOR_NAME}
             </Link>{' '}
             · {study.role}
@@ -208,7 +209,7 @@ export default function CaseStudy({ lang = 'fi', slug }: { lang?: Lang; slug: st
             </div>
             <div className="mt-8 text-center">
               <Link
-                href="/mvp-kehitys"
+                href={serviceHref('mvp', lang)}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-bg-tertiary border border-border rounded-lg text-sm font-medium text-text-primary hover:border-accent/50 transition-all"
               >
                 {t(lang, 'caseMvpCta')}

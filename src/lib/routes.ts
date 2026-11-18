@@ -3,12 +3,11 @@
 import type { Metadata, MetadataRoute } from 'next'
 import { selectPosts, type Lang, type Post } from './parsePost'
 import { getCases, type CaseStudy } from './cases'
-import { getServicePages, publishedFaq, servicePath, type ServicePage } from './servicePages'
+import { getServicePages, publishedFaq, servicePair, servicePath, type ServicePage } from './servicePages'
 import { blogListPath, blogPostPath, casePath, homePath } from './i18n'
 import {
   DEFAULT_OG_IMAGE,
   SITE_NAME,
-  ABOUT_PATH,
   PERSON_ID,
   WEBSITE_ID,
   absoluteUrl,
@@ -221,11 +220,11 @@ function caseJsonLd(study: CaseStudy, path: string, lang: Lang): Record<string, 
   ]
 }
 
-/** Suomenkieliset palvelu-, opas- ja tietoa-sivut (lib/servicePages.ts). */
+/** Palvelu-, opas- ja tietoa-sivut molemmilla kielillä (lib/servicePages.ts). */
 function serviceRoute(page: ServicePage): Route {
   const path = servicePath(page.slug)
   const url = absoluteUrl(path)
-  const base = { url, name: page.h1, description: page.metaDescription, inLanguage: 'fi', isPartOf: { '@id': WEBSITE_ID } }
+  const base = { url, name: page.h1, description: page.metaDescription, inLanguage: page.lang, isPartOf: { '@id': WEBSITE_ID } }
   const main: Record<string, unknown> =
     page.kind === 'about'
       ? { '@context': 'https://schema.org', '@type': 'ProfilePage', '@id': `${url}#webpage`, ...base, mainEntity: { '@id': PERSON_ID } }
@@ -250,19 +249,21 @@ function serviceRoute(page: ServicePage): Route {
             publisher: { '@id': PERSON_ID },
           }
   const faq = faqJsonLd(publishedFaq(page))
+  const fi = servicePair(page, 'fi')
+  const en = servicePair(page, 'en')
   return {
     path,
-    lang: 'fi',
+    lang: page.lang,
     title: page.metaTitle,
     description: page.metaDescription,
     type: 'website',
-    // Vain suomeksi: ei en-paria, x-default osoittaa itseensä.
     alternates: [
-      { hreflang: 'fi', path },
-      { hreflang: 'x-default', path },
+      ...(fi ? [{ hreflang: 'fi', path: servicePath(fi.slug) }] : []),
+      ...(en ? [{ hreflang: 'en', path: servicePath(en.slug) }] : []),
+      { hreflang: 'x-default', path: servicePath((fi ?? page).slug) },
     ],
     jsonLd: faq ? [main, faq] : [main],
-    priority: path === ABOUT_PATH ? 0.6 : 0.9,
+    priority: page.key === 'about' ? 0.6 : 0.9,
   }
 }
 
