@@ -2,11 +2,12 @@ import type { MetadataRoute } from 'next'
 import { getEveryPost } from '@/lib/posts'
 import { collectRoutes, sitemapEntries } from '@/lib/routes'
 
-// sitemap.xml is a metadata route outside every layout, so the Posts hook's
-// revalidatePath('/', 'layout') never reached it and new posts went missing
-// (e.g. /blog/ai-kehitys-yrityksessa-opas-turvalliseen-kayttoonottoon). The
-// hook now revalidates it explicitly; this hourly window is the safety net.
-export const revalidate = 3600
+// Rendered on every request. sitemap.xml is a metadata route outside every
+// layout, and neither the Posts hook's revalidatePath('/', 'layout') nor
+// revalidatePath('/sitemap.xml') refreshed its ISR cache in production: newly
+// published posts stayed missing (seen 17.–18.11.2026). It is one small query
+// and crawlers fetch it rarely, so freshness wins over caching.
+export const dynamic = 'force-dynamic'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return sitemapEntries(collectRoutes(await getEveryPost()))
