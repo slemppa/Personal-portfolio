@@ -15,11 +15,13 @@ export const siteMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'Sami Kiias | AI Systems Builder',
   description: 'Rakennan AI-järjestelmiä jotka tekevät oikeasti töitä. Full-stack kehitys, AI-automaatiot, RAG-järjestelmät.',
-  icons: [
-    { rel: 'icon', type: 'image/svg+xml', url: '/favicon.svg' },
-    { rel: 'icon', type: 'image/png', url: '/favicon.png' },
-    { rel: 'apple-touch-icon', url: '/apple-touch-icon.png' },
-  ],
+  icons: {
+    icon: [
+      { type: 'image/svg+xml', url: '/favicon.svg' },
+      { type: 'image/png', url: '/favicon.png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 /**
