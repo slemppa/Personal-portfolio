@@ -136,7 +136,7 @@ const fiPages: ServicePage[] = [
       {
         heading: 'Missä Sami on mukana nyt?',
         body: [
-          '- **[Rascal AI](https://rascalai.fi):** CTO. AI-markkinointi ja -myynti pk-yrityksille, kolme tuotetta.',
+          '- **[Rascal AI](https://www.rascalai.fi):** CTO. AI-markkinointi ja -myynti pk-yrityksille, kolme tuotetta.',
           '- **Altio:** solo developer. AI-valmennussovellus treeniin, ravintoon ja palautumiseen.',
           '- **[Mak8r.fi](https://mak8r.fi):** perustaja. Tuotekehitys- ja AI-projektit toimeksiannosta.',
         ].join('\n'),
@@ -468,7 +468,7 @@ const enPages: ServicePage[] = [
       {
         heading: 'What is Sami working on now?',
         body: [
-          '- **[Rascal AI](https://rascalai.fi):** CTO. AI marketing and sales for SMBs, three products.',
+          '- **[Rascal AI](https://www.rascalai.fi):** CTO. AI marketing and sales for SMBs, three products.',
           '- **Altio:** solo developer. An AI coaching app for training, nutrition and recovery.',
           '- **[Mak8r.fi](https://mak8r.fi):** founder. Product development and AI projects on commission.',
         ].join('\n'),
