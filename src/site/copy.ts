@@ -14,8 +14,8 @@ const FI = {
     'Rakennan fullstack-tuotteita ideasta tuotantoon: multi-tenant SaaS, mobiilisovellukset ja AI-integraatiot. Kuusi rakennettua tuotetta — kolme tuotannossa maksavilla asiakkailla. 11 vuotta yrittäjyyttä: puhun sekä bisneksen että koodin kieltä.',
   heroCta1: 'Keskustellaan projektista', heroCta2: 'Katso projektit',
   heroStat1v: '6', heroStat1l: 'Tuotetta rakennettu',
-  heroStat2v: '400k+', heroStat2l: 'Riviä koodia tuotannossa',
-  heroStat3v: '3 000+', heroStat3l: 'Automaattitestiä',
+  heroStat2v: '700k+', heroStat2l: 'Riviä koodia tuotannossa',
+  heroStat3v: '17 000+', heroStat3l: 'Automaattitestiä',
   heroTerminalTitle: 'koneisto — tuotanto',
   // KONEISTO (live section) — NEW COPY: the site's own real lead pipeline
   koneistoLive: 'Live · tämän sivun oma putki',
@@ -74,7 +74,7 @@ const FI = {
   storyName: 'Sami Kiias', storyRole: 'CTO @ Rascal AI',
   storyStat1v: '11', storyStat1l: 'Vuotta yrittäjänä',
   storyStat2v: '6', storyStat2l: 'Tuotetta rakennettu',
-  storyStat3v: '423', storyStat3l: 'Julkaisua tuotantoon',
+  storyStat3v: '440+', storyStat3l: 'Julkaisua tuotantoon',
   // YHTEYS — NEW angle
   contactEyebrow: '05 — Ota yhteyttä', contactTitleA: 'Rakennetaanko', contactTitleB: 'seuraava tuotteesi?',
   contactBody: 'Olipa kyse uudesta tuotteesta, MVP:stä tai AI-ominaisuudesta olemassa olevaan järjestelmään — kerro tilanteestasi, niin katsotaan miten se kannattaa rakentaa.',
@@ -85,7 +85,7 @@ const FI = {
   contactGh: 'GitHub', contactGhCta: 'Tutustu koodiin →',
   contactCompanies: 'Yritykset',
   contactC1n: 'Rascal AI', contactC1d: 'AI-markkinointi ja -myynti pk-yrityksille — kolme tuotetta', contactC1r: 'CTO',
-  contactC2n: 'Altio', contactC2d: 'AI-valmennussovellus — treeni, ravinto ja palautuminen', contactC2r: 'Solo Dev',
+  contactC2n: 'Ihmi', contactC2d: 'AI-valmennussovellus — treeni, ravinto ja palautuminen', contactC2r: 'Solo Dev',
   contactC3n: 'Mak8r.fi', contactC3d: 'Tuotekehitys- ja AI-projektit toimeksiannosta', contactC3r: 'Founder',
 }
 
@@ -99,8 +99,8 @@ const EN: HomeCopy = {
     'I build fullstack products from idea to production: multi-tenant SaaS, mobile apps and AI integrations. Six products built — three in production with paying customers. 11 years of entrepreneurship: I speak both business and code.',
   heroCta1: 'Let’s talk about your project', heroCta2: 'See the projects',
   heroStat1v: '6', heroStat1l: 'Products built',
-  heroStat2v: '400k+', heroStat2l: 'Lines of code in production',
-  heroStat3v: '3,000+', heroStat3l: 'Automated tests',
+  heroStat2v: '700k+', heroStat2l: 'Lines of code in production',
+  heroStat3v: '17,000+', heroStat3l: 'Automated tests',
   heroTerminalTitle: 'koneisto — production',
   koneistoLive: 'Live · this site’s own pipeline',
   koneistoTitleA: 'How your message', koneistoTitleB: 'travels on this site',
@@ -154,7 +154,7 @@ const EN: HomeCopy = {
   storyName: 'Sami Kiias', storyRole: 'CTO @ Rascal AI',
   storyStat1v: '11', storyStat1l: 'Years as an entrepreneur',
   storyStat2v: '6', storyStat2l: 'Products built',
-  storyStat3v: '423', storyStat3l: 'Releases shipped',
+  storyStat3v: '440+', storyStat3l: 'Releases shipped',
   contactEyebrow: '05 — Get in touch', contactTitleA: 'Shall we build', contactTitleB: 'your next product?',
   contactBody: 'A new product, an MVP, or an AI feature for an existing system — tell me where you are, and we’ll figure out how it should be built.',
   contactReply: 'I usually reply the same day.',
@@ -164,7 +164,7 @@ const EN: HomeCopy = {
   contactGh: 'GitHub', contactGhCta: 'See the code →',
   contactCompanies: 'Companies',
   contactC1n: 'Rascal AI', contactC1d: 'AI marketing & sales for SMBs — three products', contactC1r: 'CTO',
-  contactC2n: 'Altio', contactC2d: 'AI coaching app — training, nutrition and recovery', contactC2r: 'Solo Dev',
+  contactC2n: 'Ihmi', contactC2d: 'AI coaching app — training, nutrition and recovery', contactC2r: 'Solo Dev',
   contactC3n: 'Mak8r.fi', contactC3d: 'Product development and AI projects on commission', contactC3r: 'Founder',
 }
 
