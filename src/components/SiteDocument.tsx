@@ -43,8 +43,8 @@ export default function SiteDocument({ lang, children }: { lang: Lang; children:
           data-site="045c4ca3"
           strategy="afterInteractive"
         />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-93LNVBX246" strategy="afterInteractive" />
-        <Script id="gtag-init" strategy="afterInteractive">
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-93LNVBX246" strategy="lazyOnload" />
+        <Script id="gtag-init" strategy="lazyOnload">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());

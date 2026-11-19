@@ -122,7 +122,7 @@ const labelStyle: React.CSSProperties = {
   fontSize: 12.5,
   letterSpacing: '.2em',
   textTransform: 'uppercase',
-  color: 'rgba(255,255,255,.4)',
+  color: 'rgba(255,255,255,.58)',
 }
 const cardStyle: React.CSSProperties = {
   border: '1px solid rgba(255,255,255,.1)',
@@ -238,7 +238,7 @@ export default function BuildInPublic({ lang = 'fi', latestPosts }: { lang?: Lan
             </div>
             <div style={{ padding: 18 }}>
               <div style={{ fontWeight: 600, fontSize: 16, lineHeight: 1.35, marginBottom: 8 }}>{video.title}</div>
-              <div style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.45)' }}>
+              <div style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.6)' }}>
                 @samikiias{video.durationText ? ` · ${video.durationText}` : ''} · {t.watch}
               </div>
             </div>
@@ -259,19 +259,19 @@ export default function BuildInPublic({ lang = 'fi', latestPosts }: { lang?: Lan
               <span style={{ fontFamily: mono, fontWeight: 700, fontSize: 'clamp(1.6rem,2.6vw,2.3rem)', color: '#f7f8f9' }}>
                 {gh?.totalContributions != null ? contributions.toLocaleString(t.numberLocale) : '—'}
               </span>
-              <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.42)', marginLeft: 10 }}>
+              <span style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.58)', marginLeft: 10 }}>
                 {t.contribsPerYear}
               </span>
             </div>
-            <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.4)' }}>{t.github}</span>
+            <span style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.58)' }}>{t.github}</span>
           </div>
           {gh?.weeks ? <ContributionHeatmap weeks={gh.weeks} /> : null}
           {gh?.recent?.length ? (
             <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
               {gh.recent.slice(0, 3).map((c, i) => (
                 <div key={i} style={{ fontFamily: mono, fontSize: 12, color: 'rgba(255,255,255,.55)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  <span style={{ color: 'rgba(255,255,255,.35)' }}>{c.repo.split('/')[1] || c.repo}</span> · {c.message}
-                  {c.at ? <span style={{ color: 'rgba(255,255,255,.3)' }}> · {relTime(c.at, t)}</span> : null}
+                  <span style={{ color: 'rgba(255,255,255,.56)' }}>{c.repo.split('/')[1] || c.repo}</span> · {c.message}
+                  {c.at ? <span style={{ color: 'rgba(255,255,255,.55)' }}> · {relTime(c.at, t)}</span> : null}
                 </div>
               ))}
             </div>
@@ -280,7 +280,7 @@ export default function BuildInPublic({ lang = 'fi', latestPosts }: { lang?: Lan
 
         {latestPosts.length > 0 ? (
           <div style={{ ...tileStyle, display: 'block' }}>
-            <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.36)', marginBottom: 14 }}>
+            <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.56)', marginBottom: 14 }}>
               {t.latestPosts}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -296,7 +296,7 @@ export default function BuildInPublic({ lang = 'fi', latestPosts }: { lang?: Lan
                     borderTop: i > 0 ? '1px solid rgba(255,255,255,.07)' : undefined,
                   }}
                 >
-                  <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.36)', marginBottom: 6 }}>
+                  <div style={{ fontFamily: mono, fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.56)', marginBottom: 6 }}>
                     {fmtDate(post.date, t)}
                   </div>
                   <div style={{ fontWeight: 600, fontSize: 15, lineHeight: 1.35, marginBottom: post.description ? 6 : 0 }}>{post.title}</div>
