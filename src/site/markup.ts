@@ -327,7 +327,7 @@ export function sectionsHtml(lang: Lang): string {
           <div style="border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;background:rgba(255,255,255,.015);max-width:420px;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;">
               <div style="display:flex;align-items:center;gap:12px;">
-                <span style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:10px;border:1px solid rgba(255,255,255,.16);font-family:'JetBrains Mono',monospace;font-weight:700;">SK</span>
+                <img src="/brand/sk-mark.svg" width="42" height="42" alt="" style="display:block;width:42px;height:42px;flex:none;">
                 <div>
                   <div style="font-weight:600;font-size:15px;">@samikiias</div>
                   <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.45);">AI &amp; Automaatio</div>
@@ -401,7 +401,7 @@ export function sectionsHtml(lang: Lang): string {
       <div>
         <p style="margin:0 0 26px;font-size:clamp(1.3rem,2.2vw,1.8rem);line-height:1.4;font-weight:500;letter-spacing:-.01em;color:#f2f3f4;">${c.storyQuote}</p>
         <div style="display:flex;align-items:center;gap:12px;">
-          <span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,.16);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;">SK</span>
+          <img src="/brand/sk-mark.svg" width="40" height="40" alt="" style="display:block;width:40px;height:40px;flex:none;">
           <div>
             <div style="font-weight:600;font-size:14.5px;">${c.storyName}</div>
             <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.45);">${c.storyRole}</div>
