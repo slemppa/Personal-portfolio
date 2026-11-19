@@ -96,7 +96,7 @@ const entries: CaseEntry[] = [
           { label: 'rascalai.fi', href: 'https://www.rascalai.fi' },
           { label: 'Hakukoneoptimointi', href: 'https://www.rascalai.fi/hakukoneoptimointi' },
           { label: 'Sisällöntuotanto', href: 'https://www.rascalai.fi/sisallontuotanto' },
-          { label: 'Puhelinmyynti tekoälyllä', href: 'https://www.rascalai.fi/puhelinmyynti' },
+          { label: 'Tekoälypuhelut', href: 'https://www.rascalai.fi/tekoalypuhelut' },
           { label: 'Hinnat', href: 'https://www.rascalai.fi/hinnat' },
           { label: 'app.rascalai.fi', href: 'https://app.rascalai.fi' },
         ],
