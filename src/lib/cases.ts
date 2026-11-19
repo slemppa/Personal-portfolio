@@ -55,6 +55,7 @@ const entries: CaseEntry[] = [
       { group: 'Infra', items: ['Vercel', 'Upstash Redis', 'Sentry', 'n8n'] },
     ],
     gallery: [
+      { src: '/cases/rascal-ai/app.webp', caption: { fi: 'Rascal AI — kojelauta: näyttökerrat, tavoitteet ja julkaisukalenteri', en: 'Rascal AI — dashboard: impressions, goals and the publishing calendar' } },
       { src: '/cases/rascal-ai/site.png', caption: { fi: 'rascalai.fi — myynnin ja markkinoinnin ekosysteemi', en: 'rascalai.fi — the sales & marketing ecosystem' } },
     ],
     copy: {
@@ -150,6 +151,7 @@ const entries: CaseEntry[] = [
       { group: 'Integrations', items: ['Recall.ai', 'Unipile', 'Slack', 'Tiptap'] },
     ],
     gallery: [
+      { src: '/cases/rascal-crm/app.webp', caption: { fi: 'Rascal CRM — myyntiputki (henkilötiedot sumennettu)', en: 'Rascal CRM — sales pipeline (personal data blurred)' } },
       { src: '/cases/rascal-crm/rascal-id.jpg', caption: { fi: 'Rascal ID — yksi kirjautuminen avaa koko tuoteperheen (itse rakennettu SSO)', en: 'Rascal ID — one sign-in opens the whole suite (self-built SSO)' } },
     ],
     copy: {
@@ -238,6 +240,7 @@ const entries: CaseEntry[] = [
       { group: 'Provisioning', items: ['GitHub API', 'Vercel API'] },
     ],
     gallery: [
+      { src: '/cases/rascal-pages/app.webp', caption: { fi: 'Rascal Pages — editori: osiot, live-esikatselu ja laitenäkymät', en: 'Rascal Pages — the editor: sections, live preview and device views' } },
       { src: '/cases/rascal-pages/site.jpg', caption: { fi: 'rascalpages.fi — konvertoiva landing page alle 60 sekunnissa', en: 'rascalpages.fi — a converting landing page in under 60 seconds' } },
     ],
     copy: {
@@ -326,6 +329,7 @@ const entries: CaseEntry[] = [
       { group: 'AI & data', items: ['Claude', 'Whisper', 'Strava API', 'Mapbox'] },
     ],
     gallery: [
+      { src: '/cases/altio/app.webp', caption: { fi: 'Ihmi — markkinointisivu ja sovelluksen päivänäkymä', en: 'Ihmi — marketing site and the app’s day view' } },
       { src: '/cases/altio/marketing.png', caption: { fi: 'Altio — private beta -markkinointisivu (EN/FI)', en: 'Altio — private beta marketing site (EN/FI)' } },
     ],
     copy: {
@@ -417,6 +421,7 @@ const entries: CaseEntry[] = [
       { group: 'Quality', items: ['TypeScript strict', 'Zod', 'node:test'] },
     ],
     gallery: [
+      { src: '/cases/pesa/app.webp', caption: { fi: 'Pesä — kotinäkymä: vapaasti käytettävä raha ja "Palkka tuli" (esimerkkiluvut)', en: 'Pesä — home: free to spend and "Salary arrived" (example figures)' } },
       { src: '/cases/pesa/login.png', caption: { fi: 'Pesä — kirjautuminen: "give every euro a job"', en: 'Pesä — sign in: "give every euro a job"' } },
     ],
     copy: {
@@ -499,6 +504,7 @@ const entries: CaseEntry[] = [
       { group: 'Backend', items: ['Supabase', 'Postgres RLS', 'Realtime'] },
     ],
     gallery: [
+      { src: '/cases/perhe-app/app.webp', caption: { fi: 'Arkireitti — vanhemman päivänäkymä ja lapsen tehtävälista', en: 'Arkireitti — the parent’s day view and a child’s task list' } },
       { src: '/cases/perhe-app/login.png', caption: { fi: 'Arkireitti — kaksitasoinen kirjautuminen: lapsi koodilla, vanhempi tilillä', en: 'Arkireitti — two-tier sign-in: kids use a code, parents an account' } },
     ],
     copy: {
