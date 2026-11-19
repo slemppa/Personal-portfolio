@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import type { Lang } from '../lib/parsePost'
-import { navHtml } from '../site/markup'
-import { wireHover, wireNav } from '../site/effects'
+import { navHtml } from '../site/chrome'
+import { wireHover, wireNav } from '../site/wire'
 import { mirrorPath, homePath } from '../lib/i18n'
 
 /**

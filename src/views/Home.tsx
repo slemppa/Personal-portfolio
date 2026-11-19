@@ -1,45 +1,31 @@
-'use client'
-
-import { useEffect, useMemo, useRef } from 'react'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import BuildInPublic from '../components/BuildInPublic'
 import CasesSection from '../components/CasesSection'
 import YhteysSection from '../components/YhteysSection'
+import HomeEffects from '../components/HomeEffects'
 import { sectionsHtml } from '../site/markup'
-import { wireHover, runKoneisto, runStackFlow } from '../site/effects'
 import type { Lang, Post } from '../lib/parsePost'
 
-export default function Home({ lang = 'fi', latestPosts }: { lang?: Lang; latestPosts: Post[] }) {
-  const ref = useRef<HTMLDivElement>(null)
+// Server component: the static homepage sections are rendered to HTML on the
+// server and never shipped as JS. Interactive parts are client islands
+// (Nav, BuildInPublic, ContactForm) and HomeEffects wires up the animations.
 
+export default function Home({ lang = 'fi', latestPosts }: { lang?: Lang; latestPosts: Post[] }) {
   // The static "Projektit", "Build in Public" and "Yhteys" sections are
   // replaced by live React components; render the markup before/between them.
-  const { beforeProjects, betweenProjectsAndBuild, betweenBuildAndYhteys } = useMemo(() => {
-    const html = sectionsHtml(lang)
-    const projectsStart = html.indexOf('<!-- PROJEKTIT -->')
-    const buildStart = html.indexOf('<!-- BUILD IN PUBLIC -->')
-    const yhteysStart = html.indexOf('<!-- YHTEYS -->')
-    return {
-      beforeProjects: html.slice(0, projectsStart),
-      betweenProjectsAndBuild: html.slice(projectsStart, buildStart),
-      betweenBuildAndYhteys: html.slice(html.indexOf('<!-- TARINA -->'), yhteysStart),
-    }
-  }, [lang])
-
-  useEffect(() => {
-    const root = ref.current
-    if (!root) return
-    const disposers = [wireHover(root), runKoneisto(), runStackFlow()]
-
-    return () => disposers.forEach((d) => d())
-  }, [])
+  const html = sectionsHtml(lang)
+  const projectsStart = html.indexOf('<!-- PROJEKTIT -->')
+  const buildStart = html.indexOf('<!-- BUILD IN PUBLIC -->')
+  const yhteysStart = html.indexOf('<!-- YHTEYS -->')
+  const beforeProjects = html.slice(0, projectsStart)
+  const betweenProjectsAndBuild = html.slice(projectsStart, buildStart)
+  const betweenBuildAndYhteys = html.slice(html.indexOf('<!-- TARINA -->'), yhteysStart)
 
 
   return (
     <div
       id="site-root"
-      ref={ref}
       style={{
         position: 'relative',
         background: '#0a0b0d',
@@ -70,6 +56,7 @@ export default function Home({ lang = 'fi', latestPosts }: { lang?: Lang; latest
       <div dangerouslySetInnerHTML={{ __html: betweenBuildAndYhteys }} />
       <YhteysSection lang={lang} />
       <Footer />
+      <HomeEffects />
     </div>
   )
 }

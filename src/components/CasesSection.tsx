@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import { getCases, type CaseStudy } from '../lib/cases'
 import { casePath } from '../lib/i18n'
