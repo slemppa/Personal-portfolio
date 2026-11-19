@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <clipPath id="clip-path-1">
+      <path d="M298 142 L438 142 L438 370 L298 370 Z"/>
+    </clipPath>
+  </defs>
+  <title>sk-mark</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <path id="tile" d="M128 16 L384 16 C445.856 16 496 66.144 496 128 L496 384 C496 445.856 445.856 496 384 496 L128 496 C66.144 496 16 445.856 16 384 L16 128 C16 66.144 66.144 16 128 16 Z" fill="#0a0b0d"/>
+    <path id="tile-border" d="M128 24 L384 24 C441.438 24 488 70.562 488 128 L488 384 C488 441.438 441.438 488 384 488 L128 488 C70.562 488 24 441.438 24 384 L24 128 C24 70.562 70.562 24 128 24 Z" fill="none" stroke="#ffffff" stroke-width="8" stroke-miterlimit="10" opacity="0.22"/>
+    <path id="S" d="M214 160 L148 160 C125.333 160 114 171.333 114 194 L114 218 C114 240.667 125.333 252 148 252 L180 252 C202.667 252 214 263.333 214 286 L214 318 C214 340.667 202.667 352 180 352 L114 352" fill="none" stroke="#f2f3f4" stroke-width="36" stroke-linejoin="round"/>
+    <path id="K-stem" d="M274 142 L274 370" fill="none" stroke="#f2f3f4" stroke-width="36" stroke-miterlimit="10"/>
+    <g clip-path="url(#clip-path-1)">
+      <path id="K-arms" d="M398 120 L328 256 L398 392" fill="none" stroke="#f2f3f4" stroke-width="36" stroke-linejoin="round"/>
+    </g>
+    <path id="live-dot" d="M392 105 C392 97.82 397.82 92 405 92 C412.18 92 418 97.82 418 105 C418 112.18 412.18 118 405 118 C397.82 118 392 112.18 392 105 Z" fill="#3ddc97"/>
+  </g>
+</svg>
