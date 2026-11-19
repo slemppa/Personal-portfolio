@@ -1,6 +1,23 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Self-hosted (latin subset, variable weight) — no render-blocking
+   third-party CSS. Preloaded in components/SiteDocument.tsx. */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-latin-v22.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-latin-v24.woff2') format('woff2');
+}
+
 @theme {
   --color-bg-primary: #0a0b0d;
   --color-bg-secondary: #0c0d10;

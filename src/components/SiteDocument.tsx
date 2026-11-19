@@ -7,8 +7,9 @@ import { SITE_URL, siteGraph } from '../lib/seo'
 import type { Lang } from '../lib/parsePost'
 import '../index.css'
 
-const FONTS =
-  'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap'
+// Self-hosted fonts (see @font-face in index.css), preloaded so they arrive
+// with the HTML instead of behind a render-blocking third-party stylesheet.
+const FONTS = ['/fonts/space-grotesk-latin-v22.woff2', '/fonts/jetbrains-mono-latin-v24.woff2']
 
 export const siteMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -28,9 +29,9 @@ export default function SiteDocument({ lang, children }: { lang: Lang; children:
   return (
     <html lang={lang}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="stylesheet" href={FONTS} />
+        {FONTS.map((href) => (
+          <link key={href} rel="preload" href={href} as="font" type="font/woff2" crossOrigin="" />
+        ))}
         {/* Person + WebSite on every page, so page-level JSON-LD can reference them by @id. */}
         <JsonLd blocks={[siteGraph(lang)]} />
       </head>
