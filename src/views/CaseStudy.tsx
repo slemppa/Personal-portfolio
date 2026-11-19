@@ -139,9 +139,18 @@ export default function CaseStudy({ lang = 'fi', slug }: { lang?: Lang; slug: st
           <h2 className="text-sm font-semibold uppercase tracking-wider text-accent mb-8">{t(lang, 'caseGallery')}</h2>
           {study.gallery.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {study.gallery.map((shot) => (
-                <figure key={shot.src} className="overflow-hidden rounded-2xl border border-border bg-bg-secondary">
-                  <img src={shot.src} alt={shot.caption} className="w-full aspect-video object-cover" />
+              {study.gallery.map((shot, i) => (
+                // The first shot is the composed product image: full width, uncropped.
+                <figure
+                  key={shot.src}
+                  className={`overflow-hidden rounded-2xl border border-border bg-bg-secondary${i === 0 ? ' sm:col-span-2' : ''}`}
+                >
+                  <img
+                    src={shot.src}
+                    alt={shot.caption}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    className={`w-full object-cover ${i === 0 ? 'aspect-[16/10]' : 'aspect-video'}`}
+                  />
                   <figcaption className="p-4 text-sm text-text-muted">{shot.caption}</figcaption>
                 </figure>
               ))}

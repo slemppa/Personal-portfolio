@@ -195,8 +195,8 @@ export function runKoneisto(): Disposer {
     const script = [
       { p: '$', t: './status' },
       { p: '✓', t: 'products: 6 built · 3 in production' },
-      { p: '✓', t: 'code: 400k+ lines · tests: 3 000+' },
-      { p: '✓', t: 'releases: 423 shipped' },
+      { p: '✓', t: 'code: 700k+ lines · tests: 17 000+' },
+      { p: '✓', t: 'releases: 440+ shipped' },
       { p: '$', t: 'status: production ✓' },
     ]
     const newRow = (p: string) => {

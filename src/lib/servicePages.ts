@@ -119,7 +119,7 @@ const fiPages: ServicePage[] = [
           '- **SaaS:** multi-tenant-alustat, joissa data on eristetty tietokantatasolla (RLS)',
           '- **AI-integraatiot:** Claude, ElevenLabs ja MCP-serverit tuotantokäytössä',
           '- **Automaatiot:** n8n, webhookit ja integraatiot järjestelmästä toiseen',
-          '- **Sovellukset:** iOS, Android ja web yhdestä koodipohjasta omissa tuotteissani (Altio, Pesä)',
+          '- **Sovellukset:** iOS, Android ja web yhdestä koodipohjasta omissa tuotteissani (Ihmi, Pesä)',
         ].join('\n'),
       },
       {
@@ -137,7 +137,7 @@ const fiPages: ServicePage[] = [
         heading: 'Missä Sami on mukana nyt?',
         body: [
           '- **[Rascal AI](https://www.rascalai.fi):** CTO. AI-markkinointi ja -myynti pk-yrityksille, kolme tuotetta.',
-          '- **Altio:** solo developer. AI-valmennussovellus treeniin, ravintoon ja palautumiseen.',
+          '- **Ihmi:** solo developer. AI-valmennussovellus treeniin, ravintoon ja palautumiseen.',
           '- **[Mak8r.fi](https://mak8r.fi):** perustaja. Tuotekehitys- ja AI-projektit toimeksiannosta.',
         ].join('\n'),
       },
@@ -451,7 +451,7 @@ const enPages: ServicePage[] = [
           '- **SaaS:** multi-tenant platforms with data isolated at the database level (RLS)',
           '- **AI integrations:** Claude, ElevenLabs and MCP servers in production',
           '- **Automation:** n8n, webhooks and integrations from one system to another',
-          '- **Apps:** iOS, Android and web from one codebase in my own products (Altio, Pesä)',
+          '- **Apps:** iOS, Android and web from one codebase in my own products (Ihmi, Pesä)',
         ].join('\n'),
       },
       {
@@ -469,7 +469,7 @@ const enPages: ServicePage[] = [
         heading: 'What is Sami working on now?',
         body: [
           '- **[Rascal AI](https://www.rascalai.fi):** CTO. AI marketing and sales for SMBs, three products.',
-          '- **Altio:** solo developer. An AI coaching app for training, nutrition and recovery.',
+          '- **Ihmi:** solo developer. An AI coaching app for training, nutrition and recovery.',
           '- **[Mak8r.fi](https://mak8r.fi):** founder. Product development and AI projects on commission.',
         ].join('\n'),
       },

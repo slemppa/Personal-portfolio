@@ -19,6 +19,7 @@ type Dict = {
   postCtaBody: string
   postCtaMvp: string
   postCtaN8n: string
+  postCtaCost: string
   faqTitle: string
   // Case pages
   caseBack: string
@@ -71,6 +72,7 @@ const strings: Record<Lang, Dict> = {
     postCtaBody: 'Rakennan MVP:t, AI-integraatiot ja n8n-automaatiot ideasta tuotantoon.',
     postCtaMvp: 'MVP-kehitys',
     postCtaN8n: 'n8n-automaatiot',
+    postCtaCost: 'Ohjelmistokehityksen hinta',
     faqTitle: 'Usein kysytyt kysymykset',
     // Case pages
     caseBack: 'Takaisin projekteihin',
@@ -121,6 +123,7 @@ const strings: Record<Lang, Dict> = {
     postCtaBody: 'I build MVPs, AI integrations and n8n automation from idea to production.',
     postCtaMvp: 'MVP development',
     postCtaN8n: 'n8n automation',
+    postCtaCost: 'Software development cost',
     faqTitle: 'Frequently asked questions',
     // Case pages
     caseBack: 'Back to projects',

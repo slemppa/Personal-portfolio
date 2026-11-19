@@ -4,6 +4,7 @@ import BuildInPublic from '../components/BuildInPublic'
 import CasesSection from '../components/CasesSection'
 import YhteysSection from '../components/YhteysSection'
 import HomeEffects from '../components/HomeEffects'
+import { ServicesSection } from '../components/ServiceCards'
 import { sectionsHtml } from '../site/markup'
 import type { Lang, Post } from '../lib/parsePost'
 
@@ -51,6 +52,7 @@ export default function Home({ lang = 'fi', latestPosts }: { lang?: Lang; latest
       <Nav lang={lang} />
       <div dangerouslySetInnerHTML={{ __html: beforeProjects }} />
       <CasesSection lang={lang} />
+      <ServicesSection lang={lang} />
       <div dangerouslySetInnerHTML={{ __html: betweenProjectsAndBuild }} />
       <BuildInPublic lang={lang} latestPosts={latestPosts} />
       <div dangerouslySetInnerHTML={{ __html: betweenBuildAndYhteys }} />
