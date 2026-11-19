@@ -110,7 +110,7 @@ export function sectionsHtml(lang: Lang): string {
   <!-- TECH MARQUEE -->
   <div style="position:relative;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:22px 0;overflow:hidden;background:#0c0d10;">
     <div style="display:flex;width:max-content;animation:marquee 32s linear infinite;will-change:transform;">
-      <div style="display:flex;align-items:center;gap:44px;padding-right:44px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.06em;color:rgba(255,255,255,.4);text-transform:uppercase;">
+      <div style="display:flex;align-items:center;gap:44px;padding-right:44px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.06em;color:rgba(255,255,255,.58);text-transform:uppercase;">
         <span>n8n</span><span style="opacity:.3;">/</span><span>Supabase</span><span style="opacity:.3;">/</span><span>React</span><span style="opacity:.3;">/</span><span>Voice AI</span><span style="opacity:.3;">/</span><span>RAG</span><span style="opacity:.3;">/</span><span>Multi-tenant</span><span style="opacity:.3;">/</span><span>Claude</span><span style="opacity:.3;">/</span><span>TypeScript</span><span style="opacity:.3;">/</span><span>VAPI</span><span style="opacity:.3;">/</span><span>Vercel</span><span style="opacity:.3;">/</span><span>pgvector</span><span style="opacity:.3;">/</span>
       </div>
       <div style="display:flex;align-items:center;gap:44px;padding-right:44px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.06em;color:rgba(255,255,255,.4);text-transform:uppercase;">

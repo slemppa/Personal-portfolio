@@ -8,6 +8,59 @@ type Disposer = () => void
 const prefersReduced = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+/** Small screens / touch devices get a lighter canvas workload. */
+const isLowPower = () =>
+  window.matchMedia('(max-width: 760px), (pointer: coarse)').matches
+
+type IdleWindow = Window & {
+  requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+  cancelIdleCallback?: (id: number) => void
+}
+
+/** Run `fn` once the browser is idle (after first paint / hydration work). */
+function whenIdle(fn: () => void, timeout = 2500): Disposer {
+  const w = window as IdleWindow
+  if (w.requestIdleCallback) {
+    const id = w.requestIdleCallback(fn, { timeout })
+    return () => w.cancelIdleCallback?.(id)
+  }
+  const id = window.setTimeout(fn, 1200)
+  return () => clearTimeout(id)
+}
+
+/**
+ * Drive a rAF loop only while `el` is on screen and the tab is visible, so
+ * decorative canvases never burn main-thread time off-screen.
+ */
+function loopWhileVisible(el: Element, frame: (now: number) => void): Disposer {
+  let raf = 0
+  let onScreen = false
+  const tick = (now: number) => {
+    frame(now)
+    raf = requestAnimationFrame(tick)
+  }
+  const sync = () => {
+    const run = onScreen && document.visibilityState === 'visible'
+    if (run && !raf) raf = requestAnimationFrame(tick)
+    else if (!run && raf) {
+      cancelAnimationFrame(raf)
+      raf = 0
+    }
+  }
+  const io = new IntersectionObserver((entries) => {
+    onScreen = entries[entries.length - 1].isIntersecting
+    sync()
+  })
+  io.observe(el)
+  document.addEventListener('visibilitychange', sync)
+  return () => {
+    io.disconnect()
+    document.removeEventListener('visibilitychange', sync)
+    cancelAnimationFrame(raf)
+    raf = 0
+  }
+}
+
 /** Apply `data-hover` style overrides on pointer enter, restore on leave. */
 export function wireHover(root: ParentNode): Disposer {
   const els = Array.from(root.querySelectorAll<HTMLElement>('[data-hover]'))
@@ -65,7 +118,6 @@ export function runKoneisto(): Disposer {
 
   // ---- Reveal + count-up ----------------------------------------------------
   const root = document.getElementById('site-root')
-  let reveals: HTMLElement[] = []
 
   const animateCount = (el: HTMLElement) => {
     const node = el as HTMLElement & { _counted?: boolean }
@@ -93,79 +145,93 @@ export function runKoneisto(): Disposer {
       : Array.from(el.querySelectorAll<HTMLElement>('[data-count-to]'))
     targets.forEach((t) => T(() => animateCount(t), (delay || 0) + 120))
   }
+  // Reveal-on-scroll. Elements already on screen when the page loads are
+  // left alone (server-rendered content paints immediately); only content
+  // below the fold is hidden, then faded in via the Web Animations API
+  // (compositor-driven, no per-frame JS) when it scrolls into view.
   const animateReveal = (el: HTMLElement, delay: number) => {
-    const begin = () => {
-      const dur = 680
-      const t0 = performance.now()
-      el.style.willChange = 'opacity, transform'
-      const tick = (now: number) => {
-        const p = Math.min(1, (now - t0) / dur)
-        const e = 1 - Math.pow(1 - p, 3)
-        el.style.opacity = String(e)
-        el.style.transform = 'translateY(' + 30 * (1 - e) + 'px)'
-        if (p < 1) requestAnimationFrame(tick)
-        else {
-          el.style.opacity = '1'
-          el.style.transform = 'none'
-          el.style.willChange = 'auto'
-        }
-      }
-      requestAnimationFrame(tick)
-    }
-    if (delay) T(begin, delay)
-    else begin()
-  }
-  const checkReveal = () => {
-    if (!reveals.length) return
-    const wh = window.innerHeight || document.documentElement.clientHeight
-    reveals = reveals.filter((el) => {
-      const r = el.getBoundingClientRect()
-      const inView = r.top < wh * 0.92 && r.bottom > 0
-      if (!inView) return true
-      const d = parseInt(el.getAttribute('data-delay') || '0', 10)
-      animateReveal(el, d)
-      maybeCount(el, d)
-      return false
-    })
+    const anim = el.animate(
+      [
+        { opacity: 0, transform: 'translateY(30px)' },
+        { opacity: 1, transform: 'none' },
+      ],
+      { duration: 680, delay, easing: 'cubic-bezier(.215,.61,.355,1)', fill: 'backwards' },
+    )
+    el.style.opacity = ''
+    el.style.transform = ''
+    anim.onfinish = () => anim.cancel()
   }
   if (root) {
-    reveals = Array.from(root.querySelectorAll<HTMLElement>('[data-reveal]'))
+    const reveals = Array.from(root.querySelectorAll<HTMLElement>('[data-reveal]'))
     if (reduce) {
       reveals.forEach((el) => maybeCount(el))
-      reveals = []
     } else {
-      reveals.forEach((el) => {
-        el.style.opacity = '0'
-        el.style.transform = 'translateY(30px)'
-        el.style.willChange = 'opacity, transform'
-      })
-      checkReveal()
-      requestAnimationFrame(() => checkReveal())
-      const safety = T(() => {
-        Array.from(root.querySelectorAll<HTMLElement>('[data-reveal]')).forEach((el) => {
-          if (parseFloat(getComputedStyle(el).opacity) < 0.9) {
-            el.style.animation = 'none'
-            el.style.transition = 'none'
-            el.style.opacity = '1'
-            el.style.transform = 'none'
+      let first = true
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const en of entries) {
+            const el = en.target as HTMLElement
+            if (first && en.isIntersecting) {
+              // Visible at load: no hide/fade, just run any count-up.
+              io.unobserve(el)
+              maybeCount(el)
+            } else if (first) {
+              el.style.opacity = '0'
+              el.style.transform = 'translateY(30px)'
+            } else if (en.isIntersecting) {
+              io.unobserve(el)
+              const d = parseInt(el.getAttribute('data-delay') || '0', 10)
+              animateReveal(el, d)
+              maybeCount(el, d)
+            }
           }
+          first = false
+        },
+        { rootMargin: '0px 0px -8% 0px' },
+      )
+      reveals.forEach((el) => io.observe(el))
+      disposers.push(() => {
+        io.disconnect()
+        reveals.forEach((el) => {
+          el.style.opacity = ''
+          el.style.transform = ''
         })
-      }, 3500)
-      disposers.push(() => clearTimeout(safety))
+      })
     }
   }
 
-  // ---- Scrollbar progress + reveal trigger ---------------------------------
+  // ---- Scrollbar progress --------------------------------------------------
   const bar = document.getElementById('scrollbar')
+  let scrollMax = 0
+  const measure = () => {
+    scrollMax = document.documentElement.scrollHeight - window.innerHeight
+  }
+  let scrollRaf = 0
   const onScroll = () => {
-    const sc = window.scrollY || document.documentElement.scrollTop
-    const h = document.documentElement.scrollHeight - window.innerHeight
-    if (bar) bar.style.width = (h > 0 ? (sc / h) * 100 : 0) + '%'
-    checkReveal()
+    if (scrollRaf) return
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = 0
+      const sc = window.scrollY || document.documentElement.scrollTop
+      if (bar) bar.style.width = (scrollMax > 0 ? (sc / scrollMax) * 100 : 0) + '%'
+    })
+  }
+  const onResize = () => {
+    measure()
+    onScroll()
   }
   window.addEventListener('scroll', onScroll, { passive: true })
-  onScroll()
-  disposers.push(() => window.removeEventListener('scroll', onScroll))
+  window.addEventListener('resize', onResize)
+  disposers.push(
+    whenIdle(() => {
+      measure()
+      onScroll()
+    }),
+  )
+  disposers.push(() => {
+    cancelAnimationFrame(scrollRaf)
+    window.removeEventListener('scroll', onScroll)
+    window.removeEventListener('resize', onResize)
+  })
 
   // ---- Hero terminal --------------------------------------------------------
   const termOut = document.getElementById('term-output')
@@ -373,14 +439,14 @@ export function runKoneisto(): Disposer {
     const ctx = cv.getContext('2d')!
     let W = 0
     let H = 0
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.6)
+    const lowPower = isLowPower()
+    const dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : 1.6)
     type P = {
       x: number; y: number; px: number; py: number; sp: number
       life: number; max: number; a: number; w: number; bright: boolean
     }
     let particles: P[] = []
     let t = 0
-    let raf = 0
     const mouse = { x: -9999, y: -9999, on: false }
     const mk = (): P => {
       const bright = Math.random() < 0.08
@@ -407,7 +473,9 @@ export function runKoneisto(): Disposer {
       ctx.fillStyle = '#0a0b0d'
       ctx.fillRect(0, 0, W, H)
       particles = []
-      const n = Math.min(820, Math.floor((W * H) / 1700))
+      const n = lowPower
+        ? Math.min(220, Math.floor((W * H) / 4200))
+        : Math.min(820, Math.floor((W * H) / 1700))
       for (let i = 0; i < n; i++) particles.push(mk())
     }
     const flow = (x: number, y: number) =>
@@ -452,7 +520,6 @@ export function runKoneisto(): Disposer {
         if (p.x < -12 || p.x > W + 12 || p.y < -12 || p.y > H + 12 || p.life > p.max)
           Object.assign(p, mk())
       }
-      raf = requestAnimationFrame(frame)
     }
     const onHeroMove = (e: MouseEvent) => {
       const r = header.getBoundingClientRect()
@@ -466,14 +533,19 @@ export function runKoneisto(): Disposer {
     header.addEventListener('mousemove', onHeroMove, { passive: true })
     header.addEventListener('mouseleave', onHeroLeave)
     window.addEventListener('resize', resize)
+    let stopLoop: Disposer = () => {}
+    // Start after the browser is idle so hydration and first paint win.
+    const cancelIdle = whenIdle(() => {
+      resize()
+      stopLoop = loopWhileVisible(cv, frame)
+    })
     disposers.push(() => {
-      cancelAnimationFrame(raf)
+      cancelIdle()
+      stopLoop()
       window.removeEventListener('resize', resize)
       header.removeEventListener('mousemove', onHeroMove)
       header.removeEventListener('mouseleave', onHeroLeave)
     })
-    resize()
-    frame()
   }
 
   return () => {
@@ -545,7 +617,6 @@ export function runStackFlow(): Disposer {
   type Ring = { x: number; y: number; t0: number }
   let packets: Packet[] = []
   let rings: Ring[] = []
-  let raf = 0
   let lastSpawn = 0
 
   const ease = (p: number) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2)
@@ -586,16 +657,18 @@ export function runStackFlow(): Disposer {
       ctx.stroke()
       return true
     })
-
-    raf = requestAnimationFrame(frame)
   }
 
-  resize()
+  let stopLoop: Disposer = () => {}
+  const cancelIdle = whenIdle(() => {
+    resize()
+    stopLoop = loopWhileVisible(cv, frame)
+  })
   window.addEventListener('resize', resize)
-  raf = requestAnimationFrame(frame)
 
   return () => {
-    cancelAnimationFrame(raf)
+    cancelIdle()
+    stopLoop()
     window.removeEventListener('resize', resize)
   }
 }
