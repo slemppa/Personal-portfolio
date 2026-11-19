@@ -43,7 +43,7 @@ export function siteGraph(lang: Lang): Record<string, unknown> {
         name: AUTHOR_NAME,
         url: `${SITE_URL}/`,
         jobTitle: fi ? ['Fullstack-tuoterakentaja', 'CTO'] : ['Fullstack product builder', 'CTO'],
-        worksFor: { '@type': 'Organization', name: 'Rascal AI', url: 'https://rascalai.fi' },
+        worksFor: { '@type': 'Organization', name: 'Rascal AI', url: 'https://www.rascalai.fi' },
         alumniOf: { '@type': 'CollegeOrUniversity', name: 'Haaga-Helia' },
         knowsAbout: fi
           ? ['Fullstack-kehitys', 'SaaS', 'Mobiilisovellukset', 'AI-integraatiot', 'n8n']

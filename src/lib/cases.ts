@@ -93,7 +93,11 @@ const entries: CaseEntry[] = [
           'Kaksikielinen käyttöliittymä (fi/en)',
         ],
         links: [
-          { label: 'rascalai.fi', href: 'https://rascalai.fi' },
+          { label: 'rascalai.fi', href: 'https://www.rascalai.fi' },
+          { label: 'Hakukoneoptimointi', href: 'https://www.rascalai.fi/hakukoneoptimointi' },
+          { label: 'Sisällöntuotanto', href: 'https://www.rascalai.fi/sisallontuotanto' },
+          { label: 'Tekoälypuhelut', href: 'https://www.rascalai.fi/tekoalypuhelut' },
+          { label: 'Hinnat', href: 'https://www.rascalai.fi/hinnat' },
           { label: 'app.rascalai.fi', href: 'https://app.rascalai.fi' },
         ],
       },
@@ -132,7 +136,7 @@ const entries: CaseEntry[] = [
           'Bilingual UI (fi/en)',
         ],
         links: [
-          { label: 'rascalai.fi', href: 'https://rascalai.fi' },
+          { label: 'rascalai.fi', href: 'https://www.rascalai.fi' },
           { label: 'app.rascalai.fi', href: 'https://app.rascalai.fi' },
         ],
       },
@@ -183,7 +187,10 @@ const entries: CaseEntry[] = [
           'Kaksikielinen (fi/en), 3 216 riviä käännöksiä per kieli',
           '32 design-spekkiä ja 23 toteutussuunnitelmaa dokumentoituna',
         ],
-        links: [{ label: 'crm.rascalai.fi', href: 'https://crm.rascalai.fi' }],
+        links: [
+          { label: 'Rascal CRM -esittely', href: 'https://www.rascalai.fi/crm-jarjestelma' },
+          { label: 'crm.rascalai.fi', href: 'https://crm.rascalai.fi' },
+        ],
       },
       en: {
         title: 'Rascal CRM',
@@ -268,7 +275,10 @@ const entries: CaseEntry[] = [
           'Sivuston luovutus asiakkaalle yhdellä komennolla',
           'Formaali ADR-arkkitehtuuripäätös riskitauluineen',
         ],
-        links: [{ label: 'rascalpages.fi', href: 'https://rascalpages.fi' }],
+        links: [
+          { label: 'Laskeutumissivut Rascal Pagesilla', href: 'https://www.rascalai.fi/laskeutumissivut' },
+          { label: 'rascalpages.fi', href: 'https://rascalpages.fi' },
+        ],
       },
       en: {
         title: 'Rascal Pages',
