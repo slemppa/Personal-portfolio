@@ -7,6 +7,8 @@ import { formatDate } from '../lib/format'
 import { t, otherLang, blogListPath, blogPostPath } from '../lib/i18n'
 import { AUTHOR_NAME, aboutPath, postModified } from '../lib/seo'
 import { serviceHref } from '../lib/servicePages'
+import { pickService, splitForCallout } from '../lib/serviceMatch'
+import { ServiceCallout } from '../components/ServiceCards'
 import type { Lang, Post } from '../lib/parsePost'
 
 export default function BlogPost({
@@ -80,7 +82,25 @@ export default function BlogPost({
                   <img src={post.cover} alt={post.coverAlt ?? post.title} className="mt-6 aspect-video w-full rounded-2xl object-cover" />
                 )}
               </header>
-              <Markdown demoteH1>{post.content}</Markdown>
+              {(() => {
+                // Contextual link to the most related service page, placed
+                // after the intro and first section (or after the body when
+                // the post has fewer than two H2 sections).
+                const callout = <ServiceCallout k={pickService(post)} lang={lang} />
+                const parts = splitForCallout(post.content)
+                return parts ? (
+                  <>
+                    <Markdown demoteH1>{parts[0]}</Markdown>
+                    {callout}
+                    <Markdown demoteH1>{parts[1]}</Markdown>
+                  </>
+                ) : (
+                  <>
+                    <Markdown demoteH1>{post.content}</Markdown>
+                    {callout}
+                  </>
+                )
+              })()}
             </article>
             <aside className="mt-12 rounded-2xl border border-border bg-bg-secondary p-6">
               <p className="font-semibold text-text-primary">{t(lang, 'postCtaTitle')}</p>
@@ -92,6 +112,10 @@ export default function BlogPost({
                 ·{' '}
                 <Link href={serviceHref('n8n', lang)} className="text-accent underline underline-offset-4 hover:text-accent-hover">
                   {t(lang, 'postCtaN8n')}
+                </Link>{' '}
+                ·{' '}
+                <Link href={serviceHref('cost', lang)} className="text-accent underline underline-offset-4 hover:text-accent-hover">
+                  {t(lang, 'postCtaCost')}
                 </Link>
               </p>
             </aside>
