@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { FOOTER_HTML } from '../site/markup'
-import { wireHover } from '../site/effects'
+import { FOOTER_HTML } from '../site/chrome'
+import { wireHover } from '../site/wire'
 import { PROFILES } from '../lib/seo'
 
 // Wire the footer placeholder links to their real destinations.

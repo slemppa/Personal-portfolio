@@ -33,6 +33,11 @@ const nextConfig: NextConfig = {
     // Client-specific offer pages and the admin view stay out of search
     // indexes (pages also emit a robots meta tag; see lib/routes.ts).
     return [
+      // Font files are versioned by name, so they can be cached forever.
+      {
+        source: '/fonts/:file*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
       { source: '/hallinta', headers: noindex },
       { source: '/tarjous/:path*', headers: noindex },
       { source: '/offer/:path*', headers: noindex },
